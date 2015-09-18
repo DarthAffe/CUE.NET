@@ -1,11 +1,14 @@
 ﻿// ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Global
 
+using System;
+
 namespace CUE.NET.Enums
 {
     /// <summary>
     /// Contains list of device capabilities
     /// </summary>
+    [Flags]
     public enum CorsairDeviceCaps
     {
         /// <summary>

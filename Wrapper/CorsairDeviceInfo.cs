@@ -37,7 +37,7 @@ namespace CUE.NET.Wrapper
         /// <summary>
         /// Mask that describes device capabilities, formed as logical "or" of CorsairDeviceCaps enum values
         /// </summary>
-        public int CapsMask { get; private set; }
+        public CorsairDeviceCaps CapsMask { get; private set; }
 
         #endregion
 
@@ -49,7 +49,7 @@ namespace CUE.NET.Wrapper
             this.Model = nativeInfo.model == IntPtr.Zero ? null : Marshal.PtrToStringAuto(nativeInfo.model);
             this.PhysicalLayout = nativeInfo.physicalLayout;
             this.LogicalLayout = nativeInfo.logicalLayout;
-            this.CapsMask = nativeInfo.capsMask;
+            this.CapsMask = (CorsairDeviceCaps)nativeInfo.capsMask;
         }
 
         #endregion
