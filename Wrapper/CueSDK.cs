@@ -15,7 +15,7 @@ namespace CUE.NET.Wrapper
 
         public static CorsairProtocolDetails ProtocolDetails { get; private set; }
         public static bool HasExclusiveAccess { get; private set; }
-        public static CorsairError LastError => CUESDK.CorsairGetLastError();
+        public static CorsairError LastError => _CUESDK.CorsairGetLastError();
 
         public static CueKeyboard KeyboardSDK { get; private set; }
         public static CueMouse MouseSDK { get; private set; }
@@ -32,7 +32,7 @@ namespace CUE.NET.Wrapper
             if (ProtocolDetails != null)
                 throw new WrapperException("CueSDK is already initialized.");
 
-            ProtocolDetails = new CorsairProtocolDetails(CUESDK.CorsairPerformProtocolHandshake());
+            ProtocolDetails = new CorsairProtocolDetails(_CUESDK.CorsairPerformProtocolHandshake());
 
             CorsairError error = LastError;
             if (error != CorsairError.CE_Success)
@@ -40,16 +40,16 @@ namespace CUE.NET.Wrapper
 
             if (exclusiveAccess)
             {
-                if (!CUESDK.CorsairRequestControl(CorsairAccessMode.CAM_ExclusiveLightingControl))
+                if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.CAM_ExclusiveLightingControl))
                     Throw(error);
 
                 HasExclusiveAccess = true;
             }
 
-            int deviceCount = CUESDK.CorsairGetDeviceCount();
+            int deviceCount = _CUESDK.CorsairGetDeviceCount();
             for (int i = 0; i < deviceCount; i++)
             {
-                CorsairDeviceInfo info = new CorsairDeviceInfo((_CorsairDeviceInfo)Marshal.PtrToStructure(CUESDK.CorsairGetDeviceInfo(i), typeof(_CorsairDeviceInfo)));
+                CorsairDeviceInfo info = new CorsairDeviceInfo((_CorsairDeviceInfo)Marshal.PtrToStructure(_CUESDK.CorsairGetDeviceInfo(i), typeof(_CorsairDeviceInfo)));
                 switch (info.Type)
                 {
                     case CorsairDeviceType.CDT_Keyboard:

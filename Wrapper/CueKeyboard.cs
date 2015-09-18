@@ -24,13 +24,13 @@ namespace CUE.NET.Wrapper
 
         public void SetKeyColor(char key, Color color)
         {
-            CorsairLedId id = CUESDK.CorsairGetLedIdForKeyName(key);
+            CorsairLedId id = _CUESDK.CorsairGetLedIdForKeyName(key);
             _CorsairLedColor ledColor = new _CorsairLedColor { ledId = id, r = color.R, g = color.G, b = color.B };
 
             //TODO DarthAffe 18.09.2015: Generalize and move to base class
             IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(_CorsairLedColor)));
             Marshal.StructureToPtr(ledColor, ptr, true);
-            CUESDK.CorsairSetLedsColors(1, ptr);
+            _CUESDK.CorsairSetLedsColors(1, ptr);
         }
 
         #endregion
