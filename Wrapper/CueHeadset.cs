@@ -9,7 +9,7 @@
 
         #region Constructors
 
-        public CueHeadset(CorsairDeviceInfo info)
+        internal CueHeadset(CorsairDeviceInfo info)
             : base(info)
         { }
 

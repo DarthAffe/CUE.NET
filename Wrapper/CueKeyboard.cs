@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Drawing;
 using CUE.NET.Enums;
 using CUE.NET.Native;
 
@@ -14,7 +12,7 @@ namespace CUE.NET.Wrapper
 
         #region Constructors
 
-        public CueKeyboard(CorsairDeviceInfo info)
+        internal CueKeyboard(CorsairDeviceInfo info)
             : base(info)
         { }
 
@@ -26,11 +24,18 @@ namespace CUE.NET.Wrapper
         {
             CorsairLedId id = _CUESDK.CorsairGetLedIdForKeyName(key);
             _CorsairLedColor ledColor = new _CorsairLedColor { ledId = id, r = color.R, g = color.G, b = color.B };
+            SetKeyColors(ledColor);
+        }
 
-            //TODO DarthAffe 18.09.2015: Generalize and move to base class
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(_CorsairLedColor)));
-            Marshal.StructureToPtr(ledColor, ptr, true);
-            _CUESDK.CorsairSetLedsColors(1, ptr);
+        public void SetKeyColors(char[] keys, Color color)
+        {
+            _CorsairLedColor[] ledColors = new _CorsairLedColor[keys.Length];
+            for (int i = 0; i < keys.Length; i++)
+            {
+                CorsairLedId id = _CUESDK.CorsairGetLedIdForKeyName(keys[i]);
+                ledColors[i] = new _CorsairLedColor { ledId = id, r = color.R, g = color.G, b = color.B };
+            }
+            SetKeyColors(ledColors);
         }
 
         #endregion

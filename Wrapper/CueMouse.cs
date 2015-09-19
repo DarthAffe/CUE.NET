@@ -9,7 +9,7 @@
 
         #region Constructors
 
-        public CueMouse(CorsairDeviceInfo info)
+        internal CueMouse(CorsairDeviceInfo info)
             : base(info)
         { }
 
