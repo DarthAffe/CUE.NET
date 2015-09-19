@@ -29,15 +29,15 @@ namespace CUE.NET.Devices.Generic
 
         protected CorsairLed GetLed(int ledId)
         {
-            if (!this.Leds.ContainsKey(ledId))
-                this.Leds.Add(ledId, new CorsairLed());
+            if (!Leds.ContainsKey(ledId))
+                Leds.Add(ledId, new CorsairLed());
 
-            return this.Leds[ledId];
+            return Leds[ledId];
         }
 
         public virtual void UpdateLeds(bool fullUpdate = false)
         {
-            IList<KeyValuePair<int, CorsairLed>> ledsToUpdate = (fullUpdate ? this.Leds : this.Leds.Where(x => x.Value.IsDirty)).ToList();
+            IList<KeyValuePair<int, CorsairLed>> ledsToUpdate = (fullUpdate ? Leds : Leds.Where(x => x.Value.IsDirty)).ToList();
 
             if (!ledsToUpdate.Any())
                 return; // CUE seems to crash if 'CorsairSetLedsColors' is called with a zero length array

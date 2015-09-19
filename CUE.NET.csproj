@@ -67,6 +67,9 @@
     <Compile Include="Devices\Headset\Enums\CorsairHeadsetLedId.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairKeyboardKeyId.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairPhysicalKeyboardLayout.cs" />
+    <Compile Include="Devices\Keyboard\Keys\BaseKeyGroup.cs" />
+    <Compile Include="Devices\Keyboard\Keys\IKeyGroup.cs" />
+    <Compile Include="Devices\Keyboard\Keys\SimpleKeyGroup.cs" />
     <Compile Include="Devices\Mouse\Enums\CorsairMouseButtonId.cs" />
     <Compile Include="Devices\Mouse\Enums\CorsairPhysicalMouseLayout.cs" />
     <Compile Include="Exceptions\CUEException.cs" />
@@ -77,7 +80,7 @@
     <Compile Include="Devices\Headset\CorsairHeadset.cs" />
     <Compile Include="Devices\Headset\CorsairHeadsetDeviceInfo.cs" />
     <Compile Include="Devices\IDeviceInfo.cs" />
-    <Compile Include="Devices\Keyboard\CorsairKey.cs" />
+    <Compile Include="Devices\Keyboard\Keys\CorsairKey.cs" />
     <Compile Include="Devices\Keyboard\CorsairKeyboard.cs" />
     <Compile Include="Devices\Mouse\CorsairMouseDeviceInfo.cs" />
     <Compile Include="Devices\Mouse\CorsairMouse.cs" />

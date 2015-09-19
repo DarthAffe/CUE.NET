@@ -1,7 +1,7 @@
 ﻿using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
 
-namespace CUE.NET.Devices.Keyboard
+namespace CUE.NET.Devices.Keyboard.Keys
 {
     public class CorsairKey
     {

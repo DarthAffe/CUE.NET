@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
+using CUE.NET.Devices.Keyboard.Keys;
 
 namespace CUE.NET.Devices.Keyboard
 {
@@ -14,7 +15,11 @@ namespace CUE.NET.Devices.Keyboard
         private Dictionary<CorsairKeyboardKeyId, CorsairKey> _keys = new Dictionary<CorsairKeyboardKeyId, CorsairKey>();
         public CorsairKey this[CorsairKeyboardKeyId keyId]
         {
-            get { return this._keys[keyId]; }
+            get
+            {
+                CorsairKey key;
+                return _keys.TryGetValue(keyId, out key) ? key : null;
+            }
             private set { throw new NotSupportedException(); }
         }
 
@@ -27,7 +32,7 @@ namespace CUE.NET.Devices.Keyboard
         {
             this.KeyboardDeviceInfo = info;
 
-            this.InitializeKeys();
+            InitializeKeys();
         }
 
         #endregion
@@ -37,7 +42,7 @@ namespace CUE.NET.Devices.Keyboard
         private void InitializeKeys()
         {
             foreach (CorsairKeyboardKeyId keyId in Enum.GetValues(typeof(CorsairKeyboardKeyId)))
-                this._keys.Add(keyId, new CorsairKey(keyId, this.GetLed((int)keyId)));
+                _keys.Add(keyId, new CorsairKey(keyId, GetLed((int)keyId)));
         }
 
         #endregion

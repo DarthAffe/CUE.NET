@@ -4,6 +4,7 @@ using CUE.NET;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Keyboard.Enums;
+using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Exceptions;
 
 namespace SimpleDevTest
@@ -24,11 +25,8 @@ namespace SimpleDevTest
                 keyboard[CorsairKeyboardKeyId.G].Led.Color = Color.Green;
                 keyboard[CorsairKeyboardKeyId.B].Led.Color = Color.Blue;
 
-                keyboard[CorsairKeyboardKeyId.W].Led.Color = Color.White;
-                keyboard[CorsairKeyboardKeyId.H].Led.Color = Color.White;
-                keyboard[CorsairKeyboardKeyId.I].Led.Color = Color.White;
-                keyboard[CorsairKeyboardKeyId.T].Led.Color = Color.White;
-                keyboard[CorsairKeyboardKeyId.E].Led.Color = Color.White;
+                SimpleKeyGroup whiteGroup = new SimpleKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E);
+                whiteGroup.SetColor(Color.White);
 
                 keyboard.UpdateLeds();
 
