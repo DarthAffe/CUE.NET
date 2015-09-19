@@ -3,6 +3,7 @@ using System.Drawing;
 using CUE.NET.Enums;
 using CUE.NET.Exceptions;
 using CUE.NET.Wrapper;
+using CUE.NET.Wrapper.Keyboard;
 
 namespace SimpleDevTest
 {
@@ -14,7 +15,7 @@ namespace SimpleDevTest
             {
                 CueSDK.Initialize();
 
-                CueKeyboard keyboard = CueSDK.KeyboardSDK;
+                CorsairKeyboard keyboard = CueSDK.KeyboardSDK;
                 if (keyboard == null)
                     throw new WrapperException("No keyboard found");
 

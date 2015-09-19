@@ -1,20 +1,23 @@
 ﻿using System.Drawing;
-using CUE.NET.Enums;
 using CUE.NET.Native;
 
-namespace CUE.NET.Wrapper
+namespace CUE.NET.Wrapper.Keyboard
 {
-    public class CueKeyboard : AbstractCueDevice
+    public class CorsairKeyboard : AbstractCueDevice
     {
         #region Properties & Fields
+
+        public CorsairKeyboardDeviceInfo KeyboardDeviceInfo { get; }
 
         #endregion
 
         #region Constructors
 
-        internal CueKeyboard(CorsairDeviceInfo info)
+        internal CorsairKeyboard(CorsairKeyboardDeviceInfo info)
             : base(info)
-        { }
+        {
+            this.KeyboardDeviceInfo = info;
+        }
 
         #endregion
 
@@ -22,7 +25,7 @@ namespace CUE.NET.Wrapper
 
         public void SetKeyColor(char key, Color color)
         {
-            CorsairLedId id = _CUESDK.CorsairGetLedIdForKeyName(key);
+            int id = _CUESDK.CorsairGetLedIdForKeyName(key);
             _CorsairLedColor ledColor = new _CorsairLedColor { ledId = id, r = color.R, g = color.G, b = color.B };
             SetKeyColors(ledColor);
         }
@@ -32,7 +35,7 @@ namespace CUE.NET.Wrapper
             _CorsairLedColor[] ledColors = new _CorsairLedColor[keys.Length];
             for (int i = 0; i < keys.Length; i++)
             {
-                CorsairLedId id = _CUESDK.CorsairGetLedIdForKeyName(keys[i]);
+                int id = _CUESDK.CorsairGetLedIdForKeyName(keys[i]);
                 ledColors[i] = new _CorsairLedColor { ledId = id, r = color.R, g = color.G, b = color.B };
             }
             SetKeyColors(ledColors);

@@ -3,7 +3,6 @@
 #pragma warning disable 649 // Field 'x' is never assigned
 
 using System.Runtime.InteropServices;
-using CUE.NET.Enums;
 
 namespace CUE.NET.Native
 {
@@ -11,10 +10,10 @@ namespace CUE.NET.Native
     [StructLayout(LayoutKind.Sequential)]
     public class _CorsairLedPosition // contains led id and position of led rectangle.Most of the keys are rectangular. In case if key is not rectangular(like Enter in ISO / UK layout) it returns the smallest rectangle that fully contains the key
     {
-        internal CorsairLedId ledId;          // identifier of led
+        internal int ledId;          // identifier of led
         internal double top;
         internal double left;
         internal double height;
-        internal double width;				 // values in mm
+        internal double width;   	 // values in mm
     }
 }

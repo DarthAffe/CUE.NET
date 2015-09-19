@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 using CUE.NET.Enums;
 using CUE.NET.Exceptions;
 using CUE.NET.Native;
+using CUE.NET.Wrapper.Headset;
+using CUE.NET.Wrapper.Keyboard;
+using CUE.NET.Wrapper.Mouse;
 
 namespace CUE.NET.Wrapper
 {
@@ -17,9 +20,9 @@ namespace CUE.NET.Wrapper
         public static bool HasExclusiveAccess { get; private set; }
         public static CorsairError LastError => _CUESDK.CorsairGetLastError();
 
-        public static CueKeyboard KeyboardSDK { get; private set; }
-        public static CueMouse MouseSDK { get; private set; }
-        public static CueHeadset HeadsetSDK { get; private set; }
+        public static CorsairKeyboard KeyboardSDK { get; private set; }
+        public static CorsairMouse MouseSDK { get; private set; }
+        public static CorsairHeadset HeadsetSDK { get; private set; }
 
         // ReSharper restore UnusedAutoPropertyAccessor.Global
 
@@ -35,7 +38,7 @@ namespace CUE.NET.Wrapper
             ProtocolDetails = new CorsairProtocolDetails(_CUESDK.CorsairPerformProtocolHandshake());
 
             CorsairError error = LastError;
-            if (error != CorsairError.CE_Success)
+            if (error != CorsairError.Success)
                 Throw(error);
 
             if (ProtocolDetails.BreakingChanges)
@@ -45,7 +48,7 @@ namespace CUE.NET.Wrapper
 
             if (exclusiveAccess)
             {
-                if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.CAM_ExclusiveLightingControl))
+                if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
                     Throw(error);
 
                 HasExclusiveAccess = true;
@@ -54,30 +57,31 @@ namespace CUE.NET.Wrapper
             int deviceCount = _CUESDK.CorsairGetDeviceCount();
             for (int i = 0; i < deviceCount; i++)
             {
-                CorsairDeviceInfo info = new CorsairDeviceInfo((_CorsairDeviceInfo)Marshal.PtrToStructure(_CUESDK.CorsairGetDeviceInfo(i), typeof(_CorsairDeviceInfo)));
-                if (!info.CapsMask.HasFlag(CorsairDeviceCaps.CDC_Lighting))
+                _CorsairDeviceInfo nativeDeviceInfo = (_CorsairDeviceInfo)Marshal.PtrToStructure(_CUESDK.CorsairGetDeviceInfo(i), typeof(_CorsairDeviceInfo));
+                GenericDeviceInfo info = new GenericDeviceInfo(nativeDeviceInfo);
+                if (!info.CapsMask.HasFlag(CorsairDeviceCaps.Lighting))
                     continue; // Everything that doesn't support lighting control is useless
 
                 switch (info.Type)
                 {
-                    case CorsairDeviceType.CDT_Keyboard:
-                        KeyboardSDK = new CueKeyboard(info);
+                    case CorsairDeviceType.Keyboard:
+                        KeyboardSDK = new CorsairKeyboard(new CorsairKeyboardDeviceInfo(nativeDeviceInfo));
                         break;
-                    case CorsairDeviceType.CDT_Mouse:
-                        MouseSDK = new CueMouse(info);
+                    case CorsairDeviceType.Mouse:
+                        MouseSDK = new CorsairMouse(new CorsairMouseDeviceInfo(nativeDeviceInfo));
                         break;
-                    case CorsairDeviceType.CDT_Headset:
-                        HeadsetSDK = new CueHeadset(info);
+                    case CorsairDeviceType.Headset:
+                        HeadsetSDK = new CorsairHeadset(new CorsairHeadsetDeviceInfo(nativeDeviceInfo));
                         break;
 
                     // ReSharper disable once RedundantCaseLabel
-                    case CorsairDeviceType.CDT_Unknown:
+                    case CorsairDeviceType.Unknown:
                     default:
                         throw new WrapperException("Unknown Device-Type");
                 }
 
                 error = LastError;
-                if (error != CorsairError.CE_Success)
+                if (error != CorsairError.Success)
                     Throw(error);
             }
         }

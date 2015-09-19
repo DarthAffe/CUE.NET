@@ -14,8 +14,8 @@ namespace CUE.NET.Native
     {
         internal CorsairDeviceType type;               // enum describing device type
         internal IntPtr model;                         // null - terminated device model(like “K95RGB”)
-        internal CorsairPhysicalLayout physicalLayout; // enum describing physical layout of the keyboard or mouse
-        internal CorsairLogicalLayout logicalLayout;   // enum describing logical layout of the keyboard as set in CUE settings
+        internal int physicalLayout;                   // enum describing physical layout of the keyboard or mouse
+        internal int logicalLayout;                    // enum describing logical layout of the keyboard as set in CUE settings
         internal int capsMask;					       // mask that describes device capabilities, formed as logical “or” of CorsairDeviceCaps enum values
     }
 }

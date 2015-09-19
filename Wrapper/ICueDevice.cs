@@ -2,6 +2,6 @@
 {
     public interface ICueDevice
     {
-        CorsairDeviceInfo DeviceInfo { get; }
+        IDeviceInfo DeviceInfo { get; }
     }
 }

@@ -14,11 +14,11 @@ namespace CUE.NET.Enums
         /// <summary>
         /// For devices that do not support any SDK functions
         /// </summary>
-        CDC_None = 0,
+        None = 0,
 
         /// <summary>
         /// For devices that has controlled lighting
         /// </summary>
-        CDC_Lighting = 1
+        Lighting = 1
     };
 }

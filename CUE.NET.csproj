@@ -63,15 +63,22 @@
     <Compile Include="Enums\CorsairAccessMode.cs" />
     <Compile Include="Enums\CorsairDeviceCaps.cs" />
     <Compile Include="Enums\CorsairDeviceType.cs" />
-    <Compile Include="Enums\CorsairLedId.cs" />
-    <Compile Include="Enums\CorsairLogicalLayout.cs" />
-    <Compile Include="Enums\CorsairPhysicalLayout.cs" />
+    <Compile Include="Enums\Keyboard\CorsairLogicalKeyboardLayout.cs" />
+    <Compile Include="Enums\Headset\CorsairHeadsetLedId.cs" />
+    <Compile Include="Enums\Keyboard\CorsairKeyboardLedId.cs" />
+    <Compile Include="Enums\Keyboard\CorsairPhysicalKeyboardLayout.cs" />
+    <Compile Include="Enums\Mouse\CorsairMouseLedId.cs" />
+    <Compile Include="Enums\Mouse\CorsairPhysicalMouseLayout.cs" />
     <Compile Include="Exceptions\CUEException.cs" />
     <Compile Include="Exceptions\WrapperException.cs" />
     <Compile Include="Wrapper\AbstractCueDevice.cs" />
-    <Compile Include="Wrapper\CueHeadset.cs" />
-    <Compile Include="Wrapper\CueKeyboard.cs" />
-    <Compile Include="Wrapper\CueMouse.cs" />
+    <Compile Include="Wrapper\GenericDeviceInfo.cs" />
+    <Compile Include="Wrapper\Headset\CorsairHeadset.cs" />
+    <Compile Include="Wrapper\Headset\CorsairHeadsetDeviceInfo.cs" />
+    <Compile Include="Wrapper\IDeviceInfo.cs" />
+    <Compile Include="Wrapper\Keyboard\CorsairKeyboard.cs" />
+    <Compile Include="Wrapper\Mouse\CorsairMouseDeviceInfo.cs" />
+    <Compile Include="Wrapper\Mouse\CorsairMouse.cs" />
     <Compile Include="Native\_CorsairDeviceInfo.cs" />
     <Compile Include="Native\_CorsairLedColor.cs" />
     <Compile Include="Native\_CorsairLedPosition.cs" />
@@ -80,7 +87,7 @@
     <Compile Include="Native\_CUESDK.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\CorsairError.cs" />
-    <Compile Include="Wrapper\CorsairDeviceInfo.cs" />
+    <Compile Include="Wrapper\Keyboard\CorsairKeyboardDeviceInfo.cs" />
     <Compile Include="Wrapper\CorsairProtocolDetails.cs" />
     <Compile Include="Wrapper\CueSDK.cs" />
     <Compile Include="Wrapper\ICueDevice.cs" />
@@ -91,6 +98,7 @@
   <ItemGroup>
     <None Include="libs\CUESDK_2013.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(PlatformName) == x86 copy "$(SolutionDir)libs\CUESDK_2013.dll" "$(TargetDir)CUESDK_2013.dll"

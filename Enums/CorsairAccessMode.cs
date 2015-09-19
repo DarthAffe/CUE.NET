@@ -8,6 +8,6 @@ namespace CUE.NET.Enums
     /// </summary>
     public enum CorsairAccessMode
     {
-        CAM_ExclusiveLightingControl = 0
+        ExclusiveLightingControl = 0
     };
 }

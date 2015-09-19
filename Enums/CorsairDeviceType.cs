@@ -8,9 +8,9 @@ namespace CUE.NET.Enums
     /// </summary>
     public enum CorsairDeviceType
     {
-        CDT_Unknown = 0,
-        CDT_Mouse = 1,
-        CDT_Keyboard = 2,
-        CDT_Headset = 3
+        Unknown = 0,
+        Mouse = 1,
+        Keyboard = 2,
+        Headset = 3
     };
 }

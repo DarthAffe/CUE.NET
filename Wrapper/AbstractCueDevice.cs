@@ -8,13 +8,13 @@ namespace CUE.NET.Wrapper
     {
         #region Properties & Fields
 
-        public CorsairDeviceInfo DeviceInfo { get; }
+        public IDeviceInfo DeviceInfo { get; }
 
         #endregion
 
         #region Constructors
 
-        protected AbstractCueDevice(CorsairDeviceInfo info)
+        protected AbstractCueDevice(IDeviceInfo info)
         {
             this.DeviceInfo = info;
         }

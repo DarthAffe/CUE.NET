@@ -1,7 +1,7 @@
-﻿namespace CUE.NET.Wrapper
+﻿namespace CUE.NET.Wrapper.Headset
 {
     //TODO DarthAffe 18.09.2015: Implement
-    public class CueHeadset : AbstractCueDevice
+    public class CorsairHeadset : AbstractCueDevice
     {
         #region Properties & Fields
 
@@ -9,7 +9,7 @@
 
         #region Constructors
 
-        internal CueHeadset(CorsairDeviceInfo info)
+        internal CorsairHeadset(CorsairHeadsetDeviceInfo info)
             : base(info)
         { }
 
