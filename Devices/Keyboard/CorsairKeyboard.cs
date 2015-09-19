@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -9,7 +10,7 @@ using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Keyboard
 {
-    public class CorsairKeyboard : AbstractCueDevice
+    public class CorsairKeyboard : AbstractCueDevice, IEnumerable<CorsairKey>
     {
         #region Properties & Fields
 
@@ -52,10 +53,24 @@ namespace CUE.NET.Devices.Keyboard
                 _CorsairLedPosition ledPosition = Marshal.PtrToStructure<_CorsairLedPosition>(ptr);
                 _keys.Add(ledPosition.ledId, new CorsairKey(ledPosition.ledId, GetLed((int)ledPosition.ledId),
                 //TODO DarthAffe 19.09.2015: Is something like RectangleD needed? I don't think so ...
-                    new RectangleF((float)ledPosition.top, (float)ledPosition.left, (float)ledPosition.width, (float)ledPosition.height)));
+                    new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height)));
                 ptr = new IntPtr(ptr.ToInt64() + structSize);
             }
         }
+
+        #region IEnumerable
+
+        public IEnumerator<CorsairKey> GetEnumerator()
+        {
+            return _keys.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
 
         #endregion
     }

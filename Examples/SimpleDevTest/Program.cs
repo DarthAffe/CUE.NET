@@ -21,6 +21,9 @@ namespace SimpleDevTest
                 if (keyboard == null)
                     throw new WrapperException("No keyboard found");
 
+                RectangleKeyGroup centerGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3);
+                centerGroup.SetColor(Color.Purple);
+
                 keyboard[CorsairKeyboardKeyId.R].Led.Color = Color.Red;
                 keyboard[CorsairKeyboardKeyId.G].Led.Color = Color.Green;
                 keyboard[CorsairKeyboardKeyId.B].Led.Color = Color.Blue;
@@ -28,7 +31,10 @@ namespace SimpleDevTest
                 SimpleKeyGroup whiteGroup = new SimpleKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E);
                 whiteGroup.SetColor(Color.White);
 
-                keyboard.UpdateLeds();
+                RectangleKeyGroup numberGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.D1, CorsairKeyboardKeyId.D0);
+                numberGroup.SetColor(Color.Yellow);
+
+                keyboard.UpdateLeds(true);
 
                 Console.WriteLine(CueSDK.LastError);
             }
