@@ -43,6 +43,10 @@ namespace CUE.NET.Wrapper
 
         #region Constructors
 
+        /// <summary>
+        /// Internal constructor of managed CorsairDeviceInfo.
+        /// </summary>
+        /// <param name="nativeInfo">The native CorsairDeviceInfo-struct</param>
         public CorsairDeviceInfo(_CorsairDeviceInfo nativeInfo)
         {
             this.Type = nativeInfo.type;

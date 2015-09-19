@@ -42,7 +42,7 @@ namespace CUE.NET.Wrapper
         /// <summary>
         /// Boolean that specifies if there were breaking changes between version of protocol implemented by server and client.
         /// </summary>
-        public byte BreakingChanges { get; }
+        public bool BreakingChanges { get; }
 
         #endregion
 
@@ -58,7 +58,7 @@ namespace CUE.NET.Wrapper
             this.ServerVersion = nativeDetails.serverVersion == IntPtr.Zero ? null : Marshal.PtrToStringAuto(nativeDetails.serverVersion);
             this.SdkProtocolVersion = nativeDetails.sdkProtocolVersion;
             this.ServerProtocolVersion = nativeDetails.serverProtocolVersion;
-            this.BreakingChanges = nativeDetails.breakingChanges;
+            this.BreakingChanges = nativeDetails.breakingChanges != 0;
         }
 
         #endregion

@@ -38,6 +38,11 @@ namespace CUE.NET.Wrapper
             if (error != CorsairError.CE_Success)
                 Throw(error);
 
+            if (ProtocolDetails.BreakingChanges)
+                throw new WrapperException("The SDK currently used isn't compatible with the installed version of CUE.\r\n" +
+                    $"CUE-Version: {ProtocolDetails.ServerVersion} (Protocol {ProtocolDetails.ServerProtocolVersion})\r\n" +
+                    $"SDK-Version: {ProtocolDetails.SdkVersion} (Protocol {ProtocolDetails.SdkProtocolVersion})");
+
             if (exclusiveAccess)
             {
                 if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.CAM_ExclusiveLightingControl))
@@ -50,6 +55,9 @@ namespace CUE.NET.Wrapper
             for (int i = 0; i < deviceCount; i++)
             {
                 CorsairDeviceInfo info = new CorsairDeviceInfo((_CorsairDeviceInfo)Marshal.PtrToStructure(_CUESDK.CorsairGetDeviceInfo(i), typeof(_CorsairDeviceInfo)));
+                if (!info.CapsMask.HasFlag(CorsairDeviceCaps.CDC_Lighting))
+                    continue; // Everything that doesn't support lighting control is useless
+
                 switch (info.Type)
                 {
                     case CorsairDeviceType.CDT_Keyboard:
