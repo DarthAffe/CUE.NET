@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Keys;
+using CUE.NET.Helper;
 using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Keyboard
@@ -16,6 +18,8 @@ namespace CUE.NET.Devices.Keyboard
 
         public CorsairKeyboardDeviceInfo KeyboardDeviceInfo { get; }
 
+        public RectangleF KeyboardRectangle { get; private set; }
+
         private Dictionary<CorsairKeyboardKeyId, CorsairKey> _keys = new Dictionary<CorsairKeyboardKeyId, CorsairKey>();
         public CorsairKey this[CorsairKeyboardKeyId keyId]
         {
@@ -24,6 +28,18 @@ namespace CUE.NET.Devices.Keyboard
                 CorsairKey key;
                 return _keys.TryGetValue(keyId, out key) ? key : null;
             }
+            private set { throw new NotSupportedException(); }
+        }
+
+        public CorsairKey this[PointF location]
+        {
+            get { return _keys.Values.FirstOrDefault(x => x.KeyRectangle.Contains(location)); }
+            private set { throw new NotSupportedException(); }
+        }
+
+        public IEnumerable<CorsairKey> this[RectangleF referenceRect, float minOverlayPercentage = 0.5f]
+        {
+            get { return _keys.Values.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, referenceRect) >= minOverlayPercentage); }
             private set { throw new NotSupportedException(); }
         }
 
@@ -37,6 +53,7 @@ namespace CUE.NET.Devices.Keyboard
             this.KeyboardDeviceInfo = info;
 
             InitializeKeys();
+            CalculateKeyboardRectangle();
         }
 
         #endregion
@@ -56,6 +73,24 @@ namespace CUE.NET.Devices.Keyboard
                     new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height)));
                 ptr = new IntPtr(ptr.ToInt64() + structSize);
             }
+        }
+
+        private void CalculateKeyboardRectangle()
+        {
+            float posX = float.MaxValue;
+            float posY = float.MaxValue;
+            float posX2 = float.MinValue;
+            float posY2 = float.MinValue;
+
+            foreach (CorsairKey key in this)
+            {
+                posX = Math.Min(posX, key.KeyRectangle.X);
+                posY = Math.Min(posY, key.KeyRectangle.Y);
+                posX2 = Math.Max(posX2, key.KeyRectangle.X + key.KeyRectangle.Width);
+                posY2 = Math.Max(posY2, key.KeyRectangle.Y + key.KeyRectangle.Height);
+            }
+
+            KeyboardRectangle = RectangleHelper.CreateRectangleFromPoints(new PointF(posX, posY), new PointF(posX2, posY2));
         }
 
         #region IEnumerable
