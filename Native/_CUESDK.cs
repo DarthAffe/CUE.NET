@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic.Enums;
+using CUE.NET.Devices.Keyboard.Enums;
 
 namespace CUE.NET.Native
 {
@@ -52,7 +53,7 @@ namespace CUE.NET.Native
         [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
 #endif
         // retrieves led id for key name taking logical layout into account.
-        internal static extern int CorsairGetLedIdForKeyName(char keyName);
+        internal static extern CorsairKeyboardKeyId CorsairGetLedIdForKeyName(char keyName);
 
 #if WIN64
         [DllImport("CUESDK.x64_2013.dll", CallingConvention = CallingConvention.Cdecl)]

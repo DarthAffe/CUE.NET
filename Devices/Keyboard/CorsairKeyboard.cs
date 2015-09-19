@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Keys;
+using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Keyboard
 {
@@ -41,8 +44,17 @@ namespace CUE.NET.Devices.Keyboard
 
         private void InitializeKeys()
         {
-            foreach (CorsairKeyboardKeyId keyId in Enum.GetValues(typeof(CorsairKeyboardKeyId)))
-                _keys.Add(keyId, new CorsairKey(keyId, GetLed((int)keyId)));
+            _CorsairLedPositions nativeLedPositions = (_CorsairLedPositions)Marshal.PtrToStructure(_CUESDK.CorsairGetLedPositions(), typeof(_CorsairLedPositions));
+            int structSize = Marshal.SizeOf(typeof(_CorsairLedPosition));
+            IntPtr ptr = nativeLedPositions.pLedPosition;
+            for (int i = 0; i < nativeLedPositions.numberOfLed; i++)
+            {
+                _CorsairLedPosition ledPosition = Marshal.PtrToStructure<_CorsairLedPosition>(ptr);
+                _keys.Add(ledPosition.ledId, new CorsairKey(ledPosition.ledId, GetLed((int)ledPosition.ledId),
+                //TODO DarthAffe 19.09.2015: Is something like RectangleD needed? I don't think so ...
+                    new RectangleF((float)ledPosition.top, (float)ledPosition.left, (float)ledPosition.width, (float)ledPosition.height)));
+                ptr = new IntPtr(ptr.ToInt64() + structSize);
+            }
         }
 
         #endregion
