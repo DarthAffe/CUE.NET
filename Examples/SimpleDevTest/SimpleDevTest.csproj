@@ -4,49 +4,54 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{70A266B5-E9D4-4EAA-A91A-947C0039FFB6}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{7FD88256-5E14-4D7C-862B-7BC2CD04081A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CUE.NET</RootNamespace>
-    <AssemblyName>CUE.NET</AssemblyName>
+    <RootNamespace>SimpleDevTest</RootNamespace>
+    <AssemblyName>SimpleDevTest</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WIN64</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\</OutputPath>
-    <DefineConstants>TRACE;WIN64</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WIN32</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\</OutputPath>
-    <DefineConstants>TRACE;WIN32</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -60,36 +65,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\CorsairAccessMode.cs" />
-    <Compile Include="Enums\CorsairDeviceCaps.cs" />
-    <Compile Include="Enums\CorsairDeviceType.cs" />
-    <Compile Include="Enums\CorsairLedId.cs" />
-    <Compile Include="Enums\CorsairLogicalLayout.cs" />
-    <Compile Include="Enums\CorsairPhysicalLayout.cs" />
-    <Compile Include="Exceptions\CUEException.cs" />
-    <Compile Include="Exceptions\WrapperException.cs" />
-    <Compile Include="Wrapper\AbstractCueDevice.cs" />
-    <Compile Include="Wrapper\CueHeadset.cs" />
-    <Compile Include="Wrapper\CueKeyboard.cs" />
-    <Compile Include="Wrapper\CueMouse.cs" />
-    <Compile Include="Native\_CorsairDeviceInfo.cs" />
-    <Compile Include="Native\_CorsairLedColor.cs" />
-    <Compile Include="Native\_CorsairLedPosition.cs" />
-    <Compile Include="Native\_CorsairLedPositions.cs" />
-    <Compile Include="Native\_CorsairProtocolDetails.cs" />
-    <Compile Include="Native\_CUESDK.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Enums\CorsairError.cs" />
-    <Compile Include="Wrapper\CorsairDeviceInfo.cs" />
-    <Compile Include="Wrapper\CorsairProtocolDetails.cs" />
-    <Compile Include="Wrapper\CueSDK.cs" />
-    <Compile Include="Wrapper\ICueDevice.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="libs\CUESDK.x64_2013.dll" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="libs\CUESDK_2013.dll" />
+    <ProjectReference Include="..\..\CUE.NET.csproj">
+      <Project>{70a266b5-e9d4-4eaa-a91a-947c0039ffb6}</Project>
+      <Name>CUE.NET</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

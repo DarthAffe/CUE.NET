@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUE.NET", "CUE.NET.csproj", "{70A266B5-E9D4-4EAA-A91A-947C0039FFB6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{1F52DDC9-E9D0-4A7B-8E78-930528203EE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDevTest", "Examples\SimpleDevTest\SimpleDevTest.csproj", "{7FD88256-5E14-4D7C-862B-7BC2CD04081A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,8 +25,19 @@ Global
 		{70A266B5-E9D4-4EAA-A91A-947C0039FFB6}.Release|x64.Build.0 = Release|x64
 		{70A266B5-E9D4-4EAA-A91A-947C0039FFB6}.Release|x86.ActiveCfg = Release|x86
 		{70A266B5-E9D4-4EAA-A91A-947C0039FFB6}.Release|x86.Build.0 = Release|x86
+		{7FD88256-5E14-4D7C-862B-7BC2CD04081A}.Debug|x64.ActiveCfg = Debug|x64
+		{7FD88256-5E14-4D7C-862B-7BC2CD04081A}.Debug|x64.Build.0 = Debug|x64
+		{7FD88256-5E14-4D7C-862B-7BC2CD04081A}.Debug|x86.ActiveCfg = Debug|x86
+		{7FD88256-5E14-4D7C-862B-7BC2CD04081A}.Debug|x86.Build.0 = Debug|x86
+		{7FD88256-5E14-4D7C-862B-7BC2CD04081A}.Release|x64.ActiveCfg = Release|x64
+		{7FD88256-5E14-4D7C-862B-7BC2CD04081A}.Release|x64.Build.0 = Release|x64
+		{7FD88256-5E14-4D7C-862B-7BC2CD04081A}.Release|x86.ActiveCfg = Release|x86
+		{7FD88256-5E14-4D7C-862B-7BC2CD04081A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7FD88256-5E14-4D7C-862B-7BC2CD04081A} = {1F52DDC9-E9D0-4A7B-8E78-930528203EE6}
 	EndGlobalSection
 EndGlobal
