@@ -40,7 +40,7 @@ namespace CUE.NET.Wrapper
             IList<KeyValuePair<int, CorsairLed>> ledsToUpdate = (fullUpdate ? Leds : Leds.Where(x => x.Value.IsDirty)).ToList();
 
             if (!ledsToUpdate.Any())
-                return; // CUE seems to crash if 'CorsairSetLedsColors' with a zero length array
+                return; // CUE seems to crash if 'CorsairSetLedsColors' is called with a zero length array
 
             int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
             IntPtr ptr = Marshal.AllocHGlobal(structSize * ledsToUpdate.Count);
