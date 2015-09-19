@@ -1,5 +1,6 @@
-﻿using System.Drawing;
-using CUE.NET.Native;
+﻿using System;
+using System.Collections.Generic;
+using CUE.NET.Enums.Keyboard;
 
 namespace CUE.NET.Wrapper.Keyboard
 {
@@ -9,6 +10,13 @@ namespace CUE.NET.Wrapper.Keyboard
 
         public CorsairKeyboardDeviceInfo KeyboardDeviceInfo { get; }
 
+        private Dictionary<CorsairKeyboardKeyId, CorsairKey> _keys = new Dictionary<CorsairKeyboardKeyId, CorsairKey>();
+        public CorsairKey this[CorsairKeyboardKeyId keyId]
+        {
+            get { return _keys[keyId]; }
+            private set { throw new NotSupportedException(); }
+        }
+
         #endregion
 
         #region Constructors
@@ -17,28 +25,18 @@ namespace CUE.NET.Wrapper.Keyboard
             : base(info)
         {
             this.KeyboardDeviceInfo = info;
+
+            InitializeKeys();
         }
 
         #endregion
 
         #region Methods
 
-        public void SetKeyColor(char key, Color color)
+        private void InitializeKeys()
         {
-            int id = _CUESDK.CorsairGetLedIdForKeyName(key);
-            _CorsairLedColor ledColor = new _CorsairLedColor { ledId = id, r = color.R, g = color.G, b = color.B };
-            SetKeyColors(ledColor);
-        }
-
-        public void SetKeyColors(char[] keys, Color color)
-        {
-            _CorsairLedColor[] ledColors = new _CorsairLedColor[keys.Length];
-            for (int i = 0; i < keys.Length; i++)
-            {
-                int id = _CUESDK.CorsairGetLedIdForKeyName(keys[i]);
-                ledColors[i] = new _CorsairLedColor { ledId = id, r = color.R, g = color.G, b = color.B };
-            }
-            SetKeyColors(ledColors);
+            foreach (CorsairKeyboardKeyId keyId in Enum.GetValues(typeof(CorsairKeyboardKeyId)))
+                _keys.Add(keyId, new CorsairKey(keyId, GetLed((int)keyId)));
         }
 
         #endregion

@@ -3,7 +3,7 @@
 
 namespace CUE.NET.Enums.Keyboard
 {
-    public enum CorsairKeyboardLedId
+    public enum CorsairKeyboardKeyId
     {
         Escape = 1,
         F1 = 2,

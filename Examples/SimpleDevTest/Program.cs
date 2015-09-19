@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using CUE.NET.Enums;
+using CUE.NET.Enums.Keyboard;
 using CUE.NET.Exceptions;
 using CUE.NET.Wrapper;
 using CUE.NET.Wrapper.Keyboard;
@@ -19,11 +20,17 @@ namespace SimpleDevTest
                 if (keyboard == null)
                     throw new WrapperException("No keyboard found");
 
-                keyboard.SetKeyColor('r', Color.Red);
-                keyboard.SetKeyColor('g', Color.Green);
-                keyboard.SetKeyColor('b', Color.Blue);
+                keyboard[CorsairKeyboardKeyId.R].Led.Color = Color.Red;
+                keyboard[CorsairKeyboardKeyId.G].Led.Color = Color.Green;
+                keyboard[CorsairKeyboardKeyId.B].Led.Color = Color.Blue;
 
-                keyboard.SetKeyColors(new[] { 'w', 'h', 'i', 't', 'e' }, Color.White);
+                keyboard[CorsairKeyboardKeyId.W].Led.Color = Color.White;
+                keyboard[CorsairKeyboardKeyId.H].Led.Color = Color.White;
+                keyboard[CorsairKeyboardKeyId.I].Led.Color = Color.White;
+                keyboard[CorsairKeyboardKeyId.T].Led.Color = Color.White;
+                keyboard[CorsairKeyboardKeyId.E].Led.Color = Color.White;
+
+                keyboard.UpdateLeds();
 
                 Console.WriteLine(CueSDK.LastError);
             }
