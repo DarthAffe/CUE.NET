@@ -8,7 +8,7 @@ namespace CUE.NET.Native
 {
     // ReSharper disable once InconsistentNaming
     [StructLayout(LayoutKind.Sequential)]
-    public class _CorsairLedPosition // contains led id and position of led rectangle.Most of the keys are rectangular. In case if key is not rectangular(like Enter in ISO / UK layout) it returns the smallest rectangle that fully contains the key
+    internal class _CorsairLedPosition // contains led id and position of led rectangle.Most of the keys are rectangular. In case if key is not rectangular(like Enter in ISO / UK layout) it returns the smallest rectangle that fully contains the key
     {
         internal int ledId;          // identifier of led
         internal double top;

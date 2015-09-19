@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using CUE.NET.Enums;
-using CUE.NET.Enums.Keyboard;
+using CUE.NET;
+using CUE.NET.Devices.Generic.Enums;
+using CUE.NET.Devices.Keyboard;
+using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Exceptions;
-using CUE.NET.Wrapper;
-using CUE.NET.Wrapper.Keyboard;
 
 namespace SimpleDevTest
 {

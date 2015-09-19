@@ -4,13 +4,13 @@
 
 using System;
 using System.Runtime.InteropServices;
-using CUE.NET.Enums;
+using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET.Native
 {
     // ReSharper disable once InconsistentNaming
     [StructLayout(LayoutKind.Sequential)]
-    public class _CorsairDeviceInfo	                   // contains information about device
+    internal class _CorsairDeviceInfo	                   // contains information about device
     {
         internal CorsairDeviceType type;               // enum describing device type
         internal IntPtr model;                         // null - terminated device model(like “K95RGB”)

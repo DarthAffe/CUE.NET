@@ -2,7 +2,7 @@
 // ReSharper disable MemberCanBePrivate.Global
 
 using System;
-using CUE.NET.Enums;
+using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET.Exceptions
 {

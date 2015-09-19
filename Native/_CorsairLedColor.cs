@@ -8,7 +8,7 @@ namespace CUE.NET.Native
 {
     // ReSharper disable once InconsistentNaming
     [StructLayout(LayoutKind.Sequential)]
-    public class _CorsairLedColor //  contains information about led and its color
+    internal class _CorsairLedColor //  contains information about led and its color
     {
 
         internal int ledId;       // identifier of LED to set

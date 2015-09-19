@@ -9,7 +9,7 @@ namespace CUE.NET.Native
 {
     // ReSharper disable once InconsistentNaming
     [StructLayout(LayoutKind.Sequential)]
-    public class _CorsairLedPositions     // contains number of leds and arrays with their positions
+    internal class _CorsairLedPositions     // contains number of leds and arrays with their positions
     {
         internal int numberOfLed;         // integer value.Number of elements in following array
         internal IntPtr pLedPosition;     // array of led positions
