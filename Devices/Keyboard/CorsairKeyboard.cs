@@ -51,7 +51,7 @@ namespace CUE.NET.Devices.Keyboard
         }
 
         public IEnumerable<CorsairKey> Keys => new ReadOnlyCollection<CorsairKey>(_keys.Values.ToList());
-        
+
         public Color Color { get; set; } = Color.Transparent;
 
         private readonly IList<IKeyGroup> _keyGroups = new List<IKeyGroup>();
@@ -92,19 +92,20 @@ namespace CUE.NET.Devices.Keyboard
             base.UpdateLeds(forceUpdate);
         }
 
-        public void AttachKeyGroup(IKeyGroup keyGroup)
+        public bool AttachKeyGroup(IKeyGroup keyGroup)
         {
-            if (keyGroup == null) return;
+            if (keyGroup == null || _keyGroups.Contains(keyGroup)) return false;
 
-            if (!_keyGroups.Contains(keyGroup))
-                _keyGroups.Add(keyGroup);
+            _keyGroups.Add(keyGroup);
+            return true;
         }
 
-        public void DetachKeyGroup(IKeyGroup keyGroup)
+        public bool DetachKeyGroup(IKeyGroup keyGroup)
         {
-            if (keyGroup == null) return;
+            if (keyGroup == null || !_keyGroups.Contains(keyGroup)) return false;
 
             _keyGroups.Remove(keyGroup);
+            return true;
         }
 
         private void InitializeKeys()

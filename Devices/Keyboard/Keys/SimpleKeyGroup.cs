@@ -6,18 +6,26 @@ namespace CUE.NET.Devices.Keyboard.Keys
     {
         #region Constructors
 
-        public SimpleKeyGroup(CorsairKeyboard keyboard)
-            : base(keyboard)
+        public SimpleKeyGroup(CorsairKeyboard keyboard, bool autoAttach = true)
+            : base(keyboard, autoAttach)
         { }
 
         public SimpleKeyGroup(CorsairKeyboard keyboard, params CorsairKey[] keys)
-            : base(keyboard)
+            : this(keyboard, true, keys)
+        { }
+
+        public SimpleKeyGroup(CorsairKeyboard keyboard, bool autoAttach, params CorsairKey[] keys)
+            : base(keyboard, autoAttach)
         {
             AddKey(keys);
         }
 
         public SimpleKeyGroup(CorsairKeyboard keyboard, params CorsairKeyboardKeyId[] keys)
-            : base(keyboard)
+            : this(keyboard, true, keys)
+        { }
+
+        public SimpleKeyGroup(CorsairKeyboard keyboard, bool autoAttach, params CorsairKeyboardKeyId[] keys)
+            : base(keyboard, autoAttach)
         {
             AddKey(keys);
         }
@@ -65,6 +73,13 @@ namespace CUE.NET.Devices.Keyboard.Keys
         public bool ContainsKey(CorsairKeyboardKeyId keyId)
         {
             return ContainsKey(Keyboard[keyId]);
+        }
+
+        public void MergeKeys(IKeyGroup groupToMerge)
+        {
+            foreach (CorsairKey key in groupToMerge.Keys)
+                if (!GroupKeys.Contains(key))
+                    GroupKeys.Add(key);
         }
 
         #endregion

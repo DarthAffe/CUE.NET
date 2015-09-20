@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using CUE.NET.Devices.Keyboard.Extensions;
 
 namespace CUE.NET.Devices.Keyboard.Keys
 {
@@ -8,7 +9,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
     {
         #region Properties & Fields
 
-        protected CorsairKeyboard Keyboard { get; }
+        internal CorsairKeyboard Keyboard { get; }
 
         public IEnumerable<CorsairKey> Keys => new ReadOnlyCollection<CorsairKey>(GroupKeys);
         protected IList<CorsairKey> GroupKeys { get; } = new List<CorsairKey>();
@@ -24,18 +25,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
             this.Keyboard = keyboard;
 
             if (autoAttach)
-                keyboard.AttachKeyGroup(this);
-        }
-
-        #endregion
-
-        #region Methods
-
-        public void MergeKeys(IKeyGroup groupToMerge)
-        {
-            foreach (CorsairKey key in groupToMerge.Keys)
-                if (!GroupKeys.Contains(key))
-                    GroupKeys.Add(key);
+                this.Attach();
         }
 
         #endregion

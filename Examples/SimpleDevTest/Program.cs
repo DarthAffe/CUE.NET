@@ -7,6 +7,7 @@ using CUE.NET;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Keyboard.Enums;
+using CUE.NET.Devices.Keyboard.Extensions;
 using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Exceptions;
 
@@ -34,9 +35,11 @@ namespace SimpleDevTest
                 if (keyboard == null)
                     throw new WrapperException("No keyboard found");
 
-                //Ink all numbers on the keypad purple
-                RectangleKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
-                { Color = Color.Purple };
+                //Ink all numbers on the keypad except the '5' purple, we want that to be gray
+                SimpleKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
+                { Color = Color.Purple }
+                .Exclude(CorsairKeyboardKeyId.Keypad5);
+                keyboard[CorsairKeyboardKeyId.Keypad5].Led.Color = Color.Gray;
 
                 // Ink the Keys 'r', 'g', 'b' in their respective color
                 // The char access seems to fail for everything except letters (SDK doesn't return a valid keyId)
@@ -77,9 +80,9 @@ namespace SimpleDevTest
                 Random random = new Random();
 
                 // Remove all the groups we created above to clear the keyboard
-                keyboard.DetachKeyGroup(purpleGroup);
-                keyboard.DetachKeyGroup(whiteGroup);
-                keyboard.DetachKeyGroup(yellowGroup);
+                purpleGroup.Detach();
+                whiteGroup.Detach();
+                yellowGroup.Detach();
 
                 // Flash whole keyboard three times to ... well ... just to make it happen
                 for (int i = 0; i < 3; i++)

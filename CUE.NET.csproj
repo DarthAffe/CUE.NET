@@ -85,6 +85,7 @@
     <Compile Include="Devices\Keyboard\CorsairKeyboard.cs" />
     <Compile Include="Devices\Mouse\CorsairMouseDeviceInfo.cs" />
     <Compile Include="Devices\Mouse\CorsairMouse.cs" />
+    <Compile Include="Devices\Keyboard\Extensions\KeyGroupExtension.cs" />
     <Compile Include="Helper\RectangleHelper.cs" />
     <Compile Include="Native\_CorsairDeviceInfo.cs" />
     <Compile Include="Native\_CorsairLedColor.cs" />
