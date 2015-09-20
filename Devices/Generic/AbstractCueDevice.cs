@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using CUE.NET.Native;
@@ -35,9 +36,19 @@ namespace CUE.NET.Devices.Generic
             return Leds[ledId];
         }
 
-        public virtual void UpdateLeds(bool fullUpdate = false)
+        public virtual void UpdateLeds(bool forceUpdate = false)
         {
-            IList<KeyValuePair<int, CorsairLed>> ledsToUpdate = (fullUpdate ? Leds : Leds.Where(x => x.Value.IsDirty)).ToList();
+            IList<KeyValuePair<int, CorsairLed>> ledsToUpdate = (forceUpdate ? Leds : Leds.Where(x => x.Value.IsDirty)).ToList();
+
+            foreach (CorsairLed led in Leds.Values)
+                led.Update();
+
+            UpdateLeds(ledsToUpdate);
+        }
+        
+        private static void UpdateLeds(ICollection<KeyValuePair<int, CorsairLed>> ledsToUpdate)
+        {
+            ledsToUpdate = ledsToUpdate.Where(x => x.Value.Color != Color.Transparent).ToList();
 
             if (!ledsToUpdate.Any())
                 return; // CUE seems to crash if 'CorsairSetLedsColors' is called with a zero length array

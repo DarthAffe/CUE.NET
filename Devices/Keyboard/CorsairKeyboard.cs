@@ -51,6 +51,10 @@ namespace CUE.NET.Devices.Keyboard
         }
 
         public IEnumerable<CorsairKey> Keys => new ReadOnlyCollection<CorsairKey>(_keys.Values.ToList());
+        
+        public Color Color { get; set; } = Color.Transparent;
+
+        private readonly IList<IKeyGroup> _keyGroups = new List<IKeyGroup>();
 
         #endregion
 
@@ -69,10 +73,38 @@ namespace CUE.NET.Devices.Keyboard
 
         #region Methods
 
-        public void SetColor(Color color)
+        public override void UpdateLeds(bool forceUpdate = false)
         {
-            foreach (CorsairKey key in this)
-                key.Led.Color = color;
+            // Apply all KeyGroups first
+            // Update only 'clean' leds, manual set should always override groups
+            IEnumerable<CorsairKey> cleanKeys = this.Where(x => !x.Led.IsUpdated).ToList();
+
+            if (Color != Color.Transparent)
+                foreach (CorsairKey key in cleanKeys)
+                    key.Led.Color = Color;
+
+            //TODO DarthAffe 20.09.2015: Add some sort of priority
+            foreach (IKeyGroup keyGroup in _keyGroups)
+                foreach (CorsairKey key in keyGroup.Keys.Where(key => cleanKeys.Contains(key)))
+                    key.Led.Color = keyGroup.Color;
+
+            // Perform 'real' update
+            base.UpdateLeds(forceUpdate);
+        }
+
+        public void AttachKeyGroup(IKeyGroup keyGroup)
+        {
+            if (keyGroup == null) return;
+
+            if (!_keyGroups.Contains(keyGroup))
+                _keyGroups.Add(keyGroup);
+        }
+
+        public void DetachKeyGroup(IKeyGroup keyGroup)
+        {
+            if (keyGroup == null) return;
+
+            _keyGroups.Remove(keyGroup);
         }
 
         private void InitializeKeys()
@@ -83,9 +115,11 @@ namespace CUE.NET.Devices.Keyboard
             for (int i = 0; i < nativeLedPositions.numberOfLed; i++)
             {
                 _CorsairLedPosition ledPosition = Marshal.PtrToStructure<_CorsairLedPosition>(ptr);
-                _keys.Add(ledPosition.ledId, new CorsairKey(ledPosition.ledId, GetLed((int)ledPosition.ledId),
+                CorsairLed led = GetLed((int)ledPosition.ledId);
+                _keys.Add(ledPosition.ledId, new CorsairKey(ledPosition.ledId, led,
                 //TODO DarthAffe 19.09.2015: Is something like RectangleD needed? I don't think so ...
                     new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height)));
+
                 ptr = new IntPtr(ptr.ToInt64() + structSize);
             }
         }

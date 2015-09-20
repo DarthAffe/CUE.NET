@@ -35,8 +35,8 @@ namespace SimpleDevTest
                     throw new WrapperException("No keyboard found");
 
                 //Ink all numbers on the keypad purple
-                RectangleKeyGroup centerGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3);
-                centerGroup.SetColor(Color.Purple);
+                RectangleKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
+                { Color = Color.Purple };
 
                 // Ink the Keys 'r', 'g', 'b' in their respective color
                 // The char access seems to fail for everything except letters (SDK doesn't return a valid keyId)
@@ -44,17 +44,21 @@ namespace SimpleDevTest
                 keyboard[CorsairKeyboardKeyId.G].Led.Color = Color.Green;
                 keyboard['B'].Led.Color = Color.Blue;
 
+                // Lock the 'r', 'g', 'b' keys. We want them to stay like this forever
+                keyboard['R'].Led.IsLocked = true;
+                keyboard['G'].Led.IsLocked = true;
+                keyboard['B'].Led.IsLocked = true;
+
                 // Ink the letters of 'white' white
-                SimpleKeyGroup whiteGroup = new SimpleKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E);
-                whiteGroup.SetColor(Color.White);
+                SimpleKeyGroup whiteGroup = new SimpleKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E)
+                { Color = Color.White };
 
                 // Ink the keys '1' to '0' yellow
-                RectangleKeyGroup numberGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.D1, CorsairKeyboardKeyId.D0);
-                numberGroup.SetColor(Color.Yellow);
+                RectangleKeyGroup yellowGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.D1, CorsairKeyboardKeyId.D0)
+                { Color = Color.Yellow };
 
-                // Update the keyboard to show the configured colors, the parameter 'true' overrides the whole keyboard (default: black),
-                // 'false' (or nothing) overrides only changed keys (your CUE settings defines the rest) - this default behaviour might change soon
-                keyboard.UpdateLeds(true);
+                // Update the keyboard to show the configured colors, (your CUE settings defines the rest)
+                keyboard.UpdateLeds();
 
                 // Wait 5 sec
                 for (int i = 5; i > 0; i--)
@@ -72,18 +76,24 @@ namespace SimpleDevTest
                 const float SPEED = 8f; // mm/tick
                 Random random = new Random();
 
-                // Cover whole keyboard as Group to be able to reset (I'll fix this tomorrow)
+                // Remove all the groups we created above to clear the keyboard
+                keyboard.DetachKeyGroup(purpleGroup);
+                keyboard.DetachKeyGroup(whiteGroup);
+                keyboard.DetachKeyGroup(yellowGroup);
 
                 // Flash whole keyboard three times to ... well ... just to make it happen
                 for (int i = 0; i < 3; i++)
                 {
-                    keyboard.SetColor(Color.Aquamarine);
+                    keyboard.Color = Color.Aquamarine;
                     keyboard.UpdateLeds();
                     Thread.Sleep(160);
-                    keyboard.SetColor(Color.Black);
+                    keyboard.Color = Color.Black;
                     keyboard.UpdateLeds();
                     Thread.Sleep(200);
                 }
+
+                // Set keyboard 'background' to something fancy
+                keyboard.Color = Color.DarkSlateBlue;
 
                 // Spawn our point (rectangle since circles are too hard to calculate :p) in the top-left corner (right over G1 or on ESC depending on your keyboard)
                 RectangleF point = new RectangleF(keyboard.KeyboardRectangle.X, keyboard.KeyboardRectangle.Y, 40, 40);
@@ -97,8 +107,6 @@ namespace SimpleDevTest
                                 (float)(keyboard.KeyboardRectangle.Y + (random.NextDouble() * keyboard.KeyboardRectangle.Height)));
                     else
                         point.Location = Interpolate(point.Location, target, SPEED); // It would be better to calculate from the center of our rectangle but the easy way is enough here
-
-                    keyboard.SetColor(Color.Black);
 
                     IEnumerable<CorsairKey> keys = keyboard[point, 0.1f];
                     if (keys != null)

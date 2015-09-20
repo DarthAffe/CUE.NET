@@ -7,6 +7,6 @@ namespace CUE.NET.Devices.Keyboard.Keys
     {
         IEnumerable<CorsairKey> Keys { get; }
 
-        void SetColor(Color color);
+        Color Color { get; set; }
     }
 }

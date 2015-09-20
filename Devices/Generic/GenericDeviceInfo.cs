@@ -13,8 +13,7 @@ namespace CUE.NET.Devices.Generic
         /// Device type.
         /// </summary>
         public CorsairDeviceType Type { get; }
-
-        //TODO DarthAffe 17.09.2015: This could be an Enum
+        
         /// <summary>
         /// Device model (like “K95RGB”).
         /// </summary>

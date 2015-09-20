@@ -16,20 +16,20 @@ namespace CUE.NET.Devices.Keyboard.Keys
 
         #region Constructors
 
-        public RectangleKeyGroup(CorsairKeyboard keyboard, CorsairKeyboardKeyId fromKey, CorsairKeyboardKeyId toKey, float minOverlayPercentage = 0.5f)
-            : this(keyboard, keyboard[fromKey], keyboard[toKey], minOverlayPercentage)
+        public RectangleKeyGroup(CorsairKeyboard keyboard, CorsairKeyboardKeyId fromKey, CorsairKeyboardKeyId toKey, float minOverlayPercentage = 0.5f, bool autoAttach = true)
+            : this(keyboard, keyboard[fromKey], keyboard[toKey], minOverlayPercentage, autoAttach)
         { }
 
-        public RectangleKeyGroup(CorsairKeyboard keyboard, CorsairKey fromKey, CorsairKey toKey, float minOverlayPercentage = 0.5f)
-            : this(keyboard, RectangleHelper.CreateRectangleFromRectangles(fromKey.KeyRectangle, toKey.KeyRectangle), minOverlayPercentage)
+        public RectangleKeyGroup(CorsairKeyboard keyboard, CorsairKey fromKey, CorsairKey toKey, float minOverlayPercentage = 0.5f, bool autoAttach = true)
+            : this(keyboard, RectangleHelper.CreateRectangleFromRectangles(fromKey.KeyRectangle, toKey.KeyRectangle), minOverlayPercentage, autoAttach)
         { }
 
-        public RectangleKeyGroup(CorsairKeyboard keyboard, PointF fromPoint, PointF toPoint, float minOverlayPercentage = 0.5f)
-            : this(keyboard, RectangleHelper.CreateRectangleFromPoints(fromPoint, toPoint), minOverlayPercentage)
+        public RectangleKeyGroup(CorsairKeyboard keyboard, PointF fromPoint, PointF toPoint, float minOverlayPercentage = 0.5f, bool autoAttach = true)
+            : this(keyboard, RectangleHelper.CreateRectangleFromPoints(fromPoint, toPoint), minOverlayPercentage, autoAttach)
         { }
 
-        public RectangleKeyGroup(CorsairKeyboard keyboard, RectangleF requestedRectangle, float minOverlayPercentage = 0.5f)
-            : base(keyboard)
+        public RectangleKeyGroup(CorsairKeyboard keyboard, RectangleF requestedRectangle, float minOverlayPercentage = 0.5f, bool autoAttach = true)
+            : base(keyboard, autoAttach)
         {
             this.RequestedRectangle = requestedRectangle;
             this.MinOverlayPercentage = minOverlayPercentage;

@@ -4,6 +4,6 @@
     {
         IDeviceInfo DeviceInfo { get; }
 
-        void UpdateLeds(bool fullUpdate = false);
+        void UpdateLeds(bool forceUpdate = false);
     }
 }

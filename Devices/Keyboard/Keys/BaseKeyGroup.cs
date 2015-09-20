@@ -13,24 +13,23 @@ namespace CUE.NET.Devices.Keyboard.Keys
         public IEnumerable<CorsairKey> Keys => new ReadOnlyCollection<CorsairKey>(GroupKeys);
         protected IList<CorsairKey> GroupKeys { get; } = new List<CorsairKey>();
 
+        public Color Color { get; set; } = Color.Transparent;
+
         #endregion
 
         #region Constructors
 
-        protected BaseKeyGroup(CorsairKeyboard keyboard)
+        protected BaseKeyGroup(CorsairKeyboard keyboard, bool autoAttach = true)
         {
             this.Keyboard = keyboard;
+
+            if (autoAttach)
+                keyboard.AttachKeyGroup(this);
         }
 
         #endregion
 
         #region Methods
-
-        public virtual void SetColor(Color color)
-        {
-            foreach (CorsairKey key in GroupKeys)
-                key.Led.Color = color;
-        }
 
         public void MergeKeys(IKeyGroup groupToMerge)
         {
