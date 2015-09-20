@@ -5,6 +5,7 @@ namespace CUE.NET.Devices.Keyboard.Enums
 {
     public enum CorsairKeyboardKeyId
     {
+        Invalid = 0,
         Escape = 1,
         F1 = 2,
         F2 = 3,

@@ -39,9 +39,10 @@ namespace SimpleDevTest
                 centerGroup.SetColor(Color.Purple);
 
                 // Ink the Keys 'r', 'g', 'b' in their respective color
-                keyboard[CorsairKeyboardKeyId.R].Led.Color = Color.Red;
+                // The char access seems to fail for everything except letters (SDK doesn't return a valid keyId)
+                keyboard['R'].Led.Color = Color.Red;
                 keyboard[CorsairKeyboardKeyId.G].Led.Color = Color.Green;
-                keyboard[CorsairKeyboardKeyId.B].Led.Color = Color.Blue;
+                keyboard['B'].Led.Color = Color.Blue;
 
                 // Ink the letters of 'white' white
                 SimpleKeyGroup whiteGroup = new SimpleKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E);
@@ -122,6 +123,9 @@ namespace SimpleDevTest
             {
                 Console.WriteLine("Exception! Message:" + ex.Message);
             }
+
+            while (true)
+                Thread.Sleep(1000); // Don't exit after exception
         }
 
         private static PointF Interpolate(PointF p1, PointF p2, float length)

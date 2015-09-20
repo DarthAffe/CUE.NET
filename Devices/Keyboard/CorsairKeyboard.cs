@@ -32,6 +32,12 @@ namespace CUE.NET.Devices.Keyboard
             private set { throw new NotSupportedException(); }
         }
 
+        public CorsairKey this[char key]
+        {
+            get { return this[_CUESDK.CorsairGetLedIdForKeyName(key)]; }
+            private set { throw new NotSupportedException(); }
+        }
+
         public CorsairKey this[PointF location]
         {
             get { return _keys.Values.FirstOrDefault(x => x.KeyRectangle.Contains(location)); }
