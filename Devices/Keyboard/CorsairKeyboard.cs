@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,7 +13,7 @@ using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Keyboard
 {
-    public class CorsairKeyboard : AbstractCueDevice, IEnumerable<CorsairKey>
+    public class CorsairKeyboard : AbstractCueDevice, IEnumerable<CorsairKey>, IKeyGroup
     {
         #region Properties & Fields
 
@@ -43,6 +44,8 @@ namespace CUE.NET.Devices.Keyboard
             private set { throw new NotSupportedException(); }
         }
 
+        public IEnumerable<CorsairKey> Keys => new ReadOnlyCollection<CorsairKey>(_keys.Values.ToList());
+
         #endregion
 
         #region Constructors
@@ -59,6 +62,12 @@ namespace CUE.NET.Devices.Keyboard
         #endregion
 
         #region Methods
+
+        public void SetColor(Color color)
+        {
+            foreach (CorsairKey key in this)
+                key.Led.Color = color;
+        }
 
         private void InitializeKeys()
         {

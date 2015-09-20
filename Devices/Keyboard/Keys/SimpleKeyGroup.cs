@@ -31,7 +31,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
             if (keys != null)
                 foreach (CorsairKey key in keys)
                     if (key != null && !ContainsKey(key))
-                        Keys.Add(key);
+                        GroupKeys.Add(key);
 
         }
 
@@ -47,7 +47,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
             if (keys != null)
                 foreach (CorsairKey key in keys)
                     if (key != null)
-                        Keys.Remove(key);
+                        GroupKeys.Remove(key);
         }
 
         public void RemoveKey(params CorsairKeyboardKeyId[] keyIds)
@@ -59,7 +59,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
 
         public bool ContainsKey(CorsairKey key)
         {
-            return key != null && Keys.Contains(key);
+            return key != null && GroupKeys.Contains(key);
         }
 
         public bool ContainsKey(CorsairKeyboardKeyId keyId)

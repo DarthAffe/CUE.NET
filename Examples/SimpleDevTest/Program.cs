@@ -72,15 +72,14 @@ namespace SimpleDevTest
                 Random random = new Random();
 
                 // Cover whole keyboard as Group to be able to reset (I'll fix this tomorrow)
-                RectangleKeyGroup keyboardGroup = new RectangleKeyGroup(keyboard, keyboard.KeyboardRectangle, 0f);
 
                 // Flash whole keyboard three times to ... well ... just to make it happen
                 for (int i = 0; i < 3; i++)
                 {
-                    keyboardGroup.SetColor(Color.Aquamarine);
+                    keyboard.SetColor(Color.Aquamarine);
                     keyboard.UpdateLeds();
                     Thread.Sleep(160);
-                    keyboardGroup.SetColor(Color.Black);
+                    keyboard.SetColor(Color.Black);
                     keyboard.UpdateLeds();
                     Thread.Sleep(200);
                 }
@@ -98,7 +97,7 @@ namespace SimpleDevTest
                     else
                         point.Location = Interpolate(point.Location, target, SPEED); // It would be better to calculate from the center of our rectangle but the easy way is enough here
 
-                    keyboardGroup.SetColor(Color.Black);
+                    keyboard.SetColor(Color.Black);
 
                     IEnumerable<CorsairKey> keys = keyboard[point, 0.1f];
                     if (keys != null)

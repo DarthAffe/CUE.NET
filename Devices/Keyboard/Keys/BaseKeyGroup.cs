@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 
 namespace CUE.NET.Devices.Keyboard.Keys
@@ -9,7 +10,8 @@ namespace CUE.NET.Devices.Keyboard.Keys
 
         protected CorsairKeyboard Keyboard { get; }
 
-        public IList<CorsairKey> Keys { get; } = new List<CorsairKey>();
+        public IEnumerable<CorsairKey> Keys => new ReadOnlyCollection<CorsairKey>(GroupKeys);
+        protected IList<CorsairKey> GroupKeys { get; } = new List<CorsairKey>();
 
         #endregion
 
@@ -26,15 +28,15 @@ namespace CUE.NET.Devices.Keyboard.Keys
 
         public virtual void SetColor(Color color)
         {
-            foreach (CorsairKey key in Keys)
+            foreach (CorsairKey key in GroupKeys)
                 key.Led.Color = color;
         }
 
         public void MergeKeys(IKeyGroup groupToMerge)
         {
             foreach (CorsairKey key in groupToMerge.Keys)
-                if (!Keys.Contains(key))
-                    Keys.Add(key);
+                if (!GroupKeys.Contains(key))
+                    GroupKeys.Add(key);
         }
 
         #endregion

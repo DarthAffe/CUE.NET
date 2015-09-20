@@ -35,7 +35,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
             this.MinOverlayPercentage = minOverlayPercentage;
 
             foreach (CorsairKey key in Keyboard.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, requestedRectangle) >= minOverlayPercentage))
-                Keys.Add(key);
+                GroupKeys.Add(key);
         }
 
         #endregion
