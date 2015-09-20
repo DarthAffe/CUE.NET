@@ -100,14 +100,14 @@ namespace SimpleDevTest
 
                     keyboardGroup.SetColor(Color.Black);
 
-                    IEnumerable<CorsairKey> keys = keyboard[point];
+                    IEnumerable<CorsairKey> keys = keyboard[point, 0.1f];
                     if (keys != null)
                         foreach (CorsairKey key in keys)
                             key.Led.Color = Color.Orange;
 
                     keyboard.UpdateLeds();
 
-                    // 20 updates per sec should be enought for what this
+                    // 20 updates per sec should be enought for this
                     Thread.Sleep(50);
                 }
             }
