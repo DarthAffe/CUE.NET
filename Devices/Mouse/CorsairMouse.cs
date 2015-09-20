@@ -2,7 +2,7 @@
 
 namespace CUE.NET.Devices.Mouse
 {
-    //TODO DarthAffe 18.09.2015: Implement
+    //TODO DarthAffe 20.09.2015: Find someone to test this
     public class CorsairMouse : AbstractCueDevice
     {
         #region Properties & Fields

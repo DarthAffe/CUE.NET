@@ -118,7 +118,6 @@ namespace CUE.NET.Devices.Keyboard
                 _CorsairLedPosition ledPosition = Marshal.PtrToStructure<_CorsairLedPosition>(ptr);
                 CorsairLed led = GetLed((int)ledPosition.ledId);
                 _keys.Add(ledPosition.ledId, new CorsairKey(ledPosition.ledId, led,
-                //TODO DarthAffe 19.09.2015: Is something like RectangleD needed? I don't think so ...
                     new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height)));
 
                 ptr = new IntPtr(ptr.ToInt64() + structSize);

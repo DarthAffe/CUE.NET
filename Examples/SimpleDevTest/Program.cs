@@ -35,7 +35,7 @@ namespace SimpleDevTest
                 if (keyboard == null)
                     throw new WrapperException("No keyboard found");
 
-                //Ink all numbers on the keypad except the '5' purple, we want that to be gray
+                // Ink all numbers on the keypad except the '5' purple, we want that to be gray
                 SimpleKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
                 { Color = Color.Purple }
                 .Exclude(CorsairKeyboardKeyId.Keypad5);
