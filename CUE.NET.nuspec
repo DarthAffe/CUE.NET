@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>CUE.NET</id>
+        <version>0.1.0</version>
+        <title>C# Wrapper library around the Corsair CUE SDK</title>
+        <authors>DarthAffe</authors>
+        <owners>DarthAffe</owners>
+        <licenseUrl>https://raw.githubusercontent.com/DarthAffe/CUE.NET/master/LICENSE</licenseUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Corsair HID SDK Wrapper</description>
+        <summary>C# (.NET) Wrapper library around the Corsair CUE-SDK
+
+I'm currently working on this library and it's far from being finished. Please be patient (or drop me a message) if something is missing, behave</summary>
+        <copyright>2015 DarthAffe</copyright>
+        <language>en-US</language>
+    </metadata>
+    <files>
+        <file src="bin\x64\CUE.NET.dll" target="lib\net46\CUE.NET.dll" />
+        <file src="bin\x64\CUESDK.x64_2013.dll" target="build\net46\x64" />
+    </files>
+</package>
