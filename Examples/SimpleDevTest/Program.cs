@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CUE.NET;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Keyboard;
+using CUE.NET.Devices.Keyboard.ColorBrushes;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Extensions;
 using CUE.NET.Devices.Keyboard.Keys;
@@ -36,13 +37,13 @@ namespace SimpleDevTest
                     throw new WrapperException("No keyboard found");
 
                 // Ink all numbers on the keypad except the '5' purple, we want that to be gray
-                SimpleKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
-                { Color = Color.Purple }
+                ListKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
+                { Brush = new SolidColorBrush(Color.Purple) }
                 .Exclude(CorsairKeyboardKeyId.Keypad5);
                 keyboard[CorsairKeyboardKeyId.Keypad5].Led.Color = Color.Gray;
 
                 // Ink the Keys 'r', 'g', 'b' in their respective color
-                // The char access seems to fail for everything except letters (SDK doesn't return a valid keyId)
+                // The char access fails for everything except letters (SDK doesn't return a valid keyId)
                 keyboard['R'].Led.Color = Color.Red;
                 keyboard[CorsairKeyboardKeyId.G].Led.Color = Color.Green;
                 keyboard['B'].Led.Color = Color.Blue;
@@ -53,12 +54,12 @@ namespace SimpleDevTest
                 keyboard['B'].Led.IsLocked = true;
 
                 // Ink the letters of 'white' white
-                SimpleKeyGroup whiteGroup = new SimpleKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E)
-                { Color = Color.White };
+                ListKeyGroup whiteGroup = new ListKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E)
+                { Brush = new SolidColorBrush(Color.White) };
 
                 // Ink the keys '1' to '0' yellow
                 RectangleKeyGroup yellowGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.D1, CorsairKeyboardKeyId.D0)
-                { Color = Color.Yellow };
+                { Brush = new SolidColorBrush(Color.Yellow) };
 
                 // Update the keyboard to show the configured colors, (your CUE settings defines the rest)
                 keyboard.UpdateLeds();
@@ -87,19 +88,24 @@ namespace SimpleDevTest
                 // Flash whole keyboard three times to ... well ... just to make it happen
                 for (int i = 0; i < 3; i++)
                 {
-                    keyboard.Color = Color.Aquamarine;
+                    keyboard.Brush = new SolidColorBrush(Color.Aquamarine);
                     keyboard.UpdateLeds();
                     Thread.Sleep(160);
-                    keyboard.Color = Color.Black;
+                    keyboard.Brush = new SolidColorBrush(Color.Black);
                     keyboard.UpdateLeds();
                     Thread.Sleep(200);
                 }
 
                 // Set keyboard 'background' to something fancy
-                keyboard.Color = Color.DarkSlateBlue;
+                keyboard.Brush = new SolidColorBrush(Color.DarkSlateBlue);
 
                 // Spawn our point (rectangle since circles are too hard to calculate :p) in the top-left corner (right over G1 or on ESC depending on your keyboard)
                 RectangleF point = new RectangleF(keyboard.KeyboardRectangle.X, keyboard.KeyboardRectangle.Y, 40, 40);
+
+                // Create a new KeyGroup to represent our point on the keyboard
+                RectangleKeyGroup pointGroup = new RectangleKeyGroup(keyboard, point, 0.1f)
+                { Brush = new SolidColorBrush(Color.Orange) };
+
                 // Target of our movement
                 PointF target = new PointF(point.X, point.Y);
                 while (true)
@@ -109,13 +115,13 @@ namespace SimpleDevTest
                         target = new PointF((float)(keyboard.KeyboardRectangle.X + (random.NextDouble() * keyboard.KeyboardRectangle.Width)),
                                 (float)(keyboard.KeyboardRectangle.Y + (random.NextDouble() * keyboard.KeyboardRectangle.Height)));
                     else
+                        // Calculate movement
                         point.Location = Interpolate(point.Location, target, SPEED); // It would be better to calculate from the center of our rectangle but the easy way is enough here
 
-                    IEnumerable<CorsairKey> keys = keyboard[point, 0.1f];
-                    if (keys != null)
-                        foreach (CorsairKey key in keys)
-                            key.Led.Color = Color.Orange;
+                    // Move our rectangle to the new position
+                    pointGroup.Rectangle = point;
 
+                    // Update changed leds
                     keyboard.UpdateLeds();
 
                     // 20 updates per sec should be enought for this

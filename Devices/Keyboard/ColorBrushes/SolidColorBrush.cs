@@ -21,7 +21,7 @@ namespace CUE.NET.Devices.Keyboard.ColorBrushes
 
         #region Methods
 
-        public Color GetColorAtPoint(Point point)
+        public Color GetColorAtPoint(RectangleF rectangle, PointF point)
         {
             return Color; // A solid color brush returns the same color no matter the point
         }

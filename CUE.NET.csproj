@@ -72,7 +72,7 @@
     <Compile Include="Devices\Keyboard\Keys\BaseKeyGroup.cs" />
     <Compile Include="Devices\Keyboard\Keys\IKeyGroup.cs" />
     <Compile Include="Devices\Keyboard\Keys\RectangleKeyGroup.cs" />
-    <Compile Include="Devices\Keyboard\Keys\SimpleKeyGroup.cs" />
+    <Compile Include="Devices\Keyboard\Keys\ListKeyGroup.cs" />
     <Compile Include="Devices\Mouse\Enums\CorsairMouseButtonId.cs" />
     <Compile Include="Devices\Mouse\Enums\CorsairPhysicalMouseLayout.cs" />
     <Compile Include="Exceptions\CUEException.cs" />

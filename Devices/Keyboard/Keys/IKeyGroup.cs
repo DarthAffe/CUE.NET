@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
+using CUE.NET.Devices.Keyboard.ColorBrushes;
 
 namespace CUE.NET.Devices.Keyboard.Keys
 {
@@ -7,6 +7,6 @@ namespace CUE.NET.Devices.Keyboard.Keys
     {
         IEnumerable<CorsairKey> Keys { get; }
 
-        Color Color { get; set; }
+        IBrush Brush { get; set; }
     }
 }

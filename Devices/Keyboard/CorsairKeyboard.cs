@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic;
+using CUE.NET.Devices.Keyboard.ColorBrushes;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Helper;
@@ -52,7 +53,7 @@ namespace CUE.NET.Devices.Keyboard
 
         public IEnumerable<CorsairKey> Keys => new ReadOnlyCollection<CorsairKey>(_keys.Values.ToList());
 
-        public Color Color { get; set; } = Color.Transparent;
+        public IBrush Brush { get; set; }
 
         private readonly IList<IKeyGroup> _keyGroups = new List<IKeyGroup>();
 
@@ -66,7 +67,7 @@ namespace CUE.NET.Devices.Keyboard
             this.KeyboardDeviceInfo = info;
 
             InitializeKeys();
-            CalculateKeyboardRectangle();
+            KeyboardRectangle = RectangleHelper.CreateRectangleFromRectangles(this.Select(x => x.KeyRectangle));
         }
 
         #endregion
@@ -75,21 +76,24 @@ namespace CUE.NET.Devices.Keyboard
 
         public override void UpdateLeds(bool forceUpdate = false)
         {
-            // Apply all KeyGroups first
-            // Update only 'clean' leds, manual set should always override groups
-            IEnumerable<CorsairKey> cleanKeys = this.Where(x => !x.Led.IsUpdated).ToList();
+            // Apply all KeyGroups
 
-            if (Color != Color.Transparent)
-                foreach (CorsairKey key in cleanKeys)
-                    key.Led.Color = Color;
+            if (Brush != null)
+                ApplyBrush(this.ToList(), Brush);
 
             //TODO DarthAffe 20.09.2015: Add some sort of priority
             foreach (IKeyGroup keyGroup in _keyGroups)
-                foreach (CorsairKey key in keyGroup.Keys.Where(key => cleanKeys.Contains(key)))
-                    key.Led.Color = keyGroup.Color;
+                ApplyBrush(keyGroup.Keys.ToList(), keyGroup.Brush);
 
             // Perform 'real' update
             base.UpdateLeds(forceUpdate);
+        }
+
+        private void ApplyBrush(ICollection<CorsairKey> keys, IBrush brush)
+        {
+            RectangleF brushRectangle = RectangleHelper.CreateRectangleFromRectangles(keys.Select(x => x.KeyRectangle));
+            foreach (CorsairKey key in keys)
+                key.Led.Color = brush.GetColorAtPoint(brushRectangle, key.KeyRectangle.GetCenter());
         }
 
         public bool AttachKeyGroup(IKeyGroup keyGroup)
@@ -122,24 +126,6 @@ namespace CUE.NET.Devices.Keyboard
 
                 ptr = new IntPtr(ptr.ToInt64() + structSize);
             }
-        }
-
-        private void CalculateKeyboardRectangle()
-        {
-            float posX = float.MaxValue;
-            float posY = float.MaxValue;
-            float posX2 = float.MinValue;
-            float posY2 = float.MinValue;
-
-            foreach (CorsairKey key in this)
-            {
-                posX = Math.Min(posX, key.KeyRectangle.X);
-                posY = Math.Min(posY, key.KeyRectangle.Y);
-                posX2 = Math.Max(posX2, key.KeyRectangle.X + key.KeyRectangle.Width);
-                posY2 = Math.Max(posY2, key.KeyRectangle.Y + key.KeyRectangle.Height);
-            }
-
-            KeyboardRectangle = RectangleHelper.CreateRectangleFromPoints(new PointF(posX, posY), new PointF(posX2, posY2));
         }
 
         #region IEnumerable
