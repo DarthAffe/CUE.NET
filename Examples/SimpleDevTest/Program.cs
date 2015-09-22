@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using CUE.NET;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Keyboard;
+using CUE.NET.Devices.Keyboard.ColorBrushes;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Extensions;
 using CUE.NET.Devices.Keyboard.Keys;
@@ -36,29 +36,29 @@ namespace SimpleDevTest
                     throw new WrapperException("No keyboard found");
 
                 // Ink all numbers on the keypad except the '5' purple, we want that to be gray
-                SimpleKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
-                { Color = Color.Purple }
+                ListKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
+                { Brush = new SolidColorBrush(Color.Purple) }
                 .Exclude(CorsairKeyboardKeyId.Keypad5);
                 keyboard[CorsairKeyboardKeyId.Keypad5].Led.Color = Color.Gray;
 
                 // Ink the Keys 'r', 'g', 'b' in their respective color
-                // The char access seems to fail for everything except letters (SDK doesn't return a valid keyId)
+                // The char access fails for everything except letters (SDK doesn't return a valid keyId)
                 keyboard['R'].Led.Color = Color.Red;
                 keyboard[CorsairKeyboardKeyId.G].Led.Color = Color.Green;
                 keyboard['B'].Led.Color = Color.Blue;
 
-                // Lock the 'r', 'g', 'b' keys. We want them to stay like this forever
-                keyboard['R'].Led.IsLocked = true;
-                keyboard['G'].Led.IsLocked = true;
-                keyboard['B'].Led.IsLocked = true;
+                // Lock the 'r', 'g', 'b' keys. We want them to stay like this forever (commented since it looks quite stupid later, but feel free tu uncomment this)
+                //keyboard['R'].Led.IsLocked = true;
+                //keyboard['G'].Led.IsLocked = true;
+                //keyboard['B'].Led.IsLocked = true;
 
                 // Ink the letters of 'white' white
-                SimpleKeyGroup whiteGroup = new SimpleKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E)
-                { Color = Color.White };
+                ListKeyGroup whiteGroup = new ListKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E)
+                { Brush = new SolidColorBrush(Color.White) };
 
                 // Ink the keys '1' to '0' yellow
                 RectangleKeyGroup yellowGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.D1, CorsairKeyboardKeyId.D0)
-                { Color = Color.Yellow };
+                { Brush = new SolidColorBrush(Color.Yellow) };
 
                 // Update the keyboard to show the configured colors, (your CUE settings defines the rest)
                 keyboard.UpdateLeds();
@@ -72,11 +72,11 @@ namespace SimpleDevTest
 
 
                 // ---------------------------------------------------------------------------
-                // Now let us move a orange point random over the keyboard
+                // Now let us move some points random over the keyboard
                 // Something like this could become some sort of effect
 
                 // Initialize needed stuff
-                const float SPEED = 8f; // mm/tick
+                const float SPEED = 4f; // mm/tick
                 Random random = new Random();
 
                 // Remove all the groups we created above to clear the keyboard
@@ -87,35 +87,64 @@ namespace SimpleDevTest
                 // Flash whole keyboard three times to ... well ... just to make it happen
                 for (int i = 0; i < 3; i++)
                 {
-                    keyboard.Color = Color.Aquamarine;
+                    keyboard.Brush = new SolidColorBrush(Color.Aquamarine);
                     keyboard.UpdateLeds();
                     Thread.Sleep(160);
-                    keyboard.Color = Color.Black;
+                    keyboard.Brush = new SolidColorBrush(Color.Black);
                     keyboard.UpdateLeds();
                     Thread.Sleep(200);
                 }
 
-                // Set keyboard 'background' to something fancy
-                keyboard.Color = Color.DarkSlateBlue;
+                // Set keyboard 'background' to something neutral
+                keyboard.Brush = new SolidColorBrush(Color.Black);
 
-                // Spawn our point (rectangle since circles are too hard to calculate :p) in the top-left corner (right over G1 or on ESC depending on your keyboard)
-                RectangleF point = new RectangleF(keyboard.KeyboardRectangle.X, keyboard.KeyboardRectangle.Y, 40, 40);
+                // Define how many points we have
+                const int NUM_POINTS = 6;
+
+                // The points we want to draw (rectangle since circles are too hard to calculate :p)
+                RectangleF[] points = new RectangleF[NUM_POINTS];
+
+                // KeyGroups which represents our point on the keyboard
+                RectangleKeyGroup[] pointGroups = new RectangleKeyGroup[NUM_POINTS];
+
                 // Target of our movement
-                PointF target = new PointF(point.X, point.Y);
+                PointF[] targets = new PointF[NUM_POINTS];
+
+                // Initialize all the stuff
+                for (int i = 0; i < NUM_POINTS; i++)
+                {
+                    // Spawn our point  in the top-left corner (right over G1 or on ESC depending on your keyboard)
+                    points[i] = new RectangleF(keyboard.KeyboardRectangle.X, keyboard.KeyboardRectangle.Y, 60, 60);
+                    pointGroups[i] = new RectangleKeyGroup(keyboard, points[i], 0.1f) { Brush = new SolidColorBrush(Color.White) };
+                    targets[i] = new PointF(points[i].X, points[i].Y);
+                }
+
+                // We set colors manually since white points are kinda boring (notice, that we use alpha values)
+                pointGroups[0].Brush = new SolidColorBrush(Color.FromArgb(127, 255, 0, 0));
+                pointGroups[1].Brush = new SolidColorBrush(Color.FromArgb(127, 0, 255, 0));
+                pointGroups[2].Brush = new SolidColorBrush(Color.FromArgb(127, 0, 0, 255));
+                pointGroups[3].Brush = new SolidColorBrush(Color.FromArgb(127, 255, 0, 255));
+                pointGroups[4].Brush = new SolidColorBrush(Color.FromArgb(127, 255, 255, 0));
+                pointGroups[5].Brush = new SolidColorBrush(Color.FromArgb(127, 0, 255, 255));
+
                 while (true)
                 {
-                    // Choose new target if we arrived
-                    if (point.Contains(target))
-                        target = new PointF((float)(keyboard.KeyboardRectangle.X + (random.NextDouble() * keyboard.KeyboardRectangle.Width)),
-                                (float)(keyboard.KeyboardRectangle.Y + (random.NextDouble() * keyboard.KeyboardRectangle.Height)));
-                    else
-                        point.Location = Interpolate(point.Location, target, SPEED); // It would be better to calculate from the center of our rectangle but the easy way is enough here
+                    // Calculate all the points
+                    for (int i = 0; i < NUM_POINTS; i++)
+                    {
+                        // Choose new target if we arrived
+                        if (points[i].Contains(targets[i]))
+                            targets[i] = new PointF((float)(keyboard.KeyboardRectangle.X + (random.NextDouble() * keyboard.KeyboardRectangle.Width)),
+                                    (float)(keyboard.KeyboardRectangle.Y + (random.NextDouble() * keyboard.KeyboardRectangle.Height)));
+                        else
+                            // Calculate movement
+                            points[i].Location = Interpolate(points[i].Location, targets[i], SPEED); // It would be better to calculate from the center of our rectangle but the easy way is enough here
 
-                    IEnumerable<CorsairKey> keys = keyboard[point, 0.1f];
-                    if (keys != null)
-                        foreach (CorsairKey key in keys)
-                            key.Led.Color = Color.Orange;
+                        // Move our rectangle to the new position
+                        pointGroups[i].Rectangle = points[i];
+                    }
 
+                    // Update changed leds
                     keyboard.UpdateLeds();
 
                     // 20 updates per sec should be enought for this

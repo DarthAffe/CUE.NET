@@ -1,30 +1,37 @@
-﻿using CUE.NET.Devices.Keyboard.Enums;
+﻿using System.Collections.Generic;
+using CUE.NET.Devices.Keyboard.Enums;
 
 namespace CUE.NET.Devices.Keyboard.Keys
 {
-    public class SimpleKeyGroup : BaseKeyGroup
+    public class ListKeyGroup : BaseKeyGroup
     {
+        #region Properties & Fields
+
+        protected IList<CorsairKey> GroupKeys { get; } = new List<CorsairKey>();
+
+        #endregion
+
         #region Constructors
 
-        public SimpleKeyGroup(CorsairKeyboard keyboard, bool autoAttach = true)
+        public ListKeyGroup(CorsairKeyboard keyboard, bool autoAttach = true)
             : base(keyboard, autoAttach)
         { }
 
-        public SimpleKeyGroup(CorsairKeyboard keyboard, params CorsairKey[] keys)
+        public ListKeyGroup(CorsairKeyboard keyboard, params CorsairKey[] keys)
             : this(keyboard, true, keys)
         { }
 
-        public SimpleKeyGroup(CorsairKeyboard keyboard, bool autoAttach, params CorsairKey[] keys)
+        public ListKeyGroup(CorsairKeyboard keyboard, bool autoAttach, params CorsairKey[] keys)
             : base(keyboard, autoAttach)
         {
             AddKey(keys);
         }
 
-        public SimpleKeyGroup(CorsairKeyboard keyboard, params CorsairKeyboardKeyId[] keys)
+        public ListKeyGroup(CorsairKeyboard keyboard, params CorsairKeyboardKeyId[] keys)
             : this(keyboard, true, keys)
         { }
 
-        public SimpleKeyGroup(CorsairKeyboard keyboard, bool autoAttach, params CorsairKeyboardKeyId[] keys)
+        public ListKeyGroup(CorsairKeyboard keyboard, bool autoAttach, params CorsairKeyboardKeyId[] keys)
             : base(keyboard, autoAttach)
         {
             AddKey(keys);
@@ -80,6 +87,12 @@ namespace CUE.NET.Devices.Keyboard.Keys
             foreach (CorsairKey key in groupToMerge.Keys)
                 if (!GroupKeys.Contains(key))
                     GroupKeys.Add(key);
+        }
+
+
+        protected override IList<CorsairKey> GetGroupKeys()
+        {
+            return GroupKeys;
         }
 
         #endregion

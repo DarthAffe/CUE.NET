@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Helper;
@@ -9,8 +10,8 @@ namespace CUE.NET.Devices.Keyboard.Keys
     {
         #region Properties & Fields
 
-        public RectangleF RequestedRectangle { get; }
-        public float MinOverlayPercentage { get; }
+        public RectangleF Rectangle { get; set; }
+        public float MinOverlayPercentage { get; set; }
 
         #endregion
 
@@ -28,19 +29,21 @@ namespace CUE.NET.Devices.Keyboard.Keys
             : this(keyboard, RectangleHelper.CreateRectangleFromPoints(fromPoint, toPoint), minOverlayPercentage, autoAttach)
         { }
 
-        public RectangleKeyGroup(CorsairKeyboard keyboard, RectangleF requestedRectangle, float minOverlayPercentage = 0.5f, bool autoAttach = true)
+        public RectangleKeyGroup(CorsairKeyboard keyboard, RectangleF rectangle, float minOverlayPercentage = 0.5f, bool autoAttach = true)
             : base(keyboard, autoAttach)
         {
-            this.RequestedRectangle = requestedRectangle;
+            this.Rectangle = rectangle;
             this.MinOverlayPercentage = minOverlayPercentage;
-
-            foreach (CorsairKey key in Keyboard.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, requestedRectangle) >= minOverlayPercentage))
-                GroupKeys.Add(key);
         }
 
         #endregion
 
         #region Methods
+
+        protected override IList<CorsairKey> GetGroupKeys()
+        {
+            return Keyboard.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, Rectangle) >= MinOverlayPercentage).ToList();
+        }
 
         #endregion
     }

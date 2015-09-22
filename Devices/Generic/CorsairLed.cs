@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using CUE.NET.Helper;
 
 namespace CUE.NET.Devices.Generic
 {
@@ -19,7 +20,7 @@ namespace CUE.NET.Devices.Generic
             {
                 if (!IsLocked)
                 {
-                    RequestedColor = value;
+                    RequestedColor = RequestedColor.Blend(value);
                     IsUpdated = true;
                 }
             }

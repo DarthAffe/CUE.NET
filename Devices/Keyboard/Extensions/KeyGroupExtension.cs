@@ -6,28 +6,28 @@ namespace CUE.NET.Devices.Keyboard.Extensions
 {
     public static class KeyGroupExtension
     {
-        public static SimpleKeyGroup ToSimpleKeyGroup(this BaseKeyGroup keyGroup)
+        public static ListKeyGroup ToSimpleKeyGroup(this BaseKeyGroup keyGroup)
         {
-            SimpleKeyGroup simpleKeyGroup = keyGroup as SimpleKeyGroup;
+            ListKeyGroup simpleKeyGroup = keyGroup as ListKeyGroup;
             if (simpleKeyGroup == null)
             {
                 bool wasAttached = keyGroup.Detach();
-                simpleKeyGroup = new SimpleKeyGroup(keyGroup.Keyboard, wasAttached, keyGroup.Keys.ToArray()) { Color = keyGroup.Color };
+                simpleKeyGroup = new ListKeyGroup(keyGroup.Keyboard, wasAttached, keyGroup.Keys.ToArray()) { Brush = keyGroup.Brush };
             }
             return simpleKeyGroup;
         }
 
-        public static SimpleKeyGroup Exclude(this BaseKeyGroup keyGroup, params CorsairKeyboardKeyId[] keyIds)
+        public static ListKeyGroup Exclude(this BaseKeyGroup keyGroup, params CorsairKeyboardKeyId[] keyIds)
         {
-            SimpleKeyGroup simpleKeyGroup = keyGroup.ToSimpleKeyGroup();
+            ListKeyGroup simpleKeyGroup = keyGroup.ToSimpleKeyGroup();
             foreach (CorsairKeyboardKeyId keyId in keyIds)
                 simpleKeyGroup.RemoveKey(keyId);
             return simpleKeyGroup;
         }
 
-        public static SimpleKeyGroup Exclude(this BaseKeyGroup keyGroup, params CorsairKey[] keyIds)
+        public static ListKeyGroup Exclude(this BaseKeyGroup keyGroup, params CorsairKey[] keyIds)
         {
-            SimpleKeyGroup simpleKeyGroup = keyGroup.ToSimpleKeyGroup();
+            ListKeyGroup simpleKeyGroup = keyGroup.ToSimpleKeyGroup();
             foreach (CorsairKey key in keyIds)
                 simpleKeyGroup.RemoveKey(key);
             return simpleKeyGroup;
