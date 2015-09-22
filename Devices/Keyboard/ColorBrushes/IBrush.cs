@@ -1,11 +1,10 @@
-using System.Drawing.Color;
-using System.Drawing.Point;
+using System.Drawing;
 
 namespace CUE.NET.Devices.Keyboard.ColorBrushes
 
 {
     public interface IBrush
     {
-		public Color getColorAtPoint(Point point);
+		Color getColorAtPoint(Point point);
     }
 }
