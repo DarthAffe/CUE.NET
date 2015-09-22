@@ -95,8 +95,8 @@ namespace SimpleDevTest
                     Thread.Sleep(200);
                 }
 
-                // Set keyboard 'background' to something neutral
-                keyboard.Brush = new SolidColorBrush(Color.Black);
+                // Set keyboard 'background' to black with low alpha (this will add a nice "fade" effect instead of just clearing the keyboard every frame)
+                keyboard.Brush = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
 
                 // Define how many points we have
                 const int NUM_POINTS = 6;
