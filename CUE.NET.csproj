@@ -63,6 +63,8 @@
     <Compile Include="Devices\Generic\Enums\CorsairAccessMode.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceCaps.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceType.cs" />
+    <Compile Include="Devices\Keyboard\ColorBrushes\IBrush.cs" />
+    <Compile Include="Devices\Keyboard\ColorBrushes\SolidColorBrush.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairLogicalKeyboardLayout.cs" />
     <Compile Include="Devices\Headset\Enums\CorsairHeadsetLedId.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairKeyboardKeyId.cs" />

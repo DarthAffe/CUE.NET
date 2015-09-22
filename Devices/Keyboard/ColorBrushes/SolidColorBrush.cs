@@ -4,33 +4,26 @@ namespace CUE.NET.Devices.Keyboard.ColorBrushes
 {
     public class SolidColorBrush : IBrush
     {
-        Color color;
+        #region Properties & Fields
+
+        public Color Color { get; set; }
+
+        #endregion
 
         #region Constructors
 
         public SolidColorBrush(Color color)
         {
-            this.color = color;
+            this.Color = color;
         }
 
         #endregion
 
         #region Methods
 
-        public Color getColorAtPoint(Point point)
+        public Color GetColorAtPoint(Point point)
         {
-            /* a solid color brush returns the same color no matter the point */
-            return this.color;
-        }
-
-        public Color getColor()
-        {
-            return this.color;
-        }
-
-        public void setColor(Color color)
-        {
-            this.color = color;
+            return Color; // A solid color brush returns the same color no matter the point
         }
 
         #endregion
