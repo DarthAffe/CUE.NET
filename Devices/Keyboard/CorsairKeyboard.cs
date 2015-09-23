@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic;
-using CUE.NET.Devices.Keyboard.ColorBrushes;
+using CUE.NET.Devices.Keyboard.Brushes;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Helper;
