@@ -1,5 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
+using System;
 using System.Drawing;
 
 namespace CUE.NET.Helper
@@ -43,7 +44,13 @@ namespace CUE.NET.Helper
 
         public static Color CreateColorFromFloat(float a, float r, float g, float b)
         {
-            return Color.FromArgb((int)(a * 255), (int)(r * 255), (int)(g * 255), (int)(b * 255));
+            return Color.FromArgb(GetIntColorFromFloat(a), GetIntColorFromFloat(r), GetIntColorFromFloat(g), GetIntColorFromFloat(b));
+        }
+
+        private static byte GetIntColorFromFloat(float f)
+        {
+            float calcF = (float)Math.Max(0.0, Math.Min(1.0, f));
+            return (byte)(calcF == 1.0 ? 255 : calcF * 256.0);
         }
     }
 }
