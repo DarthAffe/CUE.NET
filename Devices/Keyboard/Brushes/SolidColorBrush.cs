@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace CUE.NET.Devices.Keyboard.ColorBrushes
+namespace CUE.NET.Devices.Keyboard.Brushes
 {
     public class SolidColorBrush : IBrush
     {

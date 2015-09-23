@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using CUE.NET;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Keyboard;
-using CUE.NET.Devices.Keyboard.ColorBrushes;
+using CUE.NET.Devices.Keyboard.Brushes;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Extensions;
 using CUE.NET.Devices.Keyboard.Keys;
@@ -18,6 +18,7 @@ namespace SimpleDevTest
         public static void Main(string[] args)
         {
             Console.WriteLine("Press any key to exit ...");
+            Console.WriteLine();
             Task.Factory.StartNew(
                 () =>
                 {
@@ -35,6 +36,11 @@ namespace SimpleDevTest
                 if (keyboard == null)
                     throw new WrapperException("No keyboard found");
 
+
+                // ---------------------------------------------------------------------------
+                // First we'll look at some basic coloring
+
+                Console.WriteLine("Basic color-test ...");
                 // Ink all numbers on the keypad except the '5' purple, we want that to be gray
                 ListKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
                 { Brush = new SolidColorBrush(Color.Purple) }
@@ -63,12 +69,58 @@ namespace SimpleDevTest
                 // Update the keyboard to show the configured colors, (your CUE settings defines the rest)
                 keyboard.UpdateLeds();
 
-                // Wait 5 sec
-                for (int i = 5; i > 0; i--)
+                Wait(3);
+
+                // Remove all the groups we created above to clear the keyboard
+                purpleGroup.Detach();
+                whiteGroup.Detach();
+                yellowGroup.Detach();
+
+
+                // ---------------------------------------------------------------------------
+                // Next we add a nice linear gradient brush over the keyboard and play around with the offset of one stop
+
+                Console.WriteLine("gradient-brush-test");
+
+                // Create our gradient stop to play with
+                GradientStop moveableStop = new GradientStop(0, Color.FromArgb(0, 255, 0));
+
+                //Create a basic (by default horizontal) brush ...
+                LinearGradientBrush linearBrush = new LinearGradientBrush(new GradientStop(0, Color.Blue), moveableStop, new GradientStop(1f, Color.Red));
+
+                // ... and add it as the keyboard background
+                keyboard.Brush = linearBrush;
+
+                // Move the brush from left to right
+                for (float offset = 0; offset <= 1f; offset += 0.02f)
                 {
-                    Console.WriteLine(i);
-                    Thread.Sleep(1000);
+                    moveableStop.Offset = offset;
+                    keyboard.UpdateLeds();
+                    Thread.Sleep(100);
                 }
+
+                // And back to center
+                for (float offset = 1f; offset >= 0.5f; offset -= 0.02f)
+                {
+                    moveableStop.Offset = offset;
+                    keyboard.UpdateLeds();
+                    Thread.Sleep(100);
+                }
+
+                // "Rotate" the brush (this is of course not the best implementation for this but you see the point)
+                for (float rotateX = 0, rotateY = 0; rotateX <= 1f; rotateX += 0.02f, rotateY = 0.04f)
+                {
+                    if (rotateY > 1f)
+                        rotateY = 1f - (rotateY - 1f);
+
+                    linearBrush.StartPoint = new PointF(rotateX, rotateY);
+                    linearBrush.EndPoint = new PointF(1f - rotateX, 1f - rotateY);
+
+                    keyboard.UpdateLeds();
+                    Thread.Sleep(100);
+                }
+
+                Wait(2);
 
 
                 // ---------------------------------------------------------------------------
@@ -76,13 +128,8 @@ namespace SimpleDevTest
                 // Something like this could become some sort of effect
 
                 // Initialize needed stuff
-                const float SPEED = 4f; // mm/tick
+                const float SPEED = 6f; // mm/tick
                 Random random = new Random();
-
-                // Remove all the groups we created above to clear the keyboard
-                purpleGroup.Detach();
-                whiteGroup.Detach();
-                yellowGroup.Detach();
 
                 // Flash whole keyboard three times to ... well ... just to make it happen
                 for (int i = 0; i < 3; i++)
@@ -166,6 +213,15 @@ namespace SimpleDevTest
 
             while (true)
                 Thread.Sleep(1000); // Don't exit after exception
+        }
+
+        private static void Wait(int sec)
+        {
+            for (int i = sec; i > 0; i--)
+            {
+                Console.WriteLine(i);
+                Thread.Sleep(1000);
+            }
         }
 
         private static PointF Interpolate(PointF p1, PointF p2, float length)

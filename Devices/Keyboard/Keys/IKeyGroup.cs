@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CUE.NET.Devices.Keyboard.ColorBrushes;
+using CUE.NET.Devices.Keyboard.Brushes;
 
 namespace CUE.NET.Devices.Keyboard.Keys
 {

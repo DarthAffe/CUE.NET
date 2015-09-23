@@ -49,8 +49,8 @@ namespace CUE.NET.Helper
 
         private static byte GetIntColorFromFloat(float f)
         {
-            float calcF = (float)Math.Max(0.0, Math.Min(1.0, f));
-            return (byte)(calcF == 1.0 ? 255 : calcF * 256.0);
+            float calcF = (float)Math.Max(0f, Math.Min(1f, f));
+            return (byte)(calcF.Equals(1f) ? 255 : calcF * 256.0);
         }
     }
 }

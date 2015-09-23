@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using CUE.NET.Devices.Keyboard.ColorBrushes;
+using CUE.NET.Devices.Keyboard.Brushes;
 using CUE.NET.Devices.Keyboard.Extensions;
 
 namespace CUE.NET.Devices.Keyboard.Keys
