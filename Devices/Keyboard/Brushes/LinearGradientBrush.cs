@@ -42,89 +42,80 @@ namespace CUE.NET.Devices.Keyboard.Brushes
         #endregion
 
         #region Methods
-        
+
         public Color GetColorAtPoint(RectangleF rectangle, PointF point)
         {
             if (!GradientStops.Any()) return Color.Transparent;
             if (GradientStops.Count == 1) return GradientStops.First().Color;
 
-            // Taken from https://dotupdate.wordpress.com/2008/01/28/find-the-color-of-a-point-in-a-lineargradientbrush/
+            // Based on https://dotupdate.wordpress.com/2008/01/28/find-the-color-of-a-point-in-a-lineargradientbrush/
 
-            float x3 = point.X;
-            float y3 = point.Y;
+            PointF startPoint = new PointF(StartPoint.X * rectangle.Width, StartPoint.Y * rectangle.Height);
+            PointF endPoint = new PointF(EndPoint.X * rectangle.Width, EndPoint.Y * rectangle.Height);
 
-            float x1 = StartPoint.X * rectangle.Width;
-            float y1 = StartPoint.Y * rectangle.Height;
-            PointF p1 = new PointF(x1, y1); // Starting point
+            PointF intersectingPoint;
+            if (startPoint.Y.Equals(endPoint.Y)) // Horizontal case
+                intersectingPoint = new PointF(point.X, startPoint.Y);
 
-            float x2 = EndPoint.X * rectangle.Width;
-            float y2 = EndPoint.Y * rectangle.Height;
-            PointF p2 = new PointF(x2, y2);  //End point
-
-            // Calculate intersecting points 
-            PointF p4;
-
-            if (y1.Equals(y2)) // Horizontal case
-                p4 = new PointF(x3, y1);
-
-            else if (x1.Equals(x2)) // Vertical case
-                p4 = new PointF(x1, y3);
+            else if (startPoint.X.Equals(endPoint.X)) // Vertical case
+                intersectingPoint = new PointF(startPoint.X, point.Y);
 
             else // Diagnonal case
             {
-                float m = (y2 - y1) / (x2 - x1);
-                float m2 = -1 / m;
-                float b = y1 - m * x1;
-                float c = y3 - m2 * x3;
+                float slope = (endPoint.Y - startPoint.Y) / (endPoint.X - startPoint.X);
+                float orthogonalSlope = -1 / slope;
+                
+                float startYIntercept = startPoint.Y - slope * startPoint.X;
+                float pointYIntercept = point.Y - orthogonalSlope * point.X;
 
-                float x4 = (c - b) / (m - m2);
-                float y4 = m * x4 + b;
-                p4 = new PointF(x4, y4);
+                float intersectingPointX = (pointYIntercept - startYIntercept) / (slope - orthogonalSlope);
+                float intersectingPointY = slope * intersectingPointX + startYIntercept;
+                intersectingPoint = new PointF(intersectingPointX, intersectingPointY);
             }
 
             // Calculate distances relative to the vector start
-            float d4 = Dist(p4, p1, p2);
-            float d2 = Dist(p2, p1, p2);
+            float intersectDistance = CalculateDistance(intersectingPoint, startPoint, endPoint);
+            float gradientLength = CalculateDistance(endPoint, startPoint, endPoint);
 
-            float x = d4 / d2;
+            float offset = intersectDistance / gradientLength;
 
             // Clip the input if before or after the max/min offset values
             float max = GradientStops.Max(n => n.Offset);
-            if (x > max)
-                x = max;
+            if (offset > max)
+                offset = max;
 
             float min = GradientStops.Min(n => n.Offset);
-            if (x < min)
-                x = min;
+            if (offset < min)
+                offset = min;
 
             // Find gradient stops that surround the input value
-            GradientStop gs0 = GradientStops.Where(n => n.Offset <= x).OrderBy(n => n.Offset).Last();
-            GradientStop gs1 = GradientStops.Where(n => n.Offset >= x).OrderBy(n => n.Offset).First();
+            GradientStop gsBefore = GradientStops.Where(n => n.Offset <= offset).OrderBy(n => n.Offset).Last();
+            GradientStop gsAfter = GradientStops.Where(n => n.Offset >= offset).OrderBy(n => n.Offset).First();
 
-            float y = 0f;
-            if (!gs0.Offset.Equals(gs1.Offset))
-                y = ((x - gs0.Offset) / (gs1.Offset - gs0.Offset));
+            float blendFactor = 0f;
+            if (!gsBefore.Offset.Equals(gsAfter.Offset))
+                blendFactor = ((offset - gsBefore.Offset) / (gsAfter.Offset - gsBefore.Offset));
 
-            byte colA = (byte)((gs1.Color.A - gs0.Color.A) * y + gs0.Color.A);
-            byte colR = (byte)((gs1.Color.R - gs0.Color.R) * y + gs0.Color.R);
-            byte colG = (byte)((gs1.Color.G - gs0.Color.G) * y + gs0.Color.G);
-            byte colB = (byte)((gs1.Color.B - gs0.Color.B) * y + gs0.Color.B);
+            byte colA = (byte)((gsAfter.Color.A - gsBefore.Color.A) * blendFactor + gsBefore.Color.A);
+            byte colR = (byte)((gsAfter.Color.R - gsBefore.Color.R) * blendFactor + gsBefore.Color.R);
+            byte colG = (byte)((gsAfter.Color.G - gsBefore.Color.G) * blendFactor + gsBefore.Color.G);
+            byte colB = (byte)((gsAfter.Color.B - gsBefore.Color.B) * blendFactor + gsBefore.Color.B);
             return Color.FromArgb(colA, colR, colG, colB);
         }
 
-        // Taken from https://dotupdate.wordpress.com/2008/01/28/find-the-color-of-a-point-in-a-lineargradientbrush/
+        // Based on https://dotupdate.wordpress.com/2008/01/28/find-the-color-of-a-point-in-a-lineargradientbrush/
         /// <summary>
-        /// Returns the signed magnitude of a point on a vector with origin po and pointing to pf
+        /// Returns the signed magnitude of a point on a vector
         /// </summary>
-        private float Dist(PointF px, PointF po, PointF pf)
+        private float CalculateDistance(PointF point, PointF origin, PointF direction)
         {
-            float d = (float)Math.Sqrt((px.Y - po.Y) * (px.Y - po.Y) + (px.X - po.X) * (px.X - po.X));
+            float distance = (float)Math.Sqrt((point.Y - origin.Y) * (point.Y - origin.Y) + (point.X - origin.X) * (point.X - origin.X));
 
-            return (((px.Y < po.Y) && (pf.Y > po.Y)) ||
-                ((px.Y > po.Y) && (pf.Y < po.Y)) ||
-                ((px.Y.Equals(po.Y)) && (px.X < po.X) && (pf.X > po.X)) ||
-                ((px.Y.Equals(po.Y)) && (px.X > po.X) && (pf.X < po.X)))
-                ? -d : d;
+            return (((point.Y < origin.Y) && (direction.Y > origin.Y)) ||
+                ((point.Y > origin.Y) && (direction.Y < origin.Y)) ||
+                ((point.Y.Equals(origin.Y)) && (point.X < origin.X) && (direction.X > origin.X)) ||
+                ((point.Y.Equals(origin.Y)) && (point.X > origin.X) && (direction.X < origin.X)))
+                ? -distance : distance;
         }
 
         #endregion
