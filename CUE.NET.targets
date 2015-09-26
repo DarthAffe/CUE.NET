@@ -1,0 +1,127 @@
+<!--
+ * Build targets hacked from SQLite (thanks!)
+ * System.Data.SQLite.Core.targets -
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--
+  ******************************************************************************
+  **                                Build Items                               **
+  ******************************************************************************
+  -->
+
+  <ItemGroup>
+    <CueNETSDKFiles Condition="'$(MSBuildThisFileDirectory)' != '' And
+                                   HasTrailingSlash('$(MSBuildThisFileDirectory)')"
+                        Include="$(MSBuildThisFileDirectory)libs\**\*.dll" />
+  </ItemGroup>
+
+  <!--
+  ******************************************************************************
+  **                               Content Items                              **
+  ******************************************************************************
+  -->
+
+  <ItemGroup Condition="'$(ContentCueNETSDKFiles)' != '' And
+                        '$(ContentCueNETSDKFiles)' != 'false' And
+                        '@(CueNETSDKFiles)' != ''">
+    <Content Include="@(CueNETSDKFiles)">
+      <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!--
+  ******************************************************************************
+  **                              Build Targets*                              **
+  ******************************************************************************
+  -->
+
+  <Target Name="CopyCueNETSDKFiles"
+          Condition="'$(CopyCueNETSDKFiles)' != 'false' And
+                     '$(OutDir)' != '' And
+                     HasTrailingSlash('$(OutDir)') And
+                     Exists('$(OutDir)')"
+          Inputs="@(CueNETSDKFiles)"
+          Outputs="@(CueNETSDKFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')">
+    <!--
+        NOTE: Copy "CUESDK*.dll" and all related files, for every
+              architecture that we support, to the build output directory.
+    -->
+  <Message Text="Copying SDK files..." Importance="high" />
+    <Copy SourceFiles="@(CueNETSDKFiles)"
+          DestinationFiles="@(CueNETSDKFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+  <!--
+  ******************************************************************************
+  -->
+
+  <Target Name="CleanCueNETSDKFiles"
+          Condition="'$(CleanCueNETSDKFiles)' != 'false' And
+                     '$(OutDir)' != '' And
+                     HasTrailingSlash('$(OutDir)') And
+                     Exists('$(OutDir)')">
+
+    <!--
+        NOTE: Delete "CUESDK*.dll" and all related files, for every
+              architecture that we support, from the build output directory.
+    -->
+  <Message Text="this file $(MSBuildThisFileDirectory)" Importance="high"/>
+  <Message Text="Cleaning SDK files..." Importance="high" />
+  
+    <Delete Files="@(CueNETSDKFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+  <!--
+  ******************************************************************************
+  -->
+
+  <Target Name="CollectCueNETSDKFiles"
+          Condition="'$(CollectCueNETSDKFiles)' != 'false'">
+      <Message Text="Collecting SDK files..." Importance="high" />
+    <ItemGroup>
+      <FilesForPackagingFromProject Include="@(CueNETSDKFiles)">
+        <DestinationRelativePath>bin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
+
+  <!--
+  ******************************************************************************
+  **                            Build Properties                              **
+  ******************************************************************************
+  -->
+
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+      $(PostBuildEventDependsOn);
+      CopyCueNETSDKFiles;
+    </PostBuildEventDependsOn>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      CopyCueNETSDKFiles;
+    </BuildDependsOn>
+    <CleanDependsOn>
+      $(CleanDependsOn);
+      CleanCueNETSDKFiles;
+    </CleanDependsOn>
+  </PropertyGroup>
+
+  <!--
+  ******************************************************************************
+  **                 Publish Properties for Visual Studio 201x                **
+  ******************************************************************************
+  -->
+
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '' Or
+                            '$(VisualStudioVersion)' == '10.0' Or
+                            '$(VisualStudioVersion)' == '11.0' Or
+                            '$(VisualStudioVersion)' == '12.0'">
+    <PipelineCollectFilesPhaseDependsOn>
+      CollectCueNETSDKFiles;
+      $(PipelineCollectFilesPhaseDependsOn);
+    </PipelineCollectFilesPhaseDependsOn>
+  </PropertyGroup>
+</Project>
