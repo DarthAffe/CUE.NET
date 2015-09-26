@@ -79,8 +79,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(PlatformName) == x86 copy "$(SolutionDir)libs\CUESDK_2013.dll" "$(TargetDir)CUESDK_2013.dll"
-if $(PlatformName) == x64 copy "$(SolutionDir)libs\CUESDK.x64_2013.dll" "$(TargetDir)CUESDK.x64_2013.dll"</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(SolutionDir)libs\x64\CUESDK_2013.dll" "$(TargetDir)x64\" /y
+xcopy "$(SolutionDir)libs\x86\CUESDK_2013.dll" "$(TargetDir)x86\" /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
