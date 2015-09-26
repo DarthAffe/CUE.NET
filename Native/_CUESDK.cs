@@ -10,10 +10,12 @@ namespace CUE.NET.Native
     {
         #region Libary Management
 
+        internal static string LoadedArchitecture { get; private set; }
+
         static _CUESDK()
         {
             // HACK: Load library at runtime to support both, x86 and x64 with one managed dll
-            LoadLibrary((Environment.Is64BitProcess ? "x64" : "x86") + "/CUESDK_2013.dll");
+            LoadLibrary((LoadedArchitecture = Environment.Is64BitProcess ? "x64" : "x86") + "/CUESDK_2013.dll");
         }
 
         [DllImport("kernel32.dll")]

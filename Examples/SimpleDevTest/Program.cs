@@ -30,6 +30,7 @@ namespace SimpleDevTest
             {
                 // Initialize CUE-SDK
                 CueSDK.Initialize();
+                Console.WriteLine("Initialized with " + CueSDK.LoadedArchitecture + "-SDK");
 
                 // Get connected keyboard or throw exception if there is no light controllable keyboard connected
                 CorsairKeyboard keyboard = CueSDK.KeyboardSDK;

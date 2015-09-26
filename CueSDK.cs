@@ -17,6 +17,7 @@ namespace CUE.NET
 
         // ReSharper disable UnusedAutoPropertyAccessor.Global
 
+        public static string LoadedArchitecture => _CUESDK.LoadedArchitecture;
         public static CorsairProtocolDetails ProtocolDetails { get; private set; }
         public static bool HasExclusiveAccess { get; private set; }
         public static CorsairError LastError => _CUESDK.CorsairGetLastError();
