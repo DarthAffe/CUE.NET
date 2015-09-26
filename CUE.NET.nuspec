@@ -18,5 +18,6 @@ I'm currently working on this library and it's far from being finished. Please b
     <files>
         <file src="bin\x64\CUE.NET.dll" target="lib\net46\CUE.NET.dll" />
         <file src="bin\x64\CUESDK.x64_2013.dll" target="build\net46\x64" />
+        <file src="CUE.NET.targets" target="build\net46\x64\CUE.NET.targets" />
     </files>
 </package>
