@@ -1,37 +1,35 @@
 <!--
- * Build targets hacked from SQLite (thanks!), please rename all of this when you're feeling brave
+ * Build targets hacked from SQLite (thanks!)
  * System.Data.SQLite.Core.targets -
- *
- *
 -->
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <!--
   ******************************************************************************
-  **                    SQLite Interop Library Build Items                    **
+  **                                Build Items                               **
   ******************************************************************************
   -->
 
   <ItemGroup>
-    <SQLiteInteropFiles Condition="'$(MSBuildThisFileDirectory)' != '' And
+    <CueNETSDKFiles Condition="'$(MSBuildThisFileDirectory)' != '' And
                                    HasTrailingSlash('$(MSBuildThisFileDirectory)')"
                         Include="$(MSBuildThisFileDirectory)\libs\*.dll" />
-    <SQLiteInteropFiles Condition="'$(MSBuildThisFileDirectory)' != '' And
+    <CueNETSDKFiles Condition="'$(MSBuildThisFileDirectory)' != '' And
                                    HasTrailingSlash('$(MSBuildThisFileDirectory)')"
                         Include="$(MSBuildThisFileDirectory)\*.dll" />
   </ItemGroup>
 
   <!--
   ******************************************************************************
-  **                   SQLite Interop Library Content Items                   **
+  **                               Content Items                              **
   ******************************************************************************
   -->
 
-  <ItemGroup Condition="'$(ContentSQLiteInteropFiles)' != '' And
-                        '$(ContentSQLiteInteropFiles)' != 'false' And
-                        '@(SQLiteInteropFiles)' != ''">
-    <Content Include="@(SQLiteInteropFiles)">
+  <ItemGroup Condition="'$(ContentCueNETSDKFiles)' != '' And
+                        '$(ContentCueNETSDKFiles)' != 'false' And
+                        '@(CueNETSDKFiles)' != ''">
+    <Content Include="@(CueNETSDKFiles)">
       <Link>%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -39,55 +37,55 @@
 
   <!--
   ******************************************************************************
-  **                   SQLite Interop Library Build Targets                   **
+  **                              Build Targets*                              **
   ******************************************************************************
   -->
 
-  <Target Name="CopySQLiteInteropFiles"
-          Condition="'$(CopySQLiteInteropFiles)' != 'false' And
+  <Target Name="CopyCueNETSDKFiles"
+          Condition="'$(CopyCueNETSDKFiles)' != 'false' And
                      '$(OutDir)' != '' And
                      HasTrailingSlash('$(OutDir)') And
                      Exists('$(OutDir)')"
-          Inputs="@(SQLiteInteropFiles)"
-          Outputs="@(SQLiteInteropFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')">
+          Inputs="@(CueNETSDKFiles)"
+          Outputs="@(CueNETSDKFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')">
     <!--
-        NOTE: Copy "SQLite.Interop.dll" and all related files, for every
+        NOTE: Copy "CUESDK*.dll" and all related files, for every
               architecture that we support, to the build output directory.
     -->
-	<Message Text="Copying Interop files..." Importance="high" />
-    <Copy SourceFiles="@(SQLiteInteropFiles)"
-          DestinationFiles="@(SQLiteInteropFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+  <Message Text="Copying SDK files..." Importance="high" />
+    <Copy SourceFiles="@(CueNETSDKFiles)"
+          DestinationFiles="@(CueNETSDKFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
   <!--
   ******************************************************************************
   -->
 
-  <Target Name="CleanSQLiteInteropFiles"
-          Condition="'$(CleanSQLiteInteropFiles)' != 'false' And
+  <Target Name="CleanCueNETSDKFiles"
+          Condition="'$(CleanCueNETSDKFiles)' != 'false' And
                      '$(OutDir)' != '' And
                      HasTrailingSlash('$(OutDir)') And
                      Exists('$(OutDir)')">
 
     <!--
-        NOTE: Delete "SQLite.Interop.dll" and all related files, for every
+        NOTE: Delete "CUESDK*.dll" and all related files, for every
               architecture that we support, from the build output directory.
     -->
-	<Message Text="this file $(MSBuildThisFileDirectory)" Importance="high"/>
-	<Message Text="Cleaning Interop files..." Importance="high" />
-	
-    <Delete Files="@(SQLiteInteropFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+  <Message Text="this file $(MSBuildThisFileDirectory)" Importance="high"/>
+  <Message Text="Cleaning SDK files..." Importance="high" />
+  
+    <Delete Files="@(CueNETSDKFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
   <!--
   ******************************************************************************
   -->
 
-  <Target Name="CollectSQLiteInteropFiles"
-          Condition="'$(CollectSQLiteInteropFiles)' != 'false'">
-		  <Message Text="Collecting Interop files..." Importance="high" />
+  <Target Name="CollectCueNETSDKFiles"
+          Condition="'$(CollectCueNETSDKFiles)' != 'false'">
+      <Message Text="Collecting SDK files..." Importance="high" />
     <ItemGroup>
-      <FilesForPackagingFromProject Include="@(SQLiteInteropFiles)">
+      <FilesForPackagingFromProject Include="@(CueNETSDKFiles)">
         <DestinationRelativePath>bin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
     </ItemGroup>
@@ -95,28 +93,28 @@
 
   <!--
   ******************************************************************************
-  **                 SQLite Interop Library Build Properties                  **
+  **                            Build Properties                              **
   ******************************************************************************
   -->
 
   <PropertyGroup>
     <PostBuildEventDependsOn>
       $(PostBuildEventDependsOn);
-      CopySQLiteInteropFiles;
+      CopyCueNETSDKFiles;
     </PostBuildEventDependsOn>
     <BuildDependsOn>
       $(BuildDependsOn);
-      CopySQLiteInteropFiles;
+      CopyCueNETSDKFiles;
     </BuildDependsOn>
     <CleanDependsOn>
       $(CleanDependsOn);
-      CleanSQLiteInteropFiles;
+      CleanCueNETSDKFiles;
     </CleanDependsOn>
   </PropertyGroup>
 
   <!--
   ******************************************************************************
-  **     SQLite Interop Library Publish Properties for Visual Studio 201x     **
+  **                 Publish Properties for Visual Studio 201x                **
   ******************************************************************************
   -->
 
@@ -125,7 +123,7 @@
                             '$(VisualStudioVersion)' == '11.0' Or
                             '$(VisualStudioVersion)' == '12.0'">
     <PipelineCollectFilesPhaseDependsOn>
-      CollectSQLiteInteropFiles;
+      CollectCueNETSDKFiles;
       $(PipelineCollectFilesPhaseDependsOn);
     </PipelineCollectFilesPhaseDependsOn>
   </PropertyGroup>

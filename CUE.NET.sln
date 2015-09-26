@@ -13,6 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		CUE.NET.nuspec = CUE.NET.nuspec
 		CUE.NET.targets = CUE.NET.targets
+		nuget.exe = nuget.exe
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{D69EF6D8-68FF-4C56-B5CB-253971B1DF91}"
+	ProjectSection(SolutionItems) = preProject
+		libs\CUESDK.x64_2013.dll = libs\CUESDK.x64_2013.dll
+		libs\CUESDK.x86_2013.dll = libs\CUESDK.x86_2013.dll
 	EndProjectSection
 EndProject
 Global
@@ -45,5 +52,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7FD88256-5E14-4D7C-862B-7BC2CD04081A} = {1F52DDC9-E9D0-4A7B-8E78-930528203EE6}
+		{D69EF6D8-68FF-4C56-B5CB-253971B1DF91} = {FF50AF6A-D2AC-4772-B013-C10D127DBE29}
 	EndGlobalSection
 EndGlobal
