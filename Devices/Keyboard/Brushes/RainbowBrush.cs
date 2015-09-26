@@ -12,23 +12,26 @@ namespace CUE.NET.Devices.Keyboard.Brushes
         public PointF EndPoint { get; set; } = new PointF(1f, 0.5f);
         public float StartHue { get; set; }
         public float EndHue { get; set; }
+        public int Alpha { get; set; } = 255;
 
         #endregion
 
         #region Constructors
 
-        public RainbowBrush(float startHue = 0f, float endHue = 360f)
+        public RainbowBrush(float startHue = 0f, float endHue = 360f, int alpha = 255)
         {
             this.StartHue = startHue;
             this.EndHue = endHue;
+            this.Alpha = alpha;
         }
 
-        public RainbowBrush(PointF startPoint, PointF endPoint, float startHue = 0f, float endHue = 360f)
+        public RainbowBrush(PointF startPoint, PointF endPoint, float startHue = 0f, float endHue = 360f, int alpha = 255)
         {
             this.StartPoint = startPoint;
             this.EndPoint = endPoint;
             this.StartHue = startHue;
             this.EndHue = endHue;
+            this.Alpha = alpha;
         }
 
         #endregion
@@ -50,17 +53,17 @@ namespace CUE.NET.Devices.Keyboard.Brushes
             switch ((int)div)
             {
                 case 0:
-                    return Color.FromArgb(255, 255, value, 0);
+                    return Color.FromArgb(Alpha, 255, value, 0);
                 case 1:
-                    return Color.FromArgb(255, 255 - value, 255, 0);
+                    return Color.FromArgb(Alpha, 255 - value, 255, 0);
                 case 2:
-                    return Color.FromArgb(255, 0, 255, value);
+                    return Color.FromArgb(Alpha, 0, 255, value);
                 case 3:
-                    return Color.FromArgb(255, 0, 255 - value, 255);
+                    return Color.FromArgb(Alpha, 0, 255 - value, 255);
                 case 4:
-                    return Color.FromArgb(255, value, 0, 255);
+                    return Color.FromArgb(Alpha, value, 0, 255);
                 case 5:
-                    return Color.FromArgb(255, 255, 0, 255 - value);
+                    return Color.FromArgb(Alpha, 255, 0, 255 - value);
                 default:
                     return Color.Transparent;
             }
