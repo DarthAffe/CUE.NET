@@ -66,6 +66,7 @@
     <Compile Include="Devices\Keyboard\Brushes\GradientStop.cs" />
     <Compile Include="Devices\Keyboard\Brushes\IBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\LinearGradientBrush.cs" />
+    <Compile Include="Devices\Keyboard\Brushes\RainbowBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\SolidColorBrush.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairLogicalKeyboardLayout.cs" />
     <Compile Include="Devices\Headset\Enums\CorsairHeadsetLedId.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Devices\Mouse\CorsairMouse.cs" />
     <Compile Include="Devices\Keyboard\Extensions\KeyGroupExtension.cs" />
     <Compile Include="Helper\ColorHelper.cs" />
+    <Compile Include="Helper\GradientHelper.cs" />
     <Compile Include="Helper\RectangleHelper.cs" />
     <Compile Include="Native\_CorsairDeviceInfo.cs" />
     <Compile Include="Native\_CorsairLedColor.cs" />
@@ -113,15 +115,5 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>if $(PlatformName) == x86 copy "$(SolutionDir)libs\CUESDK_2013.dll" "$(TargetDir)CUESDK_2013.dll"
-if $(PlatformName) == x64 copy "$(SolutionDir)libs\CUESDK.x64_2013.dll" "$(TargetDir)CUESDK.x64_2013.dll"</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="$(MSBuildProjectDirectory)\CUE.NET.targets" />
 </Project>

@@ -4,7 +4,6 @@ namespace CUE.NET.Devices.Keyboard.Brushes
 {
     public class GradientStop
     {
-
         #region Properties & Fields
 
         public float Offset { get; set; }

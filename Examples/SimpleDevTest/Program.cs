@@ -85,8 +85,8 @@ namespace SimpleDevTest
                 // Create our gradient stop to play with
                 GradientStop moveableStop = new GradientStop(0, Color.FromArgb(0, 255, 0));
 
-                //Create a basic (by default horizontal) brush ...
-                LinearGradientBrush linearBrush = new LinearGradientBrush(new GradientStop(0, Color.Blue), moveableStop, new GradientStop(1f, Color.Red));
+                // Create a basic (by default horizontal) brush ...
+                LinearGradientBrush linearBrush = new LinearGradientBrush(new GradientStop(0, Color.Blue), moveableStop, new GradientStop(1f, Color.White));
 
                 // ... and add it as the keyboard background
                 keyboard.Brush = linearBrush;
@@ -116,6 +116,29 @@ namespace SimpleDevTest
                     linearBrush.StartPoint = new PointF(rotateX, rotateY);
                     linearBrush.EndPoint = new PointF(1f - rotateX, 1f - rotateY);
 
+                    keyboard.UpdateLeds();
+                    Thread.Sleep(100);
+                }
+
+                Wait(2);
+
+                // ---------------------------------------------------------------------------
+                // Time for an even better brush: rainbow
+
+                Console.WriteLine("rainbow-test");
+
+                // Create an simple horizontal rainbow containing two times the full spectrum
+                RainbowBrush rainbowBrush = new RainbowBrush(0, 720);
+
+                // Add the rainbow to the keyboard and perform an initial update
+                keyboard.Brush = rainbowBrush;
+                keyboard.UpdateLeds();
+
+                // Let the rainbow move around for 10 secs
+                for (int i = 0; i < 100; i++)
+                {
+                    rainbowBrush.StartHue += 10f;
+                    rainbowBrush.EndHue += 10f;
                     keyboard.UpdateLeds();
                     Thread.Sleep(100);
                 }
