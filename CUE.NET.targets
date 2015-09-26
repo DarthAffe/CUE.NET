@@ -14,10 +14,7 @@
   <ItemGroup>
     <CueNETSDKFiles Condition="'$(MSBuildThisFileDirectory)' != '' And
                                    HasTrailingSlash('$(MSBuildThisFileDirectory)')"
-                        Include="$(MSBuildThisFileDirectory)\libs\*.dll" />
-    <CueNETSDKFiles Condition="'$(MSBuildThisFileDirectory)' != '' And
-                                   HasTrailingSlash('$(MSBuildThisFileDirectory)')"
-                        Include="$(MSBuildThisFileDirectory)\*.dll" />
+                        Include="$(MSBuildThisFileDirectory)libs\**\*.dll" />
   </ItemGroup>
 
   <!--

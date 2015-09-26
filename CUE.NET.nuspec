@@ -16,8 +16,8 @@
     </metadata>
     <files>
         <file src="bin\CUE.NET.dll" target="lib\net46\CUE.NET.dll" />
-        <file src="bin\CUESDK.x64_2013.dll" target="build\net46\" />
-        <file src="bin\CUESDK.x86_2013.dll" target="build\net46\" />
+        <file src="bin\x64\" target="build\net46\libs\x64" />
+        <file src="bin\x86\" target="build\net46\libs\x86" />
         <file src="CUE.NET.targets" target="build\net46\CUE.NET.targets" />
     </files>
 </package>
