@@ -1,8 +1,10 @@
+// ReSharper disable MemberCanBePrivate.Global
+
 using System.Drawing;
 
 namespace CUE.NET.Devices.Keyboard.Brushes
 {
-    public class SolidColorBrush : IBrush
+    public class SolidColorBrush : AbstractBrush
     {
         #region Properties & Fields
 
@@ -21,9 +23,9 @@ namespace CUE.NET.Devices.Keyboard.Brushes
 
         #region Methods
 
-        public Color GetColorAtPoint(RectangleF rectangle, PointF point)
+        public override Color GetColorAtPoint(RectangleF rectangle, PointF point)
         {
-            return Color; // A solid color brush returns the same color no matter the point
+            return FinalizeColor(Color);
         }
 
         #endregion

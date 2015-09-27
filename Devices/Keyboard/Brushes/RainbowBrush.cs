@@ -1,10 +1,11 @@
-﻿using System;
+﻿// ReSharper disable MemberCanBePrivate.Global
+
 using System.Drawing;
 using CUE.NET.Helper;
 
 namespace CUE.NET.Devices.Keyboard.Brushes
 {
-    public class RainbowBrush : IBrush
+    public class RainbowBrush : AbstractBrush
     {
         #region Properties & Fields
 
@@ -12,61 +13,39 @@ namespace CUE.NET.Devices.Keyboard.Brushes
         public PointF EndPoint { get; set; } = new PointF(1f, 0.5f);
         public float StartHue { get; set; }
         public float EndHue { get; set; }
-        public int Alpha { get; set; } = 255;
 
         #endregion
 
         #region Constructors
 
-        public RainbowBrush(float startHue = 0f, float endHue = 360f, int alpha = 255)
+        public RainbowBrush(float startHue = 0f, float endHue = 360f)
         {
             this.StartHue = startHue;
             this.EndHue = endHue;
-            this.Alpha = alpha;
         }
 
-        public RainbowBrush(PointF startPoint, PointF endPoint, float startHue = 0f, float endHue = 360f, int alpha = 255)
+        public RainbowBrush(PointF startPoint, PointF endPoint, float startHue = 0f, float endHue = 360f)
         {
             this.StartPoint = startPoint;
             this.EndPoint = endPoint;
             this.StartHue = startHue;
             this.EndHue = endHue;
-            this.Alpha = alpha;
         }
 
         #endregion
 
         #region Methods
 
-        public Color GetColorAtPoint(RectangleF rectangle, PointF point)
+        public override Color GetColorAtPoint(RectangleF rectangle, PointF point)
         {
             PointF startPoint = new PointF(StartPoint.X * rectangle.Width, StartPoint.Y * rectangle.Height);
             PointF endPoint = new PointF(EndPoint.X * rectangle.Width, EndPoint.Y * rectangle.Height);
 
             float offset = GradientHelper.CalculateGradientOffset(startPoint, endPoint, point);
             float range = EndHue - StartHue;
-            float progress = (StartHue + (range * offset)) / 360f;
 
-            float div = (Math.Abs(progress % 1) * 6);
-            int value = (int)((div % 1) * 255);
-
-            switch ((int)div)
-            {
-                case 0:
-                    return Color.FromArgb(Alpha, 255, value, 0);
-                case 1:
-                    return Color.FromArgb(Alpha, 255 - value, 255, 0);
-                case 2:
-                    return Color.FromArgb(Alpha, 0, 255, value);
-                case 3:
-                    return Color.FromArgb(Alpha, 0, 255 - value, 255);
-                case 4:
-                    return Color.FromArgb(Alpha, value, 0, 255);
-                case 5:
-                    return Color.FromArgb(Alpha, 255, 0, 255 - value);
-                default:
-                    return Color.Transparent;
-            }
+            float hue = (StartHue + (range * offset)) % 360f;
+            return FinalizeColor(ColorHelper.ColorFromHSV(hue, 1f, 1f));
         }
 
         #endregion

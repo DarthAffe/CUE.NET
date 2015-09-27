@@ -2,7 +2,6 @@
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ReturnTypeCanBeEnumerable.Global
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,7 +9,7 @@ using CUE.NET.Helper;
 
 namespace CUE.NET.Devices.Keyboard.Brushes
 {
-    public class LinearGradientBrush : IBrush
+    public class LinearGradientBrush : AbstractBrush
     {
         #region Properties & Fields
 
@@ -44,7 +43,7 @@ namespace CUE.NET.Devices.Keyboard.Brushes
 
         #region Methods
 
-        public Color GetColorAtPoint(RectangleF rectangle, PointF point)
+        public override Color GetColorAtPoint(RectangleF rectangle, PointF point)
         {
             if (!GradientStops.Any()) return Color.Transparent;
             if (GradientStops.Count == 1) return GradientStops.First().Color;
@@ -75,7 +74,8 @@ namespace CUE.NET.Devices.Keyboard.Brushes
             byte colR = (byte)((gsAfter.Color.R - gsBefore.Color.R) * blendFactor + gsBefore.Color.R);
             byte colG = (byte)((gsAfter.Color.G - gsBefore.Color.G) * blendFactor + gsBefore.Color.G);
             byte colB = (byte)((gsAfter.Color.B - gsBefore.Color.B) * blendFactor + gsBefore.Color.B);
-            return Color.FromArgb(colA, colR, colG, colB);
+
+            return FinalizeColor(Color.FromArgb(colA, colR, colG, colB));
         }
 
         #endregion
