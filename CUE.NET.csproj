@@ -45,6 +45,7 @@
     <Compile Include="Devices\Generic\Enums\CorsairAccessMode.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceCaps.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceType.cs" />
+    <Compile Include="Devices\Keyboard\Brushes\AbstractBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\GradientStop.cs" />
     <Compile Include="Devices\Keyboard\Brushes\IBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\LinearGradientBrush.cs" />
