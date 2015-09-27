@@ -64,7 +64,7 @@ namespace CUE.NET.Helper
         #region RGB/HSV conversion
         // https://en.wikipedia.org/wiki/HSL_and_HSV
 
-        public static float GetSaturation(this Color color)
+        public static float GetHSVSaturation(this Color color)
         {
             int max = Math.Max(color.R, Math.Max(color.G, color.B));
             int min = Math.Min(color.R, Math.Min(color.G, color.B));
@@ -72,7 +72,7 @@ namespace CUE.NET.Helper
             return (max == 0) ? 0 : 1f - ((float)min / (float)max);
         }
 
-        public static float GetValue(this Color color)
+        public static float GetHSVValue(this Color color)
         {
             return Math.Max(color.R, Math.Max(color.G, color.B)) / 255f;
         }
