@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace CUE.NET.Devices.Keyboard.Brushes
+namespace CUE.NET.Devices.Keyboard.Brushes.Gradient
 {
     public class GradientStop
     {

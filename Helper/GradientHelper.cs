@@ -6,7 +6,7 @@ namespace CUE.NET.Helper
     public static class GradientHelper
     {
         // Based on https://dotupdate.wordpress.com/2008/01/28/find-the-color-of-a-point-in-a-lineargradientbrush/
-        public static float CalculateGradientOffset(PointF startPoint, PointF endPoint, PointF point)
+        public static float CalculateLinearGradientOffset(PointF startPoint, PointF endPoint, PointF point)
         {
             PointF intersectingPoint;
             if (startPoint.Y.Equals(endPoint.Y)) // Horizontal case
@@ -39,7 +39,7 @@ namespace CUE.NET.Helper
         /// <summary>
         /// Returns the signed magnitude of a point on a vector
         /// </summary>
-        private static float CalculateDistance(PointF point, PointF origin, PointF direction)
+        public static float CalculateDistance(PointF point, PointF origin, PointF direction)
         {
             float distance = (float)Math.Sqrt((point.Y - origin.Y) * (point.Y - origin.Y) + (point.X - origin.X) * (point.X - origin.X));
 
