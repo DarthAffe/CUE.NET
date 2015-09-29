@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable MemberCanBePrivate.Global
+
+using System;
 using System.Drawing;
 
 namespace CUE.NET.Helper
@@ -41,13 +43,18 @@ namespace CUE.NET.Helper
         /// </summary>
         public static float CalculateDistance(PointF point, PointF origin, PointF direction)
         {
-            float distance = (float)Math.Sqrt((point.Y - origin.Y) * (point.Y - origin.Y) + (point.X - origin.X) * (point.X - origin.X));
+            float distance = CalculateDistance(point, origin);
 
             return (((point.Y < origin.Y) && (direction.Y > origin.Y)) ||
                 ((point.Y > origin.Y) && (direction.Y < origin.Y)) ||
                 ((point.Y.Equals(origin.Y)) && (point.X < origin.X) && (direction.X > origin.X)) ||
                 ((point.Y.Equals(origin.Y)) && (point.X > origin.X) && (direction.X < origin.X)))
                 ? -distance : distance;
+        }
+
+        public static float CalculateDistance(PointF point1, PointF point2)
+        {
+            return (float)Math.Sqrt((point1.Y - point2.Y) * (point1.Y - point2.Y) + (point1.X - point2.X) * (point1.X - point2.X));
         }
     }
 }
