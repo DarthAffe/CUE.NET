@@ -53,6 +53,7 @@
     <Compile Include="Devices\Keyboard\Brushes\IBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\LinearGradientBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\RadialGradientBrush.cs" />
+    <Compile Include="Devices\Keyboard\Brushes\RandomColorBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\SolidColorBrush.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairLogicalKeyboardLayout.cs" />
     <Compile Include="Devices\Headset\Enums\CorsairHeadsetLedId.cs" />
