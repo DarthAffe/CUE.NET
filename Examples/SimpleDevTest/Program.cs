@@ -6,6 +6,7 @@ using CUE.NET;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Keyboard.Brushes;
+using CUE.NET.Devices.Keyboard.Brushes.Gradient;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Extensions;
 using CUE.NET.Devices.Keyboard.Keys;
@@ -87,7 +88,7 @@ namespace SimpleDevTest
                 GradientStop moveableStop = new GradientStop(0, Color.FromArgb(0, 255, 0));
 
                 // Create a basic (by default horizontal) brush ...
-                LinearGradientBrush linearBrush = new LinearGradientBrush(new GradientStop(0, Color.Blue), moveableStop, new GradientStop(1f, Color.White));
+                LinearGradientBrush linearBrush = new LinearGradientBrush(new LinearGradient(new GradientStop(0, Color.Blue), moveableStop, new GradientStop(1f, Color.White)));
 
                 // ... and add it as the keyboard background
                 keyboard.Brush = linearBrush;
@@ -129,17 +130,17 @@ namespace SimpleDevTest
                 Console.WriteLine("rainbow-test");
 
                 // Create an simple horizontal rainbow containing two times the full spectrum
-                RainbowBrush rainbowBrush = new RainbowBrush(0, 720);
+                RainbowGradient rainbowGradient = new RainbowGradient(0, 720);
 
                 // Add the rainbow to the keyboard and perform an initial update
-                keyboard.Brush = rainbowBrush;
+                keyboard.Brush = new LinearGradientBrush(rainbowGradient);
                 keyboard.UpdateLeds();
 
                 // Let the rainbow move around for 10 secs
                 for (int i = 0; i < 100; i++)
                 {
-                    rainbowBrush.StartHue += 10f;
-                    rainbowBrush.EndHue += 10f;
+                    rainbowGradient.StartHue += 10f;
+                    rainbowGradient.EndHue += 10f;
                     keyboard.UpdateLeds();
                     Thread.Sleep(100);
                 }

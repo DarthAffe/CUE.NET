@@ -46,10 +46,14 @@
     <Compile Include="Devices\Generic\Enums\CorsairDeviceCaps.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceType.cs" />
     <Compile Include="Devices\Keyboard\Brushes\AbstractBrush.cs" />
-    <Compile Include="Devices\Keyboard\Brushes\GradientStop.cs" />
+    <Compile Include="Devices\Keyboard\Brushes\Gradient\AbstractGradient.cs" />
+    <Compile Include="Devices\Keyboard\Brushes\Gradient\GradientStop.cs" />
+    <Compile Include="Devices\Keyboard\Brushes\Gradient\IGradient.cs" />
+    <Compile Include="Devices\Keyboard\Brushes\Gradient\RainbowGradient.cs" />
     <Compile Include="Devices\Keyboard\Brushes\IBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\LinearGradientBrush.cs" />
-    <Compile Include="Devices\Keyboard\Brushes\RainbowBrush.cs" />
+    <Compile Include="Devices\Keyboard\Brushes\RadialGradientBrush.cs" />
+    <Compile Include="Devices\Keyboard\Brushes\RandomColorBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\SolidColorBrush.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairLogicalKeyboardLayout.cs" />
     <Compile Include="Devices\Headset\Enums\CorsairHeadsetLedId.cs" />
@@ -75,6 +79,7 @@
     <Compile Include="Devices\Mouse\CorsairMouse.cs" />
     <Compile Include="Devices\Keyboard\Extensions\KeyGroupExtension.cs" />
     <Compile Include="Helper\ColorHelper.cs" />
+    <Compile Include="Devices\Keyboard\Brushes\Gradient\LinearGradient.cs" />
     <Compile Include="Helper\GradientHelper.cs" />
     <Compile Include="Helper\RectangleHelper.cs" />
     <Compile Include="Native\_CorsairDeviceInfo.cs" />

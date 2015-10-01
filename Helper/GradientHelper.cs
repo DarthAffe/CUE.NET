@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable MemberCanBePrivate.Global
+
+using System;
 using System.Drawing;
 
 namespace CUE.NET.Helper
@@ -6,7 +8,7 @@ namespace CUE.NET.Helper
     public static class GradientHelper
     {
         // Based on https://dotupdate.wordpress.com/2008/01/28/find-the-color-of-a-point-in-a-lineargradientbrush/
-        public static float CalculateGradientOffset(PointF startPoint, PointF endPoint, PointF point)
+        public static float CalculateLinearGradientOffset(PointF startPoint, PointF endPoint, PointF point)
         {
             PointF intersectingPoint;
             if (startPoint.Y.Equals(endPoint.Y)) // Horizontal case
@@ -39,15 +41,20 @@ namespace CUE.NET.Helper
         /// <summary>
         /// Returns the signed magnitude of a point on a vector
         /// </summary>
-        private static float CalculateDistance(PointF point, PointF origin, PointF direction)
+        public static float CalculateDistance(PointF point, PointF origin, PointF direction)
         {
-            float distance = (float)Math.Sqrt((point.Y - origin.Y) * (point.Y - origin.Y) + (point.X - origin.X) * (point.X - origin.X));
+            float distance = CalculateDistance(point, origin);
 
             return (((point.Y < origin.Y) && (direction.Y > origin.Y)) ||
                 ((point.Y > origin.Y) && (direction.Y < origin.Y)) ||
                 ((point.Y.Equals(origin.Y)) && (point.X < origin.X) && (direction.X > origin.X)) ||
                 ((point.Y.Equals(origin.Y)) && (point.X > origin.X) && (direction.X < origin.X)))
                 ? -distance : distance;
+        }
+
+        public static float CalculateDistance(PointF point1, PointF point2)
+        {
+            return (float)Math.Sqrt((point1.Y - point2.Y) * (point1.Y - point2.Y) + (point1.X - point2.X) * (point1.X - point2.X));
         }
     }
 }
