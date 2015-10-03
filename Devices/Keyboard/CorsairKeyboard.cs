@@ -91,8 +91,6 @@ namespace CUE.NET.Devices.Keyboard
 
         public override void Update(bool flushLeds = false)
         {
-            Console.WriteLine("Update");
-
             UpdateKeyGroups();
             UpdateEffects();
 
