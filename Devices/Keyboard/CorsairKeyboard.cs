@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Brushes;
+using CUE.NET.Devices.Keyboard.Effects;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Helper;
@@ -18,11 +19,8 @@ namespace CUE.NET.Devices.Keyboard
     {
         #region Properties & Fields
 
-        public CorsairKeyboardDeviceInfo KeyboardDeviceInfo { get; }
+        #region Indexer
 
-        public RectangleF KeyboardRectangle { get; private set; }
-
-        private Dictionary<CorsairKeyboardKeyId, CorsairKey> _keys = new Dictionary<CorsairKeyboardKeyId, CorsairKey>();
         public CorsairKey this[CorsairKeyboardKeyId keyId]
         {
             get
@@ -51,11 +49,26 @@ namespace CUE.NET.Devices.Keyboard
             private set { throw new NotSupportedException(); }
         }
 
+        #endregion
+
+        private readonly LinkedList<IKeyGroup> _keyGroups = new LinkedList<IKeyGroup>();
+        private readonly LinkedList<EffectTimeContainer> _effects = new LinkedList<EffectTimeContainer>();
+
+        private Dictionary<CorsairKeyboardKeyId, CorsairKey> _keys = new Dictionary<CorsairKeyboardKeyId, CorsairKey>();
         public IEnumerable<CorsairKey> Keys => new ReadOnlyCollection<CorsairKey>(_keys.Values.ToList());
 
+        public CorsairKeyboardDeviceInfo KeyboardDeviceInfo { get; }
+        public RectangleF KeyboardRectangle { get; private set; }
         public IBrush Brush { get; set; }
 
-        private readonly IList<IKeyGroup> _keyGroups = new List<IKeyGroup>();
+        protected override bool HasEffect
+        {
+            get
+            {
+                lock (_effects)
+                    return _effects.Any();
+            }
+        }
 
         #endregion
 
@@ -74,19 +87,61 @@ namespace CUE.NET.Devices.Keyboard
 
         #region Methods
 
-        public override void UpdateLeds(bool forceUpdate = false)
-        {
-            // Apply all KeyGroups
+        #region Update
 
+        public override void Update(bool flushLeds = false)
+        {
+            Console.WriteLine("Update");
+
+            UpdateKeyGroups();
+            UpdateEffects();
+
+            // Perform 'real' update
+            base.Update(flushLeds);
+        }
+
+        private void UpdateEffects()
+        {
+            List<IEffect> effectsToRemove = new List<IEffect>();
+            lock (_effects)
+            {
+                long currentTicks = DateTime.Now.Ticks;
+                foreach (EffectTimeContainer effect in _effects)
+                {
+                    float deltaTime;
+                    if (effect.TicksAtLastUpdate < 0)
+                    {
+                        effect.TicksAtLastUpdate = currentTicks;
+                        deltaTime = 0f;
+                    }
+                    else
+                        deltaTime = (currentTicks - effect.TicksAtLastUpdate) / 10000000f;
+
+                    effect.TicksAtLastUpdate = currentTicks;
+                    effect.Effect.Update(deltaTime);
+
+                    ApplyBrush((effect.Effect.KeyList ?? this).ToList(), effect.Effect.EffectBrush);
+
+                    if (effect.Effect.IsDone)
+                        effectsToRemove.Add(effect.Effect);
+                }
+            }
+
+            foreach (IEffect effect in effectsToRemove)
+                DetachEffect(effect);
+        }
+
+        private void UpdateKeyGroups()
+        {
             if (Brush != null)
                 ApplyBrush(this.ToList(), Brush);
 
-            //TODO DarthAffe 20.09.2015: Add some sort of priority
-            foreach (IKeyGroup keyGroup in _keyGroups)
-                ApplyBrush(keyGroup.Keys.ToList(), keyGroup.Brush);
-
-            // Perform 'real' update
-            base.UpdateLeds(forceUpdate);
+            lock (_keyGroups)
+            {
+                //TODO DarthAffe 20.09.2015: Add some sort of priority
+                foreach (IKeyGroup keyGroup in _keyGroups)
+                    ApplyBrush(keyGroup.Keys.ToList(), keyGroup.Brush);
+            }
         }
 
         private void ApplyBrush(ICollection<CorsairKey> keys, IBrush brush)
@@ -96,20 +151,68 @@ namespace CUE.NET.Devices.Keyboard
                 key.Led.Color = brush.GetColorAtPoint(brushRectangle, key.KeyRectangle.GetCenter());
         }
 
+        #endregion
+
         public bool AttachKeyGroup(IKeyGroup keyGroup)
         {
-            if (keyGroup == null || _keyGroups.Contains(keyGroup)) return false;
+            lock (_keyGroups)
+            {
+                if (keyGroup == null || _keyGroups.Contains(keyGroup)) return false;
 
-            _keyGroups.Add(keyGroup);
-            return true;
+                _keyGroups.AddLast(keyGroup);
+                return true;
+            }
         }
 
         public bool DetachKeyGroup(IKeyGroup keyGroup)
         {
-            if (keyGroup == null || !_keyGroups.Contains(keyGroup)) return false;
+            lock (_keyGroups)
+            {
+                if (keyGroup == null) return false;
 
-            _keyGroups.Remove(keyGroup);
-            return true;
+                LinkedListNode<IKeyGroup> node = _keyGroups.Find(keyGroup);
+                if (node == null) return false;
+
+                _keyGroups.Remove(node);
+                return true;
+            }
+        }
+
+        public bool AttachEffect(IEffect effect)
+        {
+            bool retVal = false;
+            lock (_effects)
+            {
+                if (effect != null && _effects.All(x => x.Effect != effect))
+                {
+                    effect.OnAttach();
+                    _effects.AddLast(new EffectTimeContainer(effect, -1));
+                    retVal = true;
+                }
+            }
+
+            CheckUpdateLoop();
+            return retVal;
+        }
+
+        public bool DetachEffect(IEffect effect)
+        {
+            bool retVal = false;
+            lock (_effects)
+            {
+                if (effect != null)
+                {
+                    EffectTimeContainer val = _effects.FirstOrDefault(x => x.Effect == effect);
+                    if (val != null)
+                    {
+                        effect.OnDetach();
+                        _effects.Remove(val);
+                        retVal = true;
+                    }
+                }
+            }
+            CheckUpdateLoop();
+            return retVal;
         }
 
         private void InitializeKeys()

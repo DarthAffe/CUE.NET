@@ -3,17 +3,39 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Generic
 {
     public abstract class AbstractCueDevice : ICueDevice
     {
+        private UpdateMode _updateMode = UpdateMode.AutoOnEffect;
+
         #region Properties & Fields
 
         public IDeviceInfo DeviceInfo { get; }
 
+        public UpdateMode UpdateMode
+        {
+            get { return _updateMode; }
+            set
+            {
+                _updateMode = value;
+                CheckUpdateLoop();
+            }
+        }
+        public float UpdateFrequency { get; set; } = 1f / 30f;
+
         private Dictionary<int, CorsairLed> Leds { get; } = new Dictionary<int, CorsairLed>();
+
+        protected abstract bool HasEffect { get; }
+
+        private CancellationTokenSource _updateTokenSource;
+        private CancellationToken _updateToken;
+        private Task _updateTask;
 
         #endregion
 
@@ -22,6 +44,8 @@ namespace CUE.NET.Devices.Generic
         protected AbstractCueDevice(IDeviceInfo info)
         {
             this.DeviceInfo = info;
+
+            CheckUpdateLoop();
         }
 
         #endregion
@@ -36,16 +60,61 @@ namespace CUE.NET.Devices.Generic
             return Leds[ledId];
         }
 
-        public virtual void UpdateLeds(bool forceUpdate = false)
+        protected async void CheckUpdateLoop()
         {
-            IList<KeyValuePair<int, CorsairLed>> ledsToUpdate = (forceUpdate ? Leds : Leds.Where(x => x.Value.IsDirty)).ToList();
+            bool shouldRun;
+            switch (UpdateMode)
+            {
+                case UpdateMode.Manual:
+                    shouldRun = false;
+                    break;
+                case UpdateMode.AutoOnEffect:
+                    shouldRun = HasEffect;
+                    break;
+                case UpdateMode.Continuous:
+                    shouldRun = true;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (shouldRun && _updateTask == null) // Start task
+            {
+                _updateTokenSource?.Dispose();
+                _updateTokenSource = new CancellationTokenSource();
+                _updateTask = Task.Factory.StartNew(UpdateLoop, (_updateToken = _updateTokenSource.Token));
+            }
+            else if (!shouldRun && _updateTask != null) // Stop task
+            {
+                _updateTokenSource.Cancel();
+                await _updateTask;
+                _updateTask.Dispose();
+                _updateTask = null;
+            }
+        }
+
+        private void UpdateLoop()
+        {
+            while (!_updateToken.IsCancellationRequested)
+            {
+                long preUpdateTicks = DateTime.Now.Ticks;
+                Update();
+                int sleep = (int)((UpdateFrequency * 1000f) - ((DateTime.Now.Ticks - preUpdateTicks) / 10000f));
+                if (sleep > 0)
+                    Thread.Sleep(sleep);
+            }
+        }
+
+        public virtual void Update(bool flushLeds = false)
+        {
+            IList<KeyValuePair<int, CorsairLed>> ledsToUpdate = (flushLeds ? Leds : Leds.Where(x => x.Value.IsDirty)).ToList();
 
             foreach (CorsairLed led in Leds.Values)
                 led.Update();
 
             UpdateLeds(ledsToUpdate);
         }
-        
+
         private static void UpdateLeds(ICollection<KeyValuePair<int, CorsairLed>> ledsToUpdate)
         {
             ledsToUpdate = ledsToUpdate.Where(x => x.Value.Color != Color.Transparent).ToList();
