@@ -55,10 +55,15 @@
     <Compile Include="Devices\Keyboard\Brushes\RadialGradientBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\RandomColorBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\SolidColorBrush.cs" />
+    <Compile Include="Devices\Keyboard\Effects\AbstractEffect.cs" />
+    <Compile Include="Devices\Keyboard\Effects\FlashEffect.cs" />
+    <Compile Include="Devices\Keyboard\Effects\IEffect.cs" />
+    <Compile Include="Devices\Keyboard\Effects\EffectTimeContainer.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairLogicalKeyboardLayout.cs" />
     <Compile Include="Devices\Headset\Enums\CorsairHeadsetLedId.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairKeyboardKeyId.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairPhysicalKeyboardLayout.cs" />
+    <Compile Include="Devices\Generic\Enums\UpdateMode.cs" />
     <Compile Include="Devices\Keyboard\Keys\BaseKeyGroup.cs" />
     <Compile Include="Devices\Keyboard\Keys\IKeyGroup.cs" />
     <Compile Include="Devices\Keyboard\Keys\RectangleKeyGroup.cs" />

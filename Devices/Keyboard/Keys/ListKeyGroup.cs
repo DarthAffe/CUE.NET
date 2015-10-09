@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable MemberCanBePrivate.Global
+
+using System.Collections.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
 
 namespace CUE.NET.Devices.Keyboard.Keys

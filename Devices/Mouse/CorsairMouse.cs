@@ -9,6 +9,8 @@ namespace CUE.NET.Devices.Mouse
 
         public CorsairMouseDeviceInfo MouseDeviceInfo { get; }
 
+        protected override bool HasEffect => false;
+
         #endregion
 
         #region Constructors

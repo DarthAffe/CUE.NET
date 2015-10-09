@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable MemberCanBeProtected.Global
+
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -14,10 +16,10 @@ namespace CUE.NET.Devices.Keyboard.Brushes.Gradient
 
         #region Constructors
 
-        public AbstractGradient()
+        protected AbstractGradient()
         { }
 
-        public AbstractGradient(params GradientStop[] gradientStops)
+        protected AbstractGradient(params GradientStop[] gradientStops)
         {
             foreach (GradientStop gradientStop in gradientStops)
                 GradientStops.Add(gradientStop);

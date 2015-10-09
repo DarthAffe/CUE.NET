@@ -7,6 +7,8 @@ namespace CUE.NET.Devices.Headset
     {
         #region Properties & Fields
 
+        protected override bool HasEffect => false;
+
         #endregion
 
         #region Constructors
