@@ -55,6 +55,8 @@
     <Compile Include="Devices\Keyboard\Brushes\RadialGradientBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\RandomColorBrush.cs" />
     <Compile Include="Devices\Keyboard\Brushes\SolidColorBrush.cs" />
+    <Compile Include="Devices\Keyboard\Effects\AbstractEffect.cs" />
+    <Compile Include="Devices\Keyboard\Effects\FlashEffect.cs" />
     <Compile Include="Devices\Keyboard\Effects\IEffect.cs" />
     <Compile Include="Devices\Keyboard\Effects\EffectTimeContainer.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairLogicalKeyboardLayout.cs" />
