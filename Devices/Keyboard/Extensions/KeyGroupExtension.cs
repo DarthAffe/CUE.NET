@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿// ReSharper disable MemberCanBePrivate.Global
+
+using System.Linq;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Keys;
 
@@ -33,6 +35,7 @@ namespace CUE.NET.Devices.Keyboard.Extensions
             return simpleKeyGroup;
         }
 
+        // ReSharper disable once UnusedMethodReturnValue.Global
         public static bool Attach(this BaseKeyGroup keyGroup)
         {
             return keyGroup.Keyboard?.AttachKeyGroup(keyGroup) ?? false;

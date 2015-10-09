@@ -1,4 +1,7 @@
-﻿using System;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+using System;
 using System.Drawing;
 using CUE.NET.Devices.Keyboard.Brushes;
 
@@ -117,7 +120,7 @@ namespace CUE.NET.Devices.Keyboard.Effects
             Decay,
             Sustain,
             Release,
-            Pause,
+            Pause
         }
     }
 }

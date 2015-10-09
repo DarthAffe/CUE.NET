@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using CUE.NET.Devices.Keyboard.Enums;

@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+
+using System.Drawing;
 
 namespace CUE.NET.Devices.Keyboard.Brushes.Gradient
 {

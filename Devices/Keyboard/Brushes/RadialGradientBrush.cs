@@ -1,4 +1,7 @@
-﻿using System;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+using System;
 using System.Drawing;
 using CUE.NET.Devices.Keyboard.Brushes.Gradient;
 using CUE.NET.Helper;
@@ -39,6 +42,7 @@ namespace CUE.NET.Devices.Keyboard.Brushes
             PointF centerPoint = new PointF(rectangle.X + rectangle.Width * Center.X, rectangle.Y + rectangle.Height * Center.Y);
 
             // Calculate the distance to the farthest point from the center as reference (this has to be a corner)
+            // ReSharper disable once RedundantCast - never trust this ...
             float refDistance = (float)Math.Max(Math.Max(Math.Max(GradientHelper.CalculateDistance(rectangle.Location, centerPoint),
                 GradientHelper.CalculateDistance(new PointF(rectangle.X + rectangle.Width, rectangle.Y), centerPoint)),
                 GradientHelper.CalculateDistance(new PointF(rectangle.X, rectangle.Y + rectangle.Height), centerPoint)),

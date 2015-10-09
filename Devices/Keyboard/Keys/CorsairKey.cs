@@ -1,4 +1,7 @@
-﻿using System.Drawing;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+using System.Drawing;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
 

@@ -1,6 +1,7 @@
 ﻿// ReSharper disable CollectionNeverUpdated.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ReturnTypeCanBeEnumerable.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 using System.Drawing;
 using CUE.NET.Devices.Keyboard.Brushes.Gradient;

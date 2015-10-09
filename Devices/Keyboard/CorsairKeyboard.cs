@@ -1,4 +1,8 @@
-﻿using System;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,26 +32,13 @@ namespace CUE.NET.Devices.Keyboard
                 CorsairKey key;
                 return _keys.TryGetValue(keyId, out key) ? key : null;
             }
-            private set { throw new NotSupportedException(); }
         }
 
-        public CorsairKey this[char key]
-        {
-            get { return this[_CUESDK.CorsairGetLedIdForKeyName(key)]; }
-            private set { throw new NotSupportedException(); }
-        }
+        public CorsairKey this[char key] => this[_CUESDK.CorsairGetLedIdForKeyName(key)];
 
-        public CorsairKey this[PointF location]
-        {
-            get { return _keys.Values.FirstOrDefault(x => x.KeyRectangle.Contains(location)); }
-            private set { throw new NotSupportedException(); }
-        }
+        public CorsairKey this[PointF location] => _keys.Values.FirstOrDefault(x => x.KeyRectangle.Contains(location));
 
-        public IEnumerable<CorsairKey> this[RectangleF referenceRect, float minOverlayPercentage = 0.5f]
-        {
-            get { return _keys.Values.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, referenceRect) >= minOverlayPercentage); }
-            private set { throw new NotSupportedException(); }
-        }
+        public IEnumerable<CorsairKey> this[RectangleF referenceRect, float minOverlayPercentage = 0.5f] => _keys.Values.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, referenceRect) >= minOverlayPercentage);
 
         #endregion
 
@@ -142,6 +133,7 @@ namespace CUE.NET.Devices.Keyboard
             }
         }
 
+        // ReSharper disable once MemberCanBeMadeStatic.Local - idc
         private void ApplyBrush(ICollection<CorsairKey> keys, IBrush brush)
         {
             RectangleF brushRectangle = RectangleHelper.CreateRectangleFromRectangles(keys.Select(x => x.KeyRectangle));

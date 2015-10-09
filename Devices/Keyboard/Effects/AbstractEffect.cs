@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable MemberCanBePrivate.Global
+
+using System.Collections.Generic;
 using System.Linq;
 using CUE.NET.Devices.Keyboard.Brushes;
 using CUE.NET.Devices.Keyboard.Keys;

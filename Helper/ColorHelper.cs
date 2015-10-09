@@ -36,6 +36,7 @@ namespace CUE.NET.Helper
 
         private static byte GetIntColorFromFloat(float f)
         {
+            // ReSharper disable once RedundantCast - never trust this ...
             float calcF = (float)Math.Max(0f, Math.Min(1f, f));
             return (byte)(calcF.Equals(1f) ? 255 : calcF * 256f);
         }
@@ -69,7 +70,9 @@ namespace CUE.NET.Helper
             int max = Math.Max(color.R, Math.Max(color.G, color.B));
             int min = Math.Min(color.R, Math.Min(color.G, color.B));
 
+            // ReSharper disable RedundantCast - never trust this ...
             return (max == 0) ? 0 : 1f - ((float)min / (float)max);
+            // ReSharper restore RedundantCast
         }
 
         public static float GetHSVValue(this Color color)

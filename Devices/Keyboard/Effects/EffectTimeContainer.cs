@@ -1,4 +1,7 @@
-﻿namespace CUE.NET.Devices.Keyboard.Effects
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+namespace CUE.NET.Devices.Keyboard.Effects
 {
     internal class EffectTimeContainer
     {
@@ -14,8 +17,8 @@
 
         internal EffectTimeContainer(IEffect effect, long ticksAtLastUpdate)
         {
-            Effect = effect;
-            TicksAtLastUpdate = ticksAtLastUpdate;
+            this.Effect = effect;
+            this.TicksAtLastUpdate = ticksAtLastUpdate;
         }
 
         #endregion

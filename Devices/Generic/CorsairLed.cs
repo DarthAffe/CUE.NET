@@ -1,4 +1,8 @@
-﻿using System.Drawing;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+using System.Drawing;
 using CUE.NET.Helper;
 
 namespace CUE.NET.Devices.Generic
@@ -27,8 +31,6 @@ namespace CUE.NET.Devices.Generic
         }
 
         public bool IsLocked { get; set; } = false;
-
-        //TODO DarthAffe 19.09.2015: Add effects and stuff
 
         #endregion
 
