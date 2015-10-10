@@ -39,6 +39,12 @@ namespace CUE.NET.Devices.Generic
 
         #endregion
 
+        #region Events
+
+        public event OnExceptionEventHandler OnException;
+
+        #endregion
+
         #region Constructors
 
         protected AbstractCueDevice(IDeviceInfo info)
@@ -140,6 +146,11 @@ namespace CUE.NET.Devices.Generic
             }
             _CUESDK.CorsairSetLedsColors(ledsToUpdate.Count, ptr);
             Marshal.FreeHGlobal(ptr);
+        }
+
+        protected void ManageException(Exception ex)
+        {
+            OnException?.Invoke(this, new OnExceptionEventArgs(ex));
         }
 
         #endregion

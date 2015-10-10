@@ -97,22 +97,26 @@ namespace CUE.NET.Devices.Keyboard
                 long currentTicks = DateTime.Now.Ticks;
                 foreach (EffectTimeContainer effect in _effects)
                 {
-                    float deltaTime;
-                    if (effect.TicksAtLastUpdate < 0)
+                    try
                     {
+                        float deltaTime;
+                        if (effect.TicksAtLastUpdate < 0)
+                        {
+                            effect.TicksAtLastUpdate = currentTicks;
+                            deltaTime = 0f;
+                        }
+                        else
+                            deltaTime = (currentTicks - effect.TicksAtLastUpdate) / 10000000f;
+
                         effect.TicksAtLastUpdate = currentTicks;
-                        deltaTime = 0f;
+                        effect.Effect.Update(deltaTime);
+
+                        ApplyBrush((effect.Effect.KeyList ?? this).ToList(), effect.Effect.EffectBrush);
+
+                        if (effect.Effect.IsDone)
+                            effectsToRemove.Add(effect.Effect);
                     }
-                    else
-                        deltaTime = (currentTicks - effect.TicksAtLastUpdate) / 10000000f;
-
-                    effect.TicksAtLastUpdate = currentTicks;
-                    effect.Effect.Update(deltaTime);
-
-                    ApplyBrush((effect.Effect.KeyList ?? this).ToList(), effect.Effect.EffectBrush);
-
-                    if (effect.Effect.IsDone)
-                        effectsToRemove.Add(effect.Effect);
+                    catch (Exception ex) { ManageException(ex); }
                 }
             }
 
@@ -136,9 +140,13 @@ namespace CUE.NET.Devices.Keyboard
         // ReSharper disable once MemberCanBeMadeStatic.Local - idc
         private void ApplyBrush(ICollection<CorsairKey> keys, IBrush brush)
         {
-            RectangleF brushRectangle = RectangleHelper.CreateRectangleFromRectangles(keys.Select(x => x.KeyRectangle));
-            foreach (CorsairKey key in keys)
-                key.Led.Color = brush.GetColorAtPoint(brushRectangle, key.KeyRectangle.GetCenter());
+            try
+            {
+                RectangleF brushRectangle = RectangleHelper.CreateRectangleFromRectangles(keys.Select(x => x.KeyRectangle));
+                foreach (CorsairKey key in keys)
+                    key.Led.Color = brush.GetColorAtPoint(brushRectangle, key.KeyRectangle.GetCenter());
+            }
+            catch (Exception ex) { ManageException(ex); }
         }
 
         #endregion
