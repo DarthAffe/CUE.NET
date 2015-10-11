@@ -69,7 +69,7 @@ namespace SimpleDevTest
                 { Brush = new SolidColorBrush(Color.Yellow) };
 
                 // Update the keyboard to show the configured colors, (your CUE settings defines the rest)
-                keyboard.UpdateLeds();
+                keyboard.Update();
 
                 Wait(3);
 
@@ -97,7 +97,7 @@ namespace SimpleDevTest
                 for (float offset = 0; offset <= 1f; offset += 0.02f)
                 {
                     moveableStop.Offset = offset;
-                    keyboard.UpdateLeds();
+                    keyboard.Update();
                     Thread.Sleep(100);
                 }
 
@@ -105,7 +105,7 @@ namespace SimpleDevTest
                 for (float offset = 1f; offset >= 0.5f; offset -= 0.02f)
                 {
                     moveableStop.Offset = offset;
-                    keyboard.UpdateLeds();
+                    keyboard.Update();
                     Thread.Sleep(100);
                 }
 
@@ -118,7 +118,7 @@ namespace SimpleDevTest
                     linearBrush.StartPoint = new PointF(rotateX, rotateY);
                     linearBrush.EndPoint = new PointF(1f - rotateX, 1f - rotateY);
 
-                    keyboard.UpdateLeds();
+                    keyboard.Update();
                     Thread.Sleep(100);
                 }
 
@@ -134,14 +134,14 @@ namespace SimpleDevTest
 
                 // Add the rainbow to the keyboard and perform an initial update
                 keyboard.Brush = new LinearGradientBrush(rainbowGradient);
-                keyboard.UpdateLeds();
+                keyboard.Update();
 
                 // Let the rainbow move around for 10 secs
                 for (int i = 0; i < 100; i++)
                 {
                     rainbowGradient.StartHue += 10f;
                     rainbowGradient.EndHue += 10f;
-                    keyboard.UpdateLeds();
+                    keyboard.Update();
                     Thread.Sleep(100);
                 }
 
@@ -160,10 +160,10 @@ namespace SimpleDevTest
                 for (int i = 0; i < 3; i++)
                 {
                     keyboard.Brush = new SolidColorBrush(Color.Aquamarine);
-                    keyboard.UpdateLeds();
+                    keyboard.Update();
                     Thread.Sleep(160);
                     keyboard.Brush = new SolidColorBrush(Color.Black);
-                    keyboard.UpdateLeds();
+                    keyboard.Update();
                     Thread.Sleep(200);
                 }
 
@@ -217,7 +217,7 @@ namespace SimpleDevTest
                     }
 
                     // Update changed leds
-                    keyboard.UpdateLeds();
+                    keyboard.Update();
 
                     // 20 updates per sec should be enought for this
                     Thread.Sleep(50);
