@@ -11,6 +11,8 @@ namespace CUE.NET.Devices.Keyboard.Effects
 
         internal long TicksAtLastUpdate { get; set; }
 
+        internal int ZIndex => Effect?.ZIndex ?? 0;
+
         #endregion
 
         #region Constructors

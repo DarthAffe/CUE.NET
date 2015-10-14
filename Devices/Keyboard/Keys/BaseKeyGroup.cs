@@ -15,6 +15,8 @@ namespace CUE.NET.Devices.Keyboard.Keys
 
         public IBrush Brush { get; set; }
 
+        public int ZIndex { get; set; } = 0;
+
         #endregion
 
         #region Constructors

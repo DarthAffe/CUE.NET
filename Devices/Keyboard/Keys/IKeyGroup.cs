@@ -8,5 +8,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
         IEnumerable<CorsairKey> Keys { get; }
 
         IBrush Brush { get; set; }
+
+        int ZIndex { get; set; }
     }
 }
