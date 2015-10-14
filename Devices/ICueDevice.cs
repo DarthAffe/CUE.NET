@@ -7,7 +7,6 @@ namespace CUE.NET.Devices
 
     public interface ICueDevice
     {
-
         IDeviceInfo DeviceInfo { get; }
 
         UpdateMode UpdateMode { get; set; }

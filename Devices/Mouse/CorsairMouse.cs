@@ -3,6 +3,9 @@
 namespace CUE.NET.Devices.Mouse
 {
     //TODO DarthAffe 20.09.2015: Find someone to test this
+    /// <summary>
+    /// Stub for planned headset-support.
+    /// </summary>
     public class CorsairMouse : AbstractCueDevice
     {
         #region Properties & Fields

@@ -10,17 +10,17 @@ namespace CUE.NET.Devices.Generic
         #region Properties & Fields
 
         /// <summary>
-        /// Device type.
+        /// Gets the device type. (<see cref="CUE.NET.Devices.Generic.Enums.CorsairDeviceType" />)
         /// </summary>
         public CorsairDeviceType Type { get; }
-        
+
         /// <summary>
-        /// Device model (like “K95RGB”).
+        /// Gets the device model (like “K95RGB”).
         /// </summary>
         public string Model { get; }
 
         /// <summary>
-        /// Flags that describes device capabilities
+        /// Get a flag that describes device capabilities. (<see cref="CUE.NET.Devices.Generic.Enums.CorsairDeviceCaps" />)
         /// </summary>
         public CorsairDeviceCaps CapsMask { get; }
 

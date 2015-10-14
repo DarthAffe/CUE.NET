@@ -7,6 +7,9 @@ using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Mouse
 {
+    /// <summary>
+    /// Stub for planned headset-support.
+    /// </summary>
     public class CorsairMouseDeviceInfo : GenericDeviceInfo
     {
         #region Properties & Fields
