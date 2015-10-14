@@ -51,6 +51,7 @@ namespace CUE.NET.Devices.Keyboard
         public CorsairKeyboardDeviceInfo KeyboardDeviceInfo { get; }
         public RectangleF KeyboardRectangle { get; private set; }
         public IBrush Brush { get; set; }
+        public int ZIndex { get; set; } = 0;
 
         protected override bool HasEffect
         {
@@ -89,13 +90,25 @@ namespace CUE.NET.Devices.Keyboard
             base.Update(flushLeds);
         }
 
+        private void UpdateKeyGroups()
+        {
+            if (Brush != null)
+                ApplyBrush(this.ToList(), Brush);
+
+            lock (_keyGroups)
+            {
+                foreach (IKeyGroup keyGroup in _keyGroups.OrderBy(x => x.ZIndex))
+                    ApplyBrush(keyGroup.Keys.ToList(), keyGroup.Brush);
+            }
+        }
+
         private void UpdateEffects()
         {
             List<IEffect> effectsToRemove = new List<IEffect>();
             lock (_effects)
             {
                 long currentTicks = DateTime.Now.Ticks;
-                foreach (EffectTimeContainer effect in _effects)
+                foreach (EffectTimeContainer effect in _effects.OrderBy(x => x.ZIndex))
                 {
                     try
                     {
@@ -116,25 +129,13 @@ namespace CUE.NET.Devices.Keyboard
                         if (effect.Effect.IsDone)
                             effectsToRemove.Add(effect.Effect);
                     }
+                    // ReSharper disable once CatchAllClause
                     catch (Exception ex) { ManageException(ex); }
                 }
             }
 
             foreach (IEffect effect in effectsToRemove)
                 DetachEffect(effect);
-        }
-
-        private void UpdateKeyGroups()
-        {
-            if (Brush != null)
-                ApplyBrush(this.ToList(), Brush);
-
-            lock (_keyGroups)
-            {
-                //TODO DarthAffe 20.09.2015: Add some sort of priority
-                foreach (IKeyGroup keyGroup in _keyGroups)
-                    ApplyBrush(keyGroup.Keys.ToList(), keyGroup.Brush);
-            }
         }
 
         // ReSharper disable once MemberCanBeMadeStatic.Local - idc
@@ -146,6 +147,7 @@ namespace CUE.NET.Devices.Keyboard
                 foreach (CorsairKey key in keys)
                     key.Led.Color = brush.GetColorAtPoint(brushRectangle, key.KeyRectangle.GetCenter());
             }
+            // ReSharper disable once CatchAllClause
             catch (Exception ex) { ManageException(ex); }
         }
 

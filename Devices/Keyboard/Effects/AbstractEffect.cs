@@ -11,9 +11,11 @@ namespace CUE.NET.Devices.Keyboard.Effects
     {
         #region Properties & Fields
 
+        public IEnumerable<CorsairKey> KeyList { get; protected set; }
+
         public abstract IBrush EffectBrush { get; }
 
-        public IEnumerable<CorsairKey> KeyList { get; protected set; }
+        public int ZIndex { get; set; } = 0;
 
         public bool IsDone { get; protected set; }
 
