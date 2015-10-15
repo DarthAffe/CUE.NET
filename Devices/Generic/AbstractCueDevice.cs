@@ -40,7 +40,10 @@ namespace CUE.NET.Devices.Generic
         /// </summary>
         public float UpdateFrequency { get; set; } = 1f / 30f;
 
-        private Dictionary<int, CorsairLed> Leds { get; } = new Dictionary<int, CorsairLed>();
+        /// <summary>
+        /// Gets a dictionary containing all LEDs of the device.
+        /// </summary>
+        protected Dictionary<int, CorsairLed> Leds { get; } = new Dictionary<int, CorsairLed>();
 
         /// <summary>
         /// Indicates if the device has an active effect to deal with.
