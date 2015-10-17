@@ -3,6 +3,9 @@
 
 namespace CUE.NET.Devices.Headset.Enums
 {
+    /// <summary>
+    /// Contains list of all LEDs available for corsair headsets.
+    /// </summary>
     public enum CorsairHeadsetLedId
     {
         Invalid = 0,

@@ -17,13 +17,42 @@ namespace CUE.NET
 
         // ReSharper disable UnusedAutoPropertyAccessor.Global
 
+        /// <summary>
+        /// Gets the loaded architecture (x64/x86).
+        /// </summary>
         public static string LoadedArchitecture => _CUESDK.LoadedArchitecture;
+
+        /// <summary>
+        /// Gets the protocol details for the current SDK-connection.
+        /// </summary>
         public static CorsairProtocolDetails ProtocolDetails { get; private set; }
+
+        /// <summary>
+        /// Gets whether the application has exclusive access to the SDK or not.
+        /// </summary>
         public static bool HasExclusiveAccess { get; private set; }
+
+        /// <summary>
+        /// Gets the last error documented by CUE.
+        /// </summary>
         public static CorsairError LastError => _CUESDK.CorsairGetLastError();
 
+        /// <summary>
+        /// Gets the managed representation of a keyboard managed by the CUE-SDK.
+        /// Note that currently only one connected keyboard is supported.
+        /// </summary>
         public static CorsairKeyboard KeyboardSDK { get; private set; }
+
+        /// <summary>
+        /// Gets the managed representation of a mouse managed by the CUE-SDK.
+        /// Note that currently only one connected mouse is supported.
+        /// </summary>
         public static CorsairMouse MouseSDK { get; private set; }
+
+        /// <summary>
+        /// Gets the managed representation of a headset managed by the CUE-SDK.
+        /// Note that currently only one connected headset is supported.
+        /// </summary>
         public static CorsairHeadset HeadsetSDK { get; private set; }
 
         // ReSharper restore UnusedAutoPropertyAccessor.Global
@@ -32,6 +61,11 @@ namespace CUE.NET
 
         #region Methods
 
+        /// <summary>
+        /// Initializes the CUE-SDK. This method should be called exactly ONE time, before anything else is done.
+        /// </summary>
+        /// <param name="exclusiveAccess">Specifies whether the application should request exclusive access or not.</param>
+        /// <exception cref="WrapperException">Thrown if the SDK is already initialized, the SDK is not compatible to CUE or if CUE returns unknown devices.</exception>
         public static void Initialize(bool exclusiveAccess = false)
         {
             if (ProtocolDetails != null)

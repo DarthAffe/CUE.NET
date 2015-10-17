@@ -8,7 +8,7 @@ using CUE.NET.Native;
 namespace CUE.NET.Devices.Mouse
 {
     /// <summary>
-    /// Stub for planned headset-support.
+    /// Represents specific information for a CUE mouse.
     /// </summary>
     public class CorsairMouseDeviceInfo : GenericDeviceInfo
     {
@@ -24,9 +24,9 @@ namespace CUE.NET.Devices.Mouse
         #region Constructors
 
         /// <summary>
-        /// Internal constructor of managed CorsairDeviceInfo.
+        /// Internal constructor of managed <see cref="CorsairMouseDeviceInfo" />.
         /// </summary>
-        /// <param name="nativeInfo">The native CorsairDeviceInfo-struct</param>
+        /// <param name="nativeInfo">The native <see cref="_CorsairDeviceInfo" />-struct</param>
         internal CorsairMouseDeviceInfo(_CorsairDeviceInfo nativeInfo)
             : base(nativeInfo)
         {

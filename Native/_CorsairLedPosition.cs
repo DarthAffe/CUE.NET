@@ -8,13 +8,36 @@ using CUE.NET.Devices.Keyboard.Enums;
 namespace CUE.NET.Native
 {
     // ReSharper disable once InconsistentNaming
+    /// <summary>
+    /// CUE-SDK: contains led id and position of led rectangle.Most of the keys are rectangular.
+    /// In case if key is not rectangular(like Enter in ISO / UK layout) it returns the smallest rectangle that fully contains the key
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal class _CorsairLedPosition       // contains led id and position of led rectangle.Most of the keys are rectangular. In case if key is not rectangular(like Enter in ISO / UK layout) it returns the smallest rectangle that fully contains the key
+    internal class _CorsairLedPosition
     {
-        internal CorsairKeyboardKeyId ledId; // identifier of led
+        /// <summary>
+        /// CUE-SDK: identifier of led
+        /// </summary>
+        internal CorsairKeyboardKeyId ledId;
+
+        /// <summary>
+        /// CUE-SDK: values in mm
+        /// </summary>
         internal double top;
+
+        /// <summary>
+        /// CUE-SDK: values in mm
+        /// </summary>
         internal double left;
+
+        /// <summary>
+        /// CUE-SDK: values in mm
+        /// </summary>
         internal double height;
-        internal double width;   	         // values in mm
+
+        /// <summary>
+        /// CUE-SDK: values in mm
+        /// </summary>
+        internal double width;
     }
 }

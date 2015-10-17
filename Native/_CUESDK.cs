@@ -10,6 +10,9 @@ namespace CUE.NET.Native
     {
         #region Libary Management
 
+        /// <summary>
+        /// Gets the loaded architecture (x64/x86).
+        /// </summary>
         internal static string LoadedArchitecture { get; private set; }
 
         static _CUESDK()
@@ -25,8 +28,10 @@ namespace CUE.NET.Native
 
         #region SDK-IMPORTS
 
+        /// <summary>
+        /// CUE-SDK: set specified leds to some colors. The color is retained until changed by successive calls. This function does not take logical layout into account
+        /// </summary>
         [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        // set specified leds to some colors. The color is retained until changed by successive calls. This function does not take logical layout into account
         internal static extern bool CorsairSetLedsColors(int size, IntPtr ledsColors);
 
         //#if WIN64
@@ -36,32 +41,47 @@ namespace CUE.NET.Native
         //#endif
         //internal static extern bool CorsairSetLedsColorsAsync(int size, CorsairLedColor* ledsColors, void(*CallbackType)(void*, bool, CorsairError), void* context);
 
+        /// <summary>
+        /// CUE-SDK: returns number of connected Corsair devices that support lighting control.
+        /// </summary>
         [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        // returns number of connected Corsair devices that support lighting control.
         internal static extern int CorsairGetDeviceCount();
 
+        /// <summary>
+        /// CUE-SDK: returns information about device at provided index
+        /// </summary>
         [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        // returns information about device at provided index
         internal static extern IntPtr CorsairGetDeviceInfo(int deviceIndex);
 
+        /// <summary>
+        /// CUE-SDK: provides list of keyboard LEDs with their physical positions.
+        /// </summary>
         [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        // provides list of keyboard LEDs with their physical positions.
         internal static extern IntPtr CorsairGetLedPositions();
 
+        /// <summary>
+        /// CUE-SDK: retrieves led id for key name taking logical layout into account.
+        /// </summary>
         [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        // retrieves led id for key name taking logical layout into account.
         internal static extern CorsairKeyboardKeyId CorsairGetLedIdForKeyName(char keyName);
 
+        /// <summary>
+        /// CUE-SDK: requestes control using specified access mode.
+        /// By default client has shared control over lighting so there is no need to call CorsairRequestControl unless client requires exclusive control
+        /// </summary>
         [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        //  requestes control using specified access mode. By default client has shared control over lighting so there is no need to call CorsairRequestControl unless client requires exclusive control
         internal static extern bool CorsairRequestControl(CorsairAccessMode accessMode);
 
+        /// <summary>
+        /// CUE-SDK: checks file and protocol version of CUE to understand which of SDK functions can be used with this version of CUE
+        /// </summary>
         [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        // checks file and protocol version of CUE to understand which of SDK functions can be used with this version of CUE
         internal static extern _CorsairProtocolDetails CorsairPerformProtocolHandshake();
 
+        /// <summary>
+        /// CUE-SDK: returns last error that occured while using any of Corsair* functions
+        /// </summary>
         [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        // returns last error that occured while using any of Corsair* functions
         internal static extern CorsairError CorsairGetLastError();
 
         #endregion

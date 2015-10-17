@@ -5,6 +5,9 @@ using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Generic
 {
+    /// <summary>
+    /// Represents generic information about a CUE device.
+    /// </summary>
     public class GenericDeviceInfo : IDeviceInfo
     {
         #region Properties & Fields
@@ -29,9 +32,9 @@ namespace CUE.NET.Devices.Generic
         #region Constructors
 
         /// <summary>
-        /// Internal constructor of managed CorsairDeviceInfo.
+        /// Internal constructor of managed <see cref="GenericDeviceInfo"/>.
         /// </summary>
-        /// <param name="nativeInfo">The native CorsairDeviceInfo-struct</param>
+        /// <param name="nativeInfo">The native <see cref="_CorsairDeviceInfo" />-struct</param>
         internal GenericDeviceInfo(_CorsairDeviceInfo nativeInfo)
         {
             this.Type = nativeInfo.type;

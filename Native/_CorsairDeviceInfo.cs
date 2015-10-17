@@ -9,13 +9,35 @@ using CUE.NET.Devices.Generic.Enums;
 namespace CUE.NET.Native
 {
     // ReSharper disable once InconsistentNaming
+    /// <summary>
+    /// CUE-SDK: contains information about device
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal class _CorsairDeviceInfo	                   // contains information about device
+    internal class _CorsairDeviceInfo
     {
-        internal CorsairDeviceType type;               // enum describing device type
-        internal IntPtr model;                         // null - terminated device model(like “K95RGB”)
-        internal int physicalLayout;                   // enum describing physical layout of the keyboard or mouse
-        internal int logicalLayout;                    // enum describing logical layout of the keyboard as set in CUE settings
-        internal int capsMask;					       // mask that describes device capabilities, formed as logical “or” of CorsairDeviceCaps enum values
+        /// <summary>
+        /// CUE-SDK: enum describing device type
+        /// </summary>
+        internal CorsairDeviceType type;
+
+        /// <summary>
+        /// CUE-SDK: null - terminated device model(like “K95RGB”)
+        /// </summary>
+        internal IntPtr model;
+
+        /// <summary>
+        /// CUE-SDK: enum describing physical layout of the keyboard or mouse
+        /// </summary>
+        internal int physicalLayout;
+
+        /// <summary>
+        /// CUE-SDK: enum describing logical layout of the keyboard as set in CUE settings
+        /// </summary>
+        internal int logicalLayout;
+
+        /// <summary>
+        /// CUE-SDK: mask that describes device capabilities, formed as logical “or” of CorsairDeviceCaps enum values
+        /// </summary>
+        internal int capsMask;
     }
 }

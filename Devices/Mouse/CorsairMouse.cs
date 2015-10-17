@@ -12,12 +12,21 @@ using CUE.NET.Exceptions;
 
 namespace CUE.NET.Devices.Mouse
 {
+    /// <summary>
+    /// Represents the SDK for a corsair mouse.
+    /// </summary>
     public class CorsairMouse : AbstractCueDevice, IEnumerable<CorsairLed>
     {
         #region Properties & Fields
 
         #region Indexer
 
+        /// <summary>
+        /// Gets the <see cref="CorsairLed" /> with the specified ID.
+        /// </summary>
+        /// <param name="ledId">The ID of the LED to get.</param>
+        /// <returns>The LED with the specified ID.</returns>
+        /// <exception cref="System.ArgumentNullException" accessor="get"><paramref name="ledId" /> is null.</exception>
         public CorsairLed this[CorsairMouseLedId ledId]
         {
             get
@@ -29,16 +38,29 @@ namespace CUE.NET.Devices.Mouse
 
         #endregion
 
+        /// <summary>
+        /// Gets specific information provided by CUE for the mouse.
+        /// </summary>
         public CorsairMouseDeviceInfo MouseDeviceInfo { get; }
 
+        /// <summary>
+        /// Indicates if the mouse has an active effect to deal with.
+        /// </summary>
         protected override bool HasEffect => false;
 
+        /// <summary>
+        /// Gets a read-only collection containing all LEDs of the mouse.
+        /// </summary>
         public new IEnumerable<CorsairLed> Leds => new ReadOnlyCollection<CorsairLed>(base.Leds.Values.ToList());
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CorsairMouse"/> class.
+        /// </summary>
+        /// <param name="info">The specific information provided by CUE for the mouse</param>
         internal CorsairMouse(CorsairMouseDeviceInfo info)
             : base(info)
         {
@@ -80,6 +102,10 @@ namespace CUE.NET.Devices.Mouse
 
         #region IEnumerable
 
+        /// <summary>
+        /// Returns an enumerator that iterates over all LEDs of the mouse.
+        /// </summary>
+        /// <returns>An enumerator for all LDS of the mouse.</returns>
         public IEnumerator<CorsairLed> GetEnumerator()
         {
             return Leds.GetEnumerator();

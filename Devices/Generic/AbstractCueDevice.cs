@@ -35,6 +35,7 @@ namespace CUE.NET.Devices.Generic
                 CheckUpdateLoop();
             }
         }
+
         /// <summary>
         /// Gets or sets the update-frequency in seconds. (Calculate by using '1f / updates per second')
         /// </summary>
