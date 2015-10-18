@@ -3,14 +3,14 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using CUE.NET;
+using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Keyboard;
-using CUE.NET.Devices.Keyboard.Brushes;
-using CUE.NET.Devices.Keyboard.Brushes.Gradient;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Extensions;
 using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Exceptions;
+using CUE.NET.Gradients;
 
 namespace SimpleDevTest
 {
