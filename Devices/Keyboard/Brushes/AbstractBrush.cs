@@ -3,17 +3,32 @@ using CUE.NET.Helper;
 
 namespace CUE.NET.Devices.Keyboard.Brushes
 {
+    /// <summary>
+    /// Represents a basic brush.
+    /// </summary>
     public abstract class AbstractBrush : IBrush
     {
         #region Properties & Fields
 
+        /// <summary>
+        /// Gets or sets the overall percentage brightness of the brush.
+        /// </summary>
         public float Brightness { get; set; }
+
+        /// <summary>
+        /// Gets or sets the overall percentage opacity of the brush.
+        /// </summary>
         public float Opacity { get; set; }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractBrush"/> class.
+        /// </summary>
+        /// <param name="brightness">The overall percentage brightness of the brush. (default: 1f)</param>
+        /// <param name="opacity">The overall percentage opacity of the brush. (default: 1f)</param>
         protected AbstractBrush(float brightness = 1f, float opacity = 1f)
         {
             this.Brightness = brightness;
@@ -24,8 +39,20 @@ namespace CUE.NET.Devices.Keyboard.Brushes
 
         #region Methods
 
+        /// <summary>
+        /// Gets the color at an specific point assuming the brush is drawn into the given rectangle.
+        /// </summary>
+        /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
+        /// <param name="point">The point from which the color should be taken.</param>
+        /// <returns>The color at the specified point.</returns>
         public abstract Color GetColorAtPoint(RectangleF rectangle, PointF point);
 
+        /// <summary>
+        /// Finalizes the color by appliing the overall brightness and opacity.<br/>
+        /// This method should always be the last call of a <see cref="GetColorAtPoint" /> implementation.
+        /// </summary>
+        /// <param name="color">The color to finalize.</param>
+        /// <returns>The finalized color.</returns>
         protected virtual Color FinalizeColor(Color color)
         {
             // Since we use HSV to calculate there is no way to make a color 'brighter' than 100%

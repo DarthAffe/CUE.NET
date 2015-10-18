@@ -6,14 +6,31 @@ using System.Runtime.InteropServices;
 
 namespace CUE.NET.Native
 {
-    // ReSharper disable once InconsistentNaming
+    // ReSharper disable once InconsistentNaming    
+    /// <summary>
+    /// CUE-SDK: contains information about led and its color
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal class _CorsairLedColor //  contains information about led and its color
+    internal class _CorsairLedColor
     {
+        /// <summary>
+        /// CUE-SDK: identifier of LED to set
+        /// </summary>
+        internal int ledId;
 
-        internal int ledId;       // identifier of LED to set
-        internal int r;           // red   brightness[0..255]
-        internal int g;           // green brightness[0..255]
-        internal int b;           // blue  brightness[0..255]
+        /// <summary>
+        /// CUE-SDK: red   brightness[0..255]
+        /// </summary>
+        internal int r;
+
+        /// <summary>
+        /// CUE-SDK: green brightness[0..255]
+        /// </summary>
+        internal int g;
+
+        /// <summary>
+        /// CUE-SDK: blue  brightness[0..255]
+        /// </summary>
+        internal int b;
     };
 }

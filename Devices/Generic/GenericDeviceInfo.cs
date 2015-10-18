@@ -5,22 +5,25 @@ using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Generic
 {
+    /// <summary>
+    /// Represents generic information about a CUE device.
+    /// </summary>
     public class GenericDeviceInfo : IDeviceInfo
     {
         #region Properties & Fields
 
         /// <summary>
-        /// Device type.
+        /// Gets the device type. (<see cref="CUE.NET.Devices.Generic.Enums.CorsairDeviceType" />)
         /// </summary>
         public CorsairDeviceType Type { get; }
-        
+
         /// <summary>
-        /// Device model (like “K95RGB”).
+        /// Gets the device model (like “K95RGB”).
         /// </summary>
         public string Model { get; }
 
         /// <summary>
-        /// Flags that describes device capabilities
+        /// Get a flag that describes device capabilities. (<see cref="CUE.NET.Devices.Generic.Enums.CorsairDeviceCaps" />)
         /// </summary>
         public CorsairDeviceCaps CapsMask { get; }
 
@@ -29,9 +32,9 @@ namespace CUE.NET.Devices.Generic
         #region Constructors
 
         /// <summary>
-        /// Internal constructor of managed CorsairDeviceInfo.
+        /// Internal constructor of managed <see cref="GenericDeviceInfo"/>.
         /// </summary>
-        /// <param name="nativeInfo">The native CorsairDeviceInfo-struct</param>
+        /// <param name="nativeInfo">The native <see cref="_CorsairDeviceInfo" />-struct</param>
         internal GenericDeviceInfo(_CorsairDeviceInfo nativeInfo)
         {
             this.Type = nativeInfo.type;

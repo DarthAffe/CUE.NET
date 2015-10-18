@@ -3,13 +3,23 @@ using System.Linq;
 
 namespace CUE.NET.Devices.Keyboard.Brushes.Gradient
 {
+    /// <summary>
+    /// Represents a linear interpolated gradient with n stops.
+    /// </summary>
     public class LinearGradient : AbstractGradient
     {
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinearGradient"/> class.
+        /// </summary>
         public LinearGradient()
         { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LinearGradient"/> class.
+        /// </summary>
+        /// <param name="gradientStops">The stops with which the gradient should be initialized.</param>
         public LinearGradient(params GradientStop[] gradientStops)
             : base(gradientStops)
         { }
@@ -18,6 +28,11 @@ namespace CUE.NET.Devices.Keyboard.Brushes.Gradient
 
         #region Methods
 
+        /// <summary>
+        /// Gets the linear interpolated color at the given offset.
+        /// </summary>
+        /// <param name="offset">The percentage offset to take the color from.</param>
+        /// <returns>The color at the specific offset.</returns>
         public override Color GetColor(float offset)
         {
             if (!GradientStops.Any()) return Color.Transparent;

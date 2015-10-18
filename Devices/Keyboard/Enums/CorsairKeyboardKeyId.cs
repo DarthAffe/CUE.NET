@@ -3,6 +3,9 @@
 
 namespace CUE.NET.Devices.Keyboard.Enums
 {
+    /// <summary>
+    /// Contains list of all LEDs available for corsair keyboards.
+    /// </summary>
     public enum CorsairKeyboardKeyId
     {
         Invalid = 0,

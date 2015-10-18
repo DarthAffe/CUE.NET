@@ -3,6 +3,9 @@
 
 namespace CUE.NET.Devices.Mouse.Enums
 {
+    /// <summary>
+    /// Contains list of all LEDs available for corsair mice.
+    /// </summary>
     public enum CorsairMouseLedId
     {
         Invalid = 0,

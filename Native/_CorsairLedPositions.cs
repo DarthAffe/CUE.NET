@@ -8,10 +8,20 @@ using System.Runtime.InteropServices;
 namespace CUE.NET.Native
 {
     // ReSharper disable once InconsistentNaming
+    /// <summary>
+    /// CUE-SDK: contains number of leds and arrays with their positions
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    internal class _CorsairLedPositions     // contains number of leds and arrays with their positions
+    internal class _CorsairLedPositions
     {
-        internal int numberOfLed;         // integer value.Number of elements in following array
-        internal IntPtr pLedPosition;     // array of led positions
+        /// <summary>
+        /// CUE-SDK: integer value.Number of elements in following array
+        /// </summary>
+        internal int numberOfLed;
+
+        /// <summary>
+        /// CUE-SDK: array of led positions
+        /// </summary>
+        internal IntPtr pLedPosition;
     }
 }

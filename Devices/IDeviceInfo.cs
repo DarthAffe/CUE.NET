@@ -2,20 +2,23 @@
 
 namespace CUE.NET.Devices
 {
+    /// <summary>
+    /// Represents generic device information.
+    /// </summary>
     public interface IDeviceInfo
     {
         /// <summary>
-        /// Device type
+        /// Gets the device type.
         /// </summary>
         CorsairDeviceType Type { get; }
-        
+
         /// <summary>
-        /// Device model (like “K95RGB”).
+        /// Gets the device model (like “K95RGB”).
         /// </summary>
         string Model { get; }
 
         /// <summary>
-        /// Flags that describes device capabilities
+        /// Gets flags, which describe device capabilities.
         /// </summary>
         CorsairDeviceCaps CapsMask { get; }
     }
