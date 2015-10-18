@@ -3,10 +3,10 @@
 
 using System;
 using System.Drawing;
-using CUE.NET.Devices.Keyboard.Brushes.Gradient;
+using CUE.NET.Gradients;
 using CUE.NET.Helper;
 
-namespace CUE.NET.Devices.Keyboard.Brushes
+namespace CUE.NET.Brushes
 {
     /// <summary>
     /// Represents a brush drawing a radial gradient around a center point.

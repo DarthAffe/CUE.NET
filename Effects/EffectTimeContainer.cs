@@ -1,7 +1,7 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-namespace CUE.NET.Devices.Keyboard.Effects
+namespace CUE.NET.Effects
 {
     /// <summary>
     /// Represents a wrapped effect with additional time information.

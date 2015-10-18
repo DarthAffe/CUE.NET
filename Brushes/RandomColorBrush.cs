@@ -2,7 +2,7 @@
 using System.Drawing;
 using CUE.NET.Helper;
 
-namespace CUE.NET.Devices.Keyboard.Brushes
+namespace CUE.NET.Brushes
 {
     //TODO DarthAffe 30.09.2015: Like this the brush seems kinda useless. Think about making it cool.
 

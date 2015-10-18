@@ -3,7 +3,7 @@
 using System.Drawing;
 using CUE.NET.Helper;
 
-namespace CUE.NET.Devices.Keyboard.Brushes.Gradient
+namespace CUE.NET.Gradients
 {
     /// <summary>
     /// Represents a rainbow gradient which circles through all color colors of the HUE-color-space.<br />

@@ -9,11 +9,11 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic;
-using CUE.NET.Devices.Keyboard.Brushes;
-using CUE.NET.Devices.Keyboard.Effects;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Keys;
+using CUE.NET.Effects;
 using CUE.NET.Helper;
 using CUE.NET.Native;
 
@@ -188,7 +188,9 @@ namespace CUE.NET.Devices.Keyboard
                         effect.TicksAtLastUpdate = currentTicks;
                         effect.Effect.Update(deltaTime);
 
-                        ApplyBrush((effect.Effect.KeyList ?? this).ToList(), effect.Effect.EffectBrush);
+                        //TODO DarthAffe 18.10.2015: This is really dirty and might have a really negative performance impact - find a better solution.
+                        IEnumerable<CorsairKey> keys = effect.Effect?.LedList?.Select(x => this.FirstOrDefault(y => y.Led == x));
+                        ApplyBrush((keys ?? this).ToList(), effect.Effect.EffectBrush);
 
                         if (effect.Effect.IsDone)
                             effectsToRemove.Add(effect.Effect);
@@ -213,6 +215,11 @@ namespace CUE.NET.Devices.Keyboard
             }
             // ReSharper disable once CatchAllClause
             catch (Exception ex) { ManageException(ex); }
+        }
+
+        public IEnumerable<CorsairLed> GetLeds()
+        {
+            return this.Select(x => x.Led);
         }
 
         #endregion

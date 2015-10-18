@@ -3,9 +3,9 @@
 
 using System;
 using System.Drawing;
-using CUE.NET.Devices.Keyboard.Brushes;
+using CUE.NET.Brushes;
 
-namespace CUE.NET.Devices.Keyboard.Effects
+namespace CUE.NET.Effects
 {
     /// <summary>
     /// Represents an effect which allows to flash an brush by modifying his opacity.

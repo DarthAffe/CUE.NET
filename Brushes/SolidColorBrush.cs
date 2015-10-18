@@ -3,7 +3,7 @@
 
 using System.Drawing;
 
-namespace CUE.NET.Devices.Keyboard.Brushes
+namespace CUE.NET.Brushes
 {
     /// <summary>
     /// Represents a brush drawing only a single color.

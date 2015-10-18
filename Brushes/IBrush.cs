@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace CUE.NET.Devices.Keyboard.Brushes
+namespace CUE.NET.Brushes
 {
     /// <summary>
     /// Represents a basic brush.
