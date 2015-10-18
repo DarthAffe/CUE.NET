@@ -9,11 +9,11 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic;
-using CUE.NET.Devices.Keyboard.Brushes;
-using CUE.NET.Devices.Keyboard.Effects;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Keys;
+using CUE.NET.Effects;
 using CUE.NET.Helper;
 using CUE.NET.Native;
 
@@ -76,7 +76,6 @@ namespace CUE.NET.Devices.Keyboard
         #endregion
 
         private readonly LinkedList<IKeyGroup> _keyGroups = new LinkedList<IKeyGroup>();
-        private readonly LinkedList<EffectTimeContainer> _effects = new LinkedList<EffectTimeContainer>();
 
         private Dictionary<CorsairKeyboardKeyId, CorsairKey> _keys = new Dictionary<CorsairKeyboardKeyId, CorsairKey>();
 
@@ -113,8 +112,8 @@ namespace CUE.NET.Devices.Keyboard
         {
             get
             {
-                lock (_effects)
-                    return _effects.Any();
+                lock (Effects)
+                    return Effects.Any();
             }
         }
 
@@ -148,7 +147,6 @@ namespace CUE.NET.Devices.Keyboard
         public override void Update(bool flushLeds = false)
         {
             UpdateKeyGroups();
-            UpdateEffects();
 
             // Perform 'real' update
             base.Update(flushLeds);
@@ -166,40 +164,13 @@ namespace CUE.NET.Devices.Keyboard
             }
         }
 
-        private void UpdateEffects()
+        protected override void ApplyEffect(IEffect effect)
         {
-            List<IEffect> effectsToRemove = new List<IEffect>();
-            lock (_effects)
-            {
-                long currentTicks = DateTime.Now.Ticks;
-                foreach (EffectTimeContainer effect in _effects.OrderBy(x => x.ZIndex))
-                {
-                    try
-                    {
-                        float deltaTime;
-                        if (effect.TicksAtLastUpdate < 0)
-                        {
-                            effect.TicksAtLastUpdate = currentTicks;
-                            deltaTime = 0f;
-                        }
-                        else
-                            deltaTime = (currentTicks - effect.TicksAtLastUpdate) / 10000000f;
+            if (effect == null) return;
 
-                        effect.TicksAtLastUpdate = currentTicks;
-                        effect.Effect.Update(deltaTime);
-
-                        ApplyBrush((effect.Effect.KeyList ?? this).ToList(), effect.Effect.EffectBrush);
-
-                        if (effect.Effect.IsDone)
-                            effectsToRemove.Add(effect.Effect);
-                    }
-                    // ReSharper disable once CatchAllClause
-                    catch (Exception ex) { ManageException(ex); }
-                }
-            }
-
-            foreach (IEffect effect in effectsToRemove)
-                DetachEffect(effect);
+            //TODO DarthAffe 18.10.2015: This is really dirty and might have a really negative performance impact - find a better solution.
+            IEnumerable<CorsairKey> keys = effect.LedList?.Select(x => this.FirstOrDefault(y => y.Led == x));
+            ApplyBrush((keys ?? this).ToList(), effect.EffectBrush);
         }
 
         // ReSharper disable once MemberCanBeMadeStatic.Local - idc
@@ -213,6 +184,11 @@ namespace CUE.NET.Devices.Keyboard
             }
             // ReSharper disable once CatchAllClause
             catch (Exception ex) { ManageException(ex); }
+        }
+
+        public IEnumerable<CorsairLed> GetLeds()
+        {
+            return this.Select(x => x.Led);
         }
 
         #endregion
@@ -250,53 +226,6 @@ namespace CUE.NET.Devices.Keyboard
                 _keyGroups.Remove(node);
                 return true;
             }
-        }
-
-        /// <summary>
-        /// Attaches the given effect.
-        /// </summary>
-        /// <param name="effect">The effect to attach.</param>
-        /// <returns><c>true</c> if the effect could be attached; otherwise, <c>false</c>.</returns>
-        public bool AttachEffect(IEffect effect)
-        {
-            bool retVal = false;
-            lock (_effects)
-            {
-                if (effect != null && _effects.All(x => x.Effect != effect))
-                {
-                    effect.OnAttach();
-                    _effects.AddLast(new EffectTimeContainer(effect, -1));
-                    retVal = true;
-                }
-            }
-
-            CheckUpdateLoop();
-            return retVal;
-        }
-
-        /// <summary>
-        /// Detaches the given effect.
-        /// </summary>
-        /// <param name="effect">The effect to detached.</param>
-        /// <returns><c>true</c> if the effect could be detached; otherwise, <c>false</c>.</returns>
-        public bool DetachEffect(IEffect effect)
-        {
-            bool retVal = false;
-            lock (_effects)
-            {
-                if (effect != null)
-                {
-                    EffectTimeContainer val = _effects.FirstOrDefault(x => x.Effect == effect);
-                    if (val != null)
-                    {
-                        effect.OnDetach();
-                        _effects.Remove(val);
-                        retVal = true;
-                    }
-                }
-            }
-            CheckUpdateLoop();
-            return retVal;
         }
 
         private void InitializeKeys()

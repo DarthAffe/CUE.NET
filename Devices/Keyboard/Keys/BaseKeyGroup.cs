@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using CUE.NET.Devices.Keyboard.Brushes;
+using System.Linq;
+using CUE.NET.Brushes;
+using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Extensions;
 
 namespace CUE.NET.Devices.Keyboard.Keys
@@ -47,6 +49,15 @@ namespace CUE.NET.Devices.Keyboard.Keys
 
             if (autoAttach)
                 this.Attach();
+        }
+
+        #endregion
+
+        #region Methods
+
+        public IEnumerable<CorsairLed> GetLeds()
+        {
+            return GetGroupKeys().Select(x => x.Led);
         }
 
         /// <summary>

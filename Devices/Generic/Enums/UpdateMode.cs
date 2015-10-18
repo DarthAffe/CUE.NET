@@ -1,4 +1,6 @@
-﻿namespace CUE.NET.Devices.Generic.Enums
+﻿using CUE.NET.Effects;
+
+namespace CUE.NET.Devices.Generic.Enums
 {
     /// <summary>
     /// Contains list of available update modes.
@@ -12,7 +14,7 @@
 
         /// <summary>
         /// The device will perform automatic updates at the rate set in <see cref="CUE.NET.Devices.ICueDevice.UpdateFrequency" />
-        /// as long as an <see cref="CUE.NET.Devices.Keyboard.Effects.IEffect" /> is attached.
+        /// as long as an <see cref="IEffect" /> is attached.
         /// </summary>
         AutoOnEffect,
 

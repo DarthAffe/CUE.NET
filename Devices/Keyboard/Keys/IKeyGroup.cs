@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using CUE.NET.Devices.Keyboard.Brushes;
+using CUE.NET.Brushes;
+using CUE.NET.Devices.Generic;
 
 namespace CUE.NET.Devices.Keyboard.Keys
 {
@@ -19,5 +20,11 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// Gets or sets the z-index of this keygroup to allow ordering them before drawing. (lowest first) (default: 0)
         /// </summary>
         int ZIndex { get; set; }
+
+        /// <summary>
+        /// Gets a list containing all LEDs of this group.
+        /// </summary>
+        /// <returns>The list containing all LEDs of this group.</returns>
+        IEnumerable<CorsairLed> GetLeds();
     }
 }

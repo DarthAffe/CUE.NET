@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using CUE.NET.Devices.Generic.Enums;
+using CUE.NET.Effects;
 using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Generic
@@ -50,6 +51,11 @@ namespace CUE.NET.Devices.Generic
         /// Indicates if the device has an active effect to deal with.
         /// </summary>
         protected abstract bool HasEffect { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected LinkedList<EffectTimeContainer> Effects { get; } = new LinkedList<EffectTimeContainer>();
 
         private CancellationTokenSource _updateTokenSource;
         private CancellationToken _updateToken;
@@ -146,11 +152,13 @@ namespace CUE.NET.Devices.Generic
         }
 
         /// <summary>
-        /// Perform an update for all dirty keys, or all keys if flushLeds is set to true.
+        /// Performs an update for all dirty keys, or all keys if flushLeds is set to true.
         /// </summary>
         /// <param name="flushLeds">Specifies whether all keys (including clean ones) should be updated.</param>
         public virtual void Update(bool flushLeds = false)
         {
+            UpdateEffects();
+
             IList<KeyValuePair<int, CorsairLed>> ledsToUpdate = (flushLeds ? Leds : Leds.Where(x => x.Value.IsDirty)).ToList();
 
             foreach (CorsairLed led in Leds.Values)
@@ -158,6 +166,48 @@ namespace CUE.NET.Devices.Generic
 
             UpdateLeds(ledsToUpdate);
         }
+
+        private void UpdateEffects()
+        {
+            List<IEffect> effectsToRemove = new List<IEffect>();
+            lock (Effects)
+            {
+                long currentTicks = DateTime.Now.Ticks;
+                foreach (EffectTimeContainer effect in Effects.OrderBy(x => x.ZIndex))
+                {
+                    try
+                    {
+                        float deltaTime;
+                        if (effect.TicksAtLastUpdate < 0)
+                        {
+                            effect.TicksAtLastUpdate = currentTicks;
+                            deltaTime = 0f;
+                        }
+                        else
+                            deltaTime = (currentTicks - effect.TicksAtLastUpdate) / 10000000f;
+
+                        effect.TicksAtLastUpdate = currentTicks;
+                        effect.Effect.Update(deltaTime);
+
+                        ApplyEffect(effect.Effect);
+
+                        if (effect.Effect.IsDone)
+                            effectsToRemove.Add(effect.Effect);
+                    }
+                    // ReSharper disable once CatchAllClause
+                    catch (Exception ex) { ManageException(ex); }
+                }
+            }
+
+            foreach (IEffect effect in effectsToRemove)
+                DetachEffect(effect);
+        }
+
+        /// <summary>
+        /// Applies the given effect to the device LEDs.
+        /// </summary>
+        /// <param name="effect">The effect to apply.</param>
+        protected abstract void ApplyEffect(IEffect effect);
 
         private static void UpdateLeds(ICollection<KeyValuePair<int, CorsairLed>> ledsToUpdate)
         {
@@ -184,6 +234,53 @@ namespace CUE.NET.Devices.Generic
             }
             _CUESDK.CorsairSetLedsColors(ledsToUpdate.Count, ptr);
             Marshal.FreeHGlobal(ptr);
+        }
+
+        /// <summary>
+        /// Attaches the given effect.
+        /// </summary>
+        /// <param name="effect">The effect to attach.</param>
+        /// <returns><c>true</c> if the effect could be attached; otherwise, <c>false</c>.</returns>
+        public bool AttachEffect(IEffect effect)
+        {
+            bool retVal = false;
+            lock (Effects)
+            {
+                if (effect != null && Effects.All(x => x.Effect != effect))
+                {
+                    effect.OnAttach();
+                    Effects.AddLast(new EffectTimeContainer(effect, -1));
+                    retVal = true;
+                }
+            }
+
+            CheckUpdateLoop();
+            return retVal;
+        }
+
+        /// <summary>
+        /// Detaches the given effect.
+        /// </summary>
+        /// <param name="effect">The effect to detached.</param>
+        /// <returns><c>true</c> if the effect could be detached; otherwise, <c>false</c>.</returns>
+        public bool DetachEffect(IEffect effect)
+        {
+            bool retVal = false;
+            lock (Effects)
+            {
+                if (effect != null)
+                {
+                    EffectTimeContainer val = Effects.FirstOrDefault(x => x.Effect == effect);
+                    if (val != null)
+                    {
+                        effect.OnDetach();
+                        Effects.Remove(val);
+                        retVal = true;
+                    }
+                }
+            }
+            CheckUpdateLoop();
+            return retVal;
         }
 
         /// <summary>

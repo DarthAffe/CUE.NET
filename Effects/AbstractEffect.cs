@@ -1,11 +1,10 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
 using System.Collections.Generic;
-using System.Linq;
-using CUE.NET.Devices.Keyboard.Brushes;
-using CUE.NET.Devices.Keyboard.Keys;
+using CUE.NET.Brushes;
+using CUE.NET.Devices.Generic;
 
-namespace CUE.NET.Devices.Keyboard.Effects
+namespace CUE.NET.Effects
 {
     /// <summary>
     /// Represents a basic effect.
@@ -15,9 +14,9 @@ namespace CUE.NET.Devices.Keyboard.Effects
         #region Properties & Fields
 
         /// <summary>
-        /// Gets or sets the list of keys to which the effect applies.
+        /// Gets or sets the list of LEDSs to which the effect applies.
         /// </summary>
-        public IEnumerable<CorsairKey> KeyList { get; protected set; }
+        public IEnumerable<CorsairLed> LedList { get; set; }
 
         /// <summary>
         /// Gets the brush which is drawn by the effect.
@@ -39,28 +38,19 @@ namespace CUE.NET.Devices.Keyboard.Effects
         #region Methods
 
         /// <summary>
-        /// Sets the list of keys to which the effect applies.
-        /// </summary>
-        /// <param name="keyGroup"></param>
-        public void SetTarget(IKeyGroup keyGroup)
-        {
-            KeyList = keyGroup.Keys.ToList();
-        }
-
-        /// <summary>
         /// Updates the effect.
         /// </summary>
         /// <param name="deltaTime">The elapsed time (in seconds) since the last update.</param>
         public abstract void Update(float deltaTime);
 
         /// <summary>
-        /// Hook which is called when the effect is attached to a keyboard.
+        /// Hook which is called when the effect is attached to a device.
         /// </summary>
         public virtual void OnAttach()
         { }
 
         /// <summary>
-        /// Hook which is called when the effect is detached from a keyboard.
+        /// Hook which is called when the effect is detached from a device.
         /// </summary>
         public virtual void OnDetach()
         { }

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace CUE.NET.Devices.Keyboard.Brushes.Gradient
+namespace CUE.NET.Gradients
 {
     /// <summary>
     /// Represents a basic gradient.
