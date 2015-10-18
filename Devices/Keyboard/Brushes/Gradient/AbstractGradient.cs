@@ -6,19 +6,32 @@ using System.Linq;
 
 namespace CUE.NET.Devices.Keyboard.Brushes.Gradient
 {
+    /// <summary>
+    /// Represents a basic gradient.
+    /// </summary>
     public abstract class AbstractGradient : IGradient
     {
         #region Properties & Fields
 
+        /// <summary>
+        /// Gets a list of the stops used by this gradient.
+        /// </summary>
         public IList<GradientStop> GradientStops { get; } = new List<GradientStop>();
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractGradient"/> class.
+        /// </summary>
         protected AbstractGradient()
         { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractGradient"/> class.
+        /// </summary>
+        /// <param name="gradientStops">The stops with which the gradient should be initialized.</param>
         protected AbstractGradient(params GradientStop[] gradientStops)
         {
             foreach (GradientStop gradientStop in gradientStops)
@@ -29,6 +42,11 @@ namespace CUE.NET.Devices.Keyboard.Brushes.Gradient
 
         #region Methods
 
+        /// <summary>
+        /// Clips the offset and ensures, that it is inside the bounds of the stop list.
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         protected float ClipOffset(float offset)
         {
             float max = GradientStops.Max(n => n.Offset);
@@ -42,6 +60,11 @@ namespace CUE.NET.Devices.Keyboard.Brushes.Gradient
             return offset;
         }
 
+        /// <summary>
+        /// Gets the color of the gradient on the specified offset.
+        /// </summary>
+        /// <param name="offset">The percentage offset to take the color from.</param>
+        /// <returns>The color at the specific offset.</returns>
         public abstract Color GetColor(float offset);
 
         #endregion

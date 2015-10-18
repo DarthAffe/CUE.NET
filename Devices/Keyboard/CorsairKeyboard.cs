@@ -19,12 +19,20 @@ using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Keyboard
 {
+    /// <summary>
+    /// Represents the SDK for a corsair keyboard.
+    /// </summary>
     public class CorsairKeyboard : AbstractCueDevice, IEnumerable<CorsairKey>, IKeyGroup
     {
         #region Properties & Fields
 
         #region Indexer
 
+        /// <summary>
+        /// Gets the <see cref="CorsairKey" /> with the specified ID.
+        /// </summary>
+        /// <param name="keyId">The ID of the key to get.</param>
+        /// <returns>The key with the specified ID or null if no key is found.</returns>
         public CorsairKey this[CorsairKeyboardKeyId keyId]
         {
             get
@@ -34,10 +42,35 @@ namespace CUE.NET.Devices.Keyboard
             }
         }
 
-        public CorsairKey this[char key] => this[_CUESDK.CorsairGetLedIdForKeyName(key)];
+        /// <summary>
+        /// Gets the <see cref="CorsairKey" /> representing the given character by calling the SDK-method 'CorsairGetLedIdForKeyName'.<br />
+        /// Note that this currently only works for letters.
+        /// </summary>
+        /// <param name="key">The character of the key.</param>
+        /// <returns>The key representing the given character or null if no key is found.</returns>
+        public CorsairKey this[char key]
+        {
+            get
+            {
+                CorsairKeyboardKeyId keyId = _CUESDK.CorsairGetLedIdForKeyName(key);
+                CorsairKey cKey;
+                return _keys.TryGetValue(keyId, out cKey) ? cKey : null;
+            }
+        }
 
+        /// <summary>
+        /// Gets the <see cref="CorsairKey" /> at the given physical location.
+        /// </summary>
+        /// <param name="location">The point to get the key from.</param>
+        /// <returns>The key at the given point or null if no key is found.</returns>
         public CorsairKey this[PointF location] => _keys.Values.FirstOrDefault(x => x.KeyRectangle.Contains(location));
 
+        /// <summary>
+        /// Gets a list of <see cref="CorsairKey" /> inside the given rectangle.
+        /// </summary>
+        /// <param name="referenceRect">The rectangle to check.</param>
+        /// <param name="minOverlayPercentage">The minimal percentage overlay a key must have with the <see cref="Rectangle" /> to be taken into the list.</param>
+        /// <returns></returns>
         public IEnumerable<CorsairKey> this[RectangleF referenceRect, float minOverlayPercentage = 0.5f] => _keys.Values.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, referenceRect) >= minOverlayPercentage);
 
         #endregion
@@ -46,13 +79,36 @@ namespace CUE.NET.Devices.Keyboard
         private readonly LinkedList<EffectTimeContainer> _effects = new LinkedList<EffectTimeContainer>();
 
         private Dictionary<CorsairKeyboardKeyId, CorsairKey> _keys = new Dictionary<CorsairKeyboardKeyId, CorsairKey>();
+
+        /// <summary>
+        /// Gets a read-only collection containing the keys of the keyboard.
+        /// </summary>
         public IEnumerable<CorsairKey> Keys => new ReadOnlyCollection<CorsairKey>(_keys.Values.ToList());
 
+        /// <summary>
+        /// Gets specific information provided by CUE for the keyboard.
+        /// </summary>
         public CorsairKeyboardDeviceInfo KeyboardDeviceInfo { get; }
+
+        /// <summary>
+        /// Gets the rectangle containing all keys of the keyboard.
+        /// </summary>
         public RectangleF KeyboardRectangle { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the background brush of the keyboard.
+        /// </summary>
         public IBrush Brush { get; set; }
+
+        /// <summary>
+        /// Gets or sets the z-index of the background brush of the keyboard.<br />
+        /// This value has absolutely no effect.
+        /// </summary>
         public int ZIndex { get; set; } = 0;
 
+        /// <summary>
+        /// Gets a value indicating if the keyboard has an active effect to deal with or not.
+        /// </summary>
         protected override bool HasEffect
         {
             get
@@ -66,6 +122,10 @@ namespace CUE.NET.Devices.Keyboard
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CorsairKeyboard"/> class.
+        /// </summary>
+        /// <param name="info">The specific information provided by CUE for the keyboard</param>
         internal CorsairKeyboard(CorsairKeyboardDeviceInfo info)
             : base(info)
         {
@@ -81,6 +141,10 @@ namespace CUE.NET.Devices.Keyboard
 
         #region Update
 
+        /// <summary>
+        /// Updates all groups and effects and perform an update for all dirty keys, or all keys if flushLeds is set to true.
+        /// </summary>
+        /// <param name="flushLeds">Specifies whether all keys (including clean ones) should be updated.</param>
         public override void Update(bool flushLeds = false)
         {
             UpdateKeyGroups();
@@ -153,6 +217,11 @@ namespace CUE.NET.Devices.Keyboard
 
         #endregion
 
+        /// <summary>
+        /// Attaches the given keygroup.
+        /// </summary>
+        /// <param name="keyGroup">The keygroup to attach.</param>
+        /// <returns><c>true</c> if the keygroup could be attached; otherwise, <c>false</c>.</returns>
         public bool AttachKeyGroup(IKeyGroup keyGroup)
         {
             lock (_keyGroups)
@@ -164,6 +233,11 @@ namespace CUE.NET.Devices.Keyboard
             }
         }
 
+        /// <summary>
+        /// Detaches the given keygroup.
+        /// </summary>
+        /// <param name="keyGroup">The keygroup to detached.</param>
+        /// <returns><c>true</c> if the keygroup could be detached; otherwise, <c>false</c>.</returns>
         public bool DetachKeyGroup(IKeyGroup keyGroup)
         {
             lock (_keyGroups)
@@ -178,6 +252,11 @@ namespace CUE.NET.Devices.Keyboard
             }
         }
 
+        /// <summary>
+        /// Attaches the given effect.
+        /// </summary>
+        /// <param name="effect">The effect to attach.</param>
+        /// <returns><c>true</c> if the effect could be attached; otherwise, <c>false</c>.</returns>
         public bool AttachEffect(IEffect effect)
         {
             bool retVal = false;
@@ -195,6 +274,11 @@ namespace CUE.NET.Devices.Keyboard
             return retVal;
         }
 
+        /// <summary>
+        /// Detaches the given effect.
+        /// </summary>
+        /// <param name="effect">The effect to detached.</param>
+        /// <returns><c>true</c> if the effect could be detached; otherwise, <c>false</c>.</returns>
         public bool DetachEffect(IEffect effect)
         {
             bool retVal = false;
@@ -233,6 +317,10 @@ namespace CUE.NET.Devices.Keyboard
 
         #region IEnumerable
 
+        /// <summary>
+        /// Returns an enumerator that iterates over all keys of the keyboard.
+        /// </summary>
+        /// <returns>An enumerator for all keys of the keyboard.</returns>
         public IEnumerator<CorsairKey> GetEnumerator()
         {
             return _keys.Values.GetEnumerator();

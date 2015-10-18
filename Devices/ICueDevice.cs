@@ -30,6 +30,7 @@ namespace CUE.NET.Devices
         /// </summary>
         float UpdateFrequency { get; set; }
 
+        // ReSharper disable once EventNeverSubscribedTo.Global
         /// <summary>
         /// Occurs when a catched exception is thrown inside the device.
         /// </summary>

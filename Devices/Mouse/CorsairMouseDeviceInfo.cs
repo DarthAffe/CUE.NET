@@ -15,7 +15,7 @@ namespace CUE.NET.Devices.Mouse
         #region Properties & Fields
 
         /// <summary>
-        /// Physical layout of the mouse.
+        /// Gets the physical layout of the mouse.
         /// </summary>
         public CorsairPhysicalMouseLayout PhysicalLayout { get; private set; }
 

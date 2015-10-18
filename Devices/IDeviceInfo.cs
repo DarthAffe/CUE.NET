@@ -2,6 +2,9 @@
 
 namespace CUE.NET.Devices
 {
+    /// <summary>
+    /// Represents generic device information.
+    /// </summary>
     public interface IDeviceInfo
     {
         /// <summary>

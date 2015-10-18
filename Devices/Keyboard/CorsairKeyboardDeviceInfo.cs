@@ -7,17 +7,20 @@ using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Keyboard
 {
+    /// <summary>
+    /// Represents specific information for a CUE keyboard.
+    /// </summary>
     public class CorsairKeyboardDeviceInfo : GenericDeviceInfo
     {
         #region Properties & Fields
 
         /// <summary>
-        /// Physical layout of the keyboard.
+        /// Gets the physical layout of the keyboard.
         /// </summary>
         public CorsairPhysicalKeyboardLayout PhysicalLayout { get; private set; }
 
         /// <summary>
-        /// Logical layout of the keyboard as set in CUE settings.
+        /// Gets the logical layout of the keyboard as set in CUE settings.
         /// </summary>
         public CorsairLogicalKeyboardLayout LogicalLayout { get; private set; }
 

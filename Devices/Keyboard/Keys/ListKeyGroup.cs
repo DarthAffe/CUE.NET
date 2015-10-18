@@ -5,34 +5,67 @@ using CUE.NET.Devices.Keyboard.Enums;
 
 namespace CUE.NET.Devices.Keyboard.Keys
 {
+    /// <summary>
+    /// Represents a keygroup containing arbitrary keys.
+    /// </summary>
     public class ListKeyGroup : BaseKeyGroup
     {
         #region Properties & Fields
 
+        /// <summary>
+        /// Gets the list containing the keys of this keygroup.
+        /// </summary>
         protected IList<CorsairKey> GroupKeys { get; } = new List<CorsairKey>();
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
+        /// </summary>
+        /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
+        /// <param name="autoAttach">Specifies whether this keygroup should be automatically attached or not.</param>
         public ListKeyGroup(CorsairKeyboard keyboard, bool autoAttach = true)
             : base(keyboard, autoAttach)
         { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
+        /// </summary>
+        /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
+        /// <param name="keys">The initial keys of this keygroup.</param>
         public ListKeyGroup(CorsairKeyboard keyboard, params CorsairKey[] keys)
             : this(keyboard, true, keys)
         { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
+        /// </summary>
+        /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
+        /// <param name="autoAttach">Specifies whether this keygroup should be automatically attached or not.</param>
+        /// <param name="keys">The initial keys of this keygroup.</param>
         public ListKeyGroup(CorsairKeyboard keyboard, bool autoAttach, params CorsairKey[] keys)
             : base(keyboard, autoAttach)
         {
             AddKey(keys);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
+        /// </summary>
+        /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
+        /// <param name="keys">The IDs of the initial keys of this keygroup.</param>
         public ListKeyGroup(CorsairKeyboard keyboard, params CorsairKeyboardKeyId[] keys)
             : this(keyboard, true, keys)
         { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
+        /// </summary>
+        /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
+        /// <param name="autoAttach">Specifies whether this keygroup should be automatically attached or not.</param>
+        /// <param name="keys">The IDs of the initial keys of this keygroup.</param>
         public ListKeyGroup(CorsairKeyboard keyboard, bool autoAttach, params CorsairKeyboardKeyId[] keys)
             : base(keyboard, autoAttach)
         {
@@ -43,6 +76,10 @@ namespace CUE.NET.Devices.Keyboard.Keys
 
         #region Methods
 
+        /// <summary>
+        /// Adds the given key(s) to the keygroup.
+        /// </summary>
+        /// <param name="keys">The key(s) to add.</param>
         public void AddKey(params CorsairKey[] keys)
         {
             if (keys != null)
@@ -52,6 +89,10 @@ namespace CUE.NET.Devices.Keyboard.Keys
 
         }
 
+        /// <summary>
+        /// Adds the given key(s) to the keygroup.
+        /// </summary>
+        /// <param name="keyIds">The ID(s) of the key(s) to add.</param>
         public void AddKey(params CorsairKeyboardKeyId[] keyIds)
         {
             if (keyIds != null)
@@ -59,6 +100,10 @@ namespace CUE.NET.Devices.Keyboard.Keys
                     AddKey(Keyboard[keyId]);
         }
 
+        /// <summary>
+        /// Removes the given key(s) from the keygroup.
+        /// </summary>
+        /// <param name="keys">The key(s) to remove.</param>
         public void RemoveKey(params CorsairKey[] keys)
         {
             if (keys != null)
@@ -67,6 +112,10 @@ namespace CUE.NET.Devices.Keyboard.Keys
                         GroupKeys.Remove(key);
         }
 
+        /// <summary>
+        /// Removes the given key(s) from the keygroup.
+        /// </summary>
+        /// <param name="keyIds">The ID(s) of the key(s) to remove.</param>
         public void RemoveKey(params CorsairKeyboardKeyId[] keyIds)
         {
             if (keyIds != null)
@@ -74,16 +123,30 @@ namespace CUE.NET.Devices.Keyboard.Keys
                     RemoveKey(Keyboard[keyId]);
         }
 
+        /// <summary>
+        /// Checks if a given key is contained by this keygroup.
+        /// </summary>
+        /// <param name="key">The key which should be checked.</param>
+        /// <returns><c>true</c> if the key is contained by this keygroup; otherwise, <c>false</c>.</returns>
         public bool ContainsKey(CorsairKey key)
         {
             return key != null && GroupKeys.Contains(key);
         }
 
+        /// <summary>
+        /// Checks if a given key is contained by this keygroup.
+        /// </summary>
+        /// <param name="keyId">The ID of the key which should be checked.</param>
+        /// <returns><c>true</c> if the key is contained by this keygroup; otherwise, <c>false</c>.</returns>
         public bool ContainsKey(CorsairKeyboardKeyId keyId)
         {
             return ContainsKey(Keyboard[keyId]);
         }
 
+        /// <summary>
+        /// Merges the keys from the given keygroup in this keygroup. 
+        /// </summary>
+        /// <param name="groupToMerge">The keygroup to merge.</param>
         public void MergeKeys(IKeyGroup groupToMerge)
         {
             foreach (CorsairKey key in groupToMerge.Keys)
@@ -91,7 +154,10 @@ namespace CUE.NET.Devices.Keyboard.Keys
                     GroupKeys.Add(key);
         }
 
-
+        /// <summary>
+        /// Gets a list containing the keys from this group.
+        /// </summary>
+        /// <returns>The list containing the keys.</returns>
         protected override IList<CorsairKey> GetGroupKeys()
         {
             return GroupKeys;

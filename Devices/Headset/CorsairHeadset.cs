@@ -24,7 +24,6 @@ namespace CUE.NET.Devices.Headset
         /// </summary>
         /// <param name="ledId">The ID of the LED to get.</param>
         /// <returns>The LED with the specified ID.</returns>
-        /// <exception cref="System.ArgumentNullException" accessor="get"><paramref name="ledId" /> is null.</exception>
         public CorsairLed this[CorsairHeadsetLedId ledId]
         {
             get
@@ -42,7 +41,7 @@ namespace CUE.NET.Devices.Headset
         public CorsairHeadsetDeviceInfo HeadsetDeviceInfo { get; }
 
         /// <summary>
-        /// Indicates if the headset has an active effect to deal with.
+        /// Gets a value indicating if the headset has an active effect to deal with or not.
         /// </summary>
         protected override bool HasEffect => false;
 

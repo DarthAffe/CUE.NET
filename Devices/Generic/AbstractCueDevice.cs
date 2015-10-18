@@ -99,6 +99,7 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Checks if automatic updates should occur and starts/stops the update-loop if needed.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the requested update-mode is not available.</exception>
         protected async void CheckUpdateLoop()
         {
             bool shouldRun;
