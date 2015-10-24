@@ -8,7 +8,7 @@
  * #                                                                                                                 #
  * ###################################################################################################################
  * 
- * > Note < This code is refactored and all parts not used inb this tutorial are removed.
+ * > Note < This code is refactored and all parts not used in this tutorial are removed.
  */
 
 using System;
@@ -32,8 +32,8 @@ namespace Example_AudioAnalyzer_full.TakeAsIs
         private float[] _freqVolScalar = new float[BAR_COUNT];
         private float[] _barValues = new float[BAR_COUNT];
         private int _sampleFrequency = 48000;
-        private int _maximumFrequency = 21000;
-        private int _minimumFrequency = 0;
+        private int _maximumFrequency = 16384;
+        private int _minimumFrequency = 32;
         private int _maximumFrequencyIndex;
         private int _minimumFrequencyIndex;
         private int _deviceNumber;

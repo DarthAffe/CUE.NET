@@ -8,7 +8,7 @@
  * #                                                                                                                 #
  * ###################################################################################################################
  * 
- * > Note < This code is refactored and all parts not used inb this tutorial are removed.
+ * > Note < This code is refactored and all parts not used in this tutorial are removed.
  */
 
 using System;
