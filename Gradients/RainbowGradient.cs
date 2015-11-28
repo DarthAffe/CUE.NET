@@ -6,7 +6,7 @@ using CUE.NET.Helper;
 namespace CUE.NET.Gradients
 {
     /// <summary>
-    /// Represents a rainbow gradient which circles through all color colors of the HUE-color-space.<br />
+    /// Represents a rainbow gradient which circles through all colors of the HUE-color-space.<br />
     /// See <see cref="http://upload.wikimedia.org/wikipedia/commons/a/ad/HueScale.svg" /> as reference
     /// </summary>
     public class RainbowGradient : IGradient
