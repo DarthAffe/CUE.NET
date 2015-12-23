@@ -67,6 +67,8 @@ namespace CUE.NET.Brushes
         /// <returns>The color at the specified point.</returns>
         public override Color GetColorAtPoint(RectangleF rectangle, PointF point)
         {
+            if(Gradient == null) return Color.Transparent;
+
             PointF centerPoint = new PointF(rectangle.X + rectangle.Width * Center.X, rectangle.Y + rectangle.Height * Center.Y);
 
             // Calculate the distance to the farthest point from the center as reference (this has to be a corner)

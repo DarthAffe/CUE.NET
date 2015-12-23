@@ -235,7 +235,7 @@ namespace CUE.NET.Devices.Keyboard
             IntPtr ptr = nativeLedPositions.pLedPosition;
             for (int i = 0; i < nativeLedPositions.numberOfLed; i++)
             {
-                _CorsairLedPosition ledPosition = Marshal.PtrToStructure<_CorsairLedPosition>(ptr);
+                _CorsairLedPosition ledPosition = (_CorsairLedPosition)Marshal.PtrToStructure(ptr, typeof(_CorsairLedPosition));
                 CorsairLed led = GetLed((int)ledPosition.ledId);
                 _keys.Add(ledPosition.ledId, new CorsairKey(ledPosition.ledId, led,
                     new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height)));

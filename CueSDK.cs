@@ -61,11 +61,13 @@ namespace CUE.NET
 
         #region Methods
 
+        // ReSharper disable once ExceptionNotThrown
         /// <summary>
         /// Initializes the CUE-SDK. This method should be called exactly ONE time, before anything else is done.
         /// </summary>
         /// <param name="exclusiveAccess">Specifies whether the application should request exclusive access or not.</param>
         /// <exception cref="WrapperException">Thrown if the SDK is already initialized, the SDK is not compatible to CUE or if CUE returns unknown devices.</exception>
+        /// <exception cref="CUEException">Thrown if the CUE-SDK provides an error.</exception>
         public static void Initialize(bool exclusiveAccess = false)
         {
             if (ProtocolDetails != null)
@@ -85,7 +87,7 @@ namespace CUE.NET
             if (exclusiveAccess)
             {
                 if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
-                    Throw(error);
+                    Throw(LastError);
 
                 HasExclusiveAccess = true;
             }
