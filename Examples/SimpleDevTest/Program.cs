@@ -11,6 +11,7 @@ using CUE.NET.Devices.Keyboard.Extensions;
 using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Exceptions;
 using CUE.NET.Gradients;
+using CUE.NET.Profiles;
 
 namespace SimpleDevTest
 {
@@ -38,6 +39,40 @@ namespace SimpleDevTest
                 if (keyboard == null)
                     throw new WrapperException("No keyboard found");
 
+                keyboard.Brush = new SolidColorBrush(Color.Black);
+                keyboard.Update();
+
+                Wait(3);
+
+                keyboard.Brush = CueProfiles.LoadProfileByID()[null];
+                keyboard.Update();
+
+                Wait(3);
+
+                // My Profile 'K95 RGB Default 2' is all black - this could lead to different behavior than cue has since transparent isn't black in CUE.NET
+                // To swap a profile like CUE does we would need to black out the keyboard before 
+                // OR work with a key group containing all keys and leave the background black - this should be always the prefered solution
+                keyboard.Brush = new SolidColorBrush(Color.Black);
+                keyboard.Update();
+                keyboard.Brush = CueProfiles.LoadProfileByID()["K95 RGB Default 2"];
+                keyboard.Update();
+
+                Wait(3);
+
+                return;
+
+                ListKeyGroup keyGroup = new ListKeyGroup(keyboard, keyboard['R'].KeyId);
+                keyGroup.Brush = new SolidColorBrush(Color.White);
+                keyboard.Update();
+                Wait(2);
+                keyGroup.RemoveKey(keyboard['R'].KeyId);
+                keyboard['R'].Led.Color = Color.Black;
+                keyGroup.AddKey(keyboard['T'].KeyId);
+                keyboard.Update();
+
+                Wait(10);
+
+                return;
 
                 // ---------------------------------------------------------------------------
                 // First we'll look at some basic coloring

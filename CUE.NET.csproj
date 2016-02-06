@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brushes\ProfileBrush.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairAccessMode.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceCaps.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceType.cs" />
@@ -97,6 +98,10 @@
     <Compile Include="Native\_CorsairLedPositions.cs" />
     <Compile Include="Native\_CorsairProtocolDetails.cs" />
     <Compile Include="Native\_CUESDK.cs" />
+    <Compile Include="Profiles\CueProfile.cs" />
+    <Compile Include="Profiles\CueProfileDevice.cs" />
+    <Compile Include="Profiles\CueProfileMode.cs" />
+    <Compile Include="Profiles\CueProfiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairError.cs" />
     <Compile Include="Devices\Keyboard\CorsairKeyboardDeviceInfo.cs" />
