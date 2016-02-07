@@ -8,10 +8,16 @@ using CUE.NET.Devices.Keyboard.Enums;
 
 namespace CUE.NET.Profiles
 {
+    /// <summary>
+    /// Represents a mode of a CUE profile.
+    /// </summary>
     internal class CueProfileMode
     {
         #region Properties & Fields
 
+        /// <summary>
+        /// Gets the name of the mode.
+        /// </summary>
         internal string Name { get; }
 
         private Dictionary<CorsairKeyboardKeyId, Color> _keyLights;
@@ -20,6 +26,10 @@ namespace CUE.NET.Profiles
 
         #region Brush Conversion
 
+        /// <summary>
+        /// Converts a <see cref="CueProfileMode" /> to a <see cref="ProfileBrush" />.
+        /// </summary>
+        /// <param name="profile">The profile mode to convert.</param>
         public static implicit operator ProfileBrush(CueProfileMode profile)
         {
             return profile != null ? new ProfileBrush(profile._keyLights) : null;
@@ -38,6 +48,11 @@ namespace CUE.NET.Profiles
 
         #region Methods
 
+        /// <summary>
+        /// Loads a mode of a CUE profile from the given XML-node.
+        /// </summary>
+        /// <param name="modeRoot">The node containing the mode.</param>
+        /// <returns>The loaded <see cref="CueProfileMode" /> or null.</returns>
         internal static CueProfileMode Load(XElement modeRoot)
         {
             // ReSharper disable PossibleNullReferenceException - Just let it fail - no need to check anything here ...

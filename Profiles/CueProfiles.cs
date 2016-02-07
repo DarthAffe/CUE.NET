@@ -8,6 +8,9 @@ using System.Xml.Linq;
 
 namespace CUE.NET.Profiles
 {
+    /// <summary>
+    /// Represents the SDK for CUE profiles.
+    /// </summary>
     public static class CueProfiles
     {
         #region Constants
@@ -22,6 +25,9 @@ namespace CUE.NET.Profiles
 
         private static Dictionary<string, string> _profileNameMapping = new Dictionary<string, string>();
 
+        /// <summary>
+        /// Gets a list containing the names of all existing profiles.
+        /// </summary>
         public static List<string> ProfileNames
         {
             get
@@ -31,6 +37,9 @@ namespace CUE.NET.Profiles
             }
         }
 
+        /// <summary>
+        /// Gets a list containing the ids of all existing profiles.
+        /// </summary>
         public static List<string> ProfileIds
         {
             get
@@ -44,6 +53,11 @@ namespace CUE.NET.Profiles
 
         #region Methods
 
+        /// <summary>
+        /// Loads the profile with the given name.
+        /// </summary>
+        /// <param name="name">The name (the one given in CUE, not the filename) of the profile.</param>
+        /// <returns>The loaded <see cref="CueProfile" /> or null if it couldn't be loaded.</returns>
         public static CueProfile LoadProfileByName(string name = null)
         {
             string id = null;
@@ -57,6 +71,11 @@ namespace CUE.NET.Profiles
             return LoadProfileByID(id);
         }
 
+        /// <summary>
+        /// Loads the profile with the given id.
+        /// </summary>
+        /// <param name="id">The id of the profile.</param>
+        /// <returns>The loaded <see cref="CueProfile" /> or null if it couldn't be loaded.</returns>
         public static CueProfile LoadProfileByID(string id = null)
         {
             if (id == null) id = GetDefaultProfileId();

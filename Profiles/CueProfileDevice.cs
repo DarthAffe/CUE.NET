@@ -5,12 +5,21 @@ using CUE.NET.Brushes;
 
 namespace CUE.NET.Profiles
 {
+    /// <summary>
+    /// Represents a device of a CUE profile.
+    /// </summary>
     internal class CueProfileDevice
     {
         #region Properties & Fields
 
+        /// <summary>
+        /// The name of the device.
+        /// </summary>
         internal string Name { get; }
 
+        /// <summary>
+        /// Returns a list of strings containing the name of all modes available for this device.
+        /// </summary>
         internal IEnumerable<string> Modes => _modes.Keys.ToList();
 
         private Dictionary<string, CueProfileMode> _modes;
@@ -19,6 +28,11 @@ namespace CUE.NET.Profiles
 
         #region Brush Conversion
 
+        /// <summary>
+        /// Returns the <see cref="ProfileBrush"/> for the given mode.
+        /// </summary>
+        /// <param name="mode">The mode to select.</param>
+        /// <returns>The <see cref="ProfileBrush"/> of the given mode.</returns>
         internal ProfileBrush this[string mode]
         {
             get
@@ -44,6 +58,11 @@ namespace CUE.NET.Profiles
 
         #region Methods
 
+        /// <summary>
+        /// Loads a device of a CUE profile from the given XML-node.
+        /// </summary>
+        /// <param name="deviceRoot">The node containing the device.</param>
+        /// <returns>The loaded <see cref="CueProfileDevice" /> or null.</returns>
         internal static CueProfileDevice Load(XElement deviceRoot)
         {
             // ReSharper disable PossibleNullReferenceException - Just let it fail - no need to check anything here ...

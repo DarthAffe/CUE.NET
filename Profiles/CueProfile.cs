@@ -10,15 +10,28 @@ using CUE.NET.Brushes;
 
 namespace CUE.NET.Profiles
 {
+    /// <summary>
+    /// Represents a CUE profile.
+    /// </summary>
     public class CueProfile
     {
         #region Properties & Fields
 
         private Dictionary<string, CueProfileDevice> _devices;
 
+        /// <summary>
+        /// Gets the Id of the profile.
+        /// </summary>
         public string Id { get; }
+        
+        /// <summary>
+        /// Gets the Name of the profile.
+        /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Returns a list of strings containing the name of all modes available.
+        /// </summary>
         public IEnumerable<string> Modes
         {
             get
@@ -29,6 +42,11 @@ namespace CUE.NET.Profiles
             }
         }
 
+        /// <summary>
+        /// Returns the <see cref="ProfileBrush"/> for the given mode.
+        /// </summary>
+        /// <param name="mode">The mode to select.</param>
+        /// <returns>The <see cref="ProfileBrush"/> of the given mode.</returns>
         public ProfileBrush this[string mode]
         {
             get
@@ -53,6 +71,11 @@ namespace CUE.NET.Profiles
 
         #region Methods
 
+        /// <summary>
+        /// Loads a CUE profile from the given file.
+        /// </summary>
+        /// <param name="file">The profile-file.</param>
+        /// <returns>The loaded <see cref="CueProfile" /> or null.</returns>
         internal static CueProfile Load(string file)
         {
             // ReSharper disable PossibleNullReferenceException - Just let it fail - no need to check anything here ...
