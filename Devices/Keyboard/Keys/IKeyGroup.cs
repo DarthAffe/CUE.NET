@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable UnusedMember.Global
+
+using System.Collections.Generic;
 using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic;
 

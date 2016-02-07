@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿// ReSharper disable VirtualMemberNeverOverriden.Global
+
+using System.Drawing;
 using CUE.NET.Helper;
 
 namespace CUE.NET.Brushes

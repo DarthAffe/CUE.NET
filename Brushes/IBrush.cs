@@ -1,3 +1,5 @@
+// ReSharper disable UnusedMemberInSuper.Global
+
 using System.Drawing;
 
 namespace CUE.NET.Brushes

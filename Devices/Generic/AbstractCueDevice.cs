@@ -1,4 +1,7 @@
-﻿using System;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMethodReturnValue.Global
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;

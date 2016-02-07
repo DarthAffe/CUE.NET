@@ -1,4 +1,5 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 using System.Collections.Generic;
 using CUE.NET.Devices.Keyboard.Enums;

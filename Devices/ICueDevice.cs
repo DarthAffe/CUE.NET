@@ -1,4 +1,7 @@
-﻿using CUE.NET.Devices.Generic;
+﻿// ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable UnusedMember.Global
+
+using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET.Devices
