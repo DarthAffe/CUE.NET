@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
+
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -10,17 +14,16 @@ namespace CUE.NET.Profiles
     {
         #region Properties & Fields
 
+        private Dictionary<string, CueProfileDevice> _devices;
+
         public string Id { get; }
         public string Name { get; }
-
-        private Dictionary<string, CueProfileDevice> _devices;
 
         public IEnumerable<string> Modes
         {
             get
             {
                 string device = _devices.Keys.FirstOrDefault();
-
                 CueProfileDevice cpd;
                 return (device != null && _devices.TryGetValue(device, out cpd)) ? cpd.Modes : new string[0];
             }
@@ -66,7 +69,8 @@ namespace CUE.NET.Profiles
                                 .ToDictionary(x => x.Name)
                 };
             }
-            catch // I have no idea how the factory pattern should handle such a case - time to read :p 
+            // ReSharper disable once CatchAllClause - I have no idea how the factory pattern should handle such a case - time to read :p 
+            catch
             {
                 return null;
             }

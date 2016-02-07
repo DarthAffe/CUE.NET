@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable UnusedMember.Global
+
+using System;
 using System.Drawing;
 using CUE.NET.Helper;
 

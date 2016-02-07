@@ -59,7 +59,8 @@ namespace CUE.NET.Profiles
                         .ToDictionary(x => x.Name)
                 };
             }
-            catch // I have no idea how the factory pattern should handle such a case - time to read :p 
+            // ReSharper disable once CatchAllClause - I have no idea how the factory pattern should handle such a case - time to read :p 
+            catch
             {
                 return null;
             }

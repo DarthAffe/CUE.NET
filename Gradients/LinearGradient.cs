@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿// ReSharper disable UnusedMember.Global
+
+using System.Drawing;
 using System.Linq;
 
 namespace CUE.NET.Gradients

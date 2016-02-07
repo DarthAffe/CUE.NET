@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable UnusedMember.Global
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -67,7 +69,8 @@ namespace CUE.NET.Profiles
             {
                 return XDocument.Load(CONFIG_FILE).Root?.Elements("value").FirstOrDefault(x => string.Equals(x.Attribute("name")?.Value, "InitialProfile", StringComparison.OrdinalIgnoreCase))?.Value;
             }
-            catch // This shouldn't happen but you never know ...
+            // ReSharper disable once CatchAllClause - This shouldn't happen but you never know ...
+            catch
             {
                 return null;
             }
@@ -90,7 +93,8 @@ namespace CUE.NET.Profiles
                         _profileNameMapping.Add(name, id);
                 }
             }
-            catch // This shouldn't happen but you never know ...
+            // ReSharper disable once CatchAllClause - This shouldn't happen but you never know ... 
+            catch
             {
                 _profileNameMapping.Clear();
             }
