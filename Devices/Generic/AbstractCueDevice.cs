@@ -296,6 +296,15 @@ namespace CUE.NET.Devices.Generic
             OnException?.Invoke(this, new OnExceptionEventArgs(ex));
         }
 
+        /// <summary>
+        /// Resets all loaded LEDs back to default.
+        /// </summary>
+        internal void ResetLeds()
+        {
+            foreach (CorsairLed led in Leds.Values)
+                led.Reset();
+        }
+
         #endregion
     }
 }

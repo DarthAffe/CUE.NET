@@ -10,6 +10,8 @@ namespace CUE.NET.Native
     {
         #region Libary Management
 
+        private static IntPtr _dllHandle = IntPtr.Zero;
+
         /// <summary>
         /// Gets the loaded architecture (x64/x86).
         /// </summary>
@@ -17,72 +19,166 @@ namespace CUE.NET.Native
 
         static _CUESDK()
         {
+            LoadCUESDK();
+        }
+
+        /// <summary>
+        /// Reloads the SDK.
+        /// </summary>
+        internal static void Reload()
+        {
+            UnloadCUESDK();
+            LoadCUESDK();
+        }
+
+        private static void LoadCUESDK()
+        {
+            if (_dllHandle != IntPtr.Zero) return;
+
             // HACK: Load library at runtime to support both, x86 and x64 with one managed dll
-            LoadLibrary((LoadedArchitecture = Environment.Is64BitProcess ? "x64" : "x86") + "/CUESDK_2013.dll");
+            _dllHandle = LoadLibrary((LoadedArchitecture = Environment.Is64BitProcess ? "x64" : "x86") + "/CUESDK_2013.dll");
+
+            _corsairSetLedsColorsPointer = (CorsairSetLedsColorsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairSetLedsColors"), typeof(CorsairSetLedsColorsPointer));
+            _corsairGetDeviceCountPointer = (CorsairGetDeviceCountPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetDeviceCount"), typeof(CorsairGetDeviceCountPointer));
+            _corsairGetDeviceInfoPointer = (CorsairGetDeviceInfoPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetDeviceInfo"), typeof(CorsairGetDeviceInfoPointer));
+            _corsairGetLedPositionsPointer = (CorsairGetLedPositionsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedPositions"), typeof(CorsairGetLedPositionsPointer));
+            _corsairGetLedIdForKeyNamePointer = (CorsairGetLedIdForKeyNamePointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedIdForKeyName"), typeof(CorsairGetLedIdForKeyNamePointer));
+            _corsairRequestControlPointer = (CorsairRequestControlPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairRequestControl"), typeof(CorsairRequestControlPointer));
+            _corsairPerformProtocolHandshakePointer = (CorsairPerformProtocolHandshakePointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairPerformProtocolHandshake"), typeof(CorsairPerformProtocolHandshakePointer));
+            _corsairGetLastErrorPointer = (CorsairGetLastErrorPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLastError"), typeof(CorsairGetLastErrorPointer));
+        }
+
+        private static void UnloadCUESDK()
+        {
+            if (_dllHandle == IntPtr.Zero) return;
+
+            // ReSharper disable once EmptyEmbeddedStatement - DarthAffe 20.02.2016: We might need to reduce the internal reference counter more than once to set the library free
+            while (FreeLibrary(_dllHandle)) ;
+            _dllHandle = IntPtr.Zero;
         }
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr LoadLibrary(string dllToLoad);
 
+        [DllImport("kernel32.dll")]
+        private static extern bool FreeLibrary(IntPtr dllHandle);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetProcAddress(IntPtr dllHandle, string name);
+
         #endregion
 
-        #region SDK-IMPORTS
+        #region SDK-METHODS
+
+        #region Pointers
+
+        private static CorsairSetLedsColorsPointer _corsairSetLedsColorsPointer;
+        private static CorsairGetDeviceCountPointer _corsairGetDeviceCountPointer;
+        private static CorsairGetDeviceInfoPointer _corsairGetDeviceInfoPointer;
+        private static CorsairGetLedPositionsPointer _corsairGetLedPositionsPointer;
+        private static CorsairGetLedIdForKeyNamePointer _corsairGetLedIdForKeyNamePointer;
+        private static CorsairRequestControlPointer _corsairRequestControlPointer;
+        private static CorsairPerformProtocolHandshakePointer _corsairPerformProtocolHandshakePointer;
+        private static CorsairGetLastErrorPointer _corsairGetLastErrorPointer;
+
+        #endregion
+
+        #region Delegates
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate bool CorsairSetLedsColorsPointer(int size, IntPtr ledsColors);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate int CorsairGetDeviceCountPointer();
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr CorsairGetDeviceInfoPointer(int deviceIndex);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr CorsairGetLedPositionsPointer();
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate CorsairKeyboardKeyId CorsairGetLedIdForKeyNamePointer(char keyName);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate bool CorsairRequestControlPointer(CorsairAccessMode accessMode);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate _CorsairProtocolDetails CorsairPerformProtocolHandshakePointer();
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate CorsairError CorsairGetLastErrorPointer();
+
+        #endregion
+
+        // ReSharper disable EventExceptionNotDocumented
 
         /// <summary>
         /// CUE-SDK: set specified leds to some colors. The color is retained until changed by successive calls. This function does not take logical layout into account
         /// </summary>
-        [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern bool CorsairSetLedsColors(int size, IntPtr ledsColors);
-
-        //#if WIN64
-        //        [DllImport("CUESDK.x64_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        //#else
-        //        [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        //#endif
-        //internal static extern bool CorsairSetLedsColorsAsync(int size, CorsairLedColor* ledsColors, void(*CallbackType)(void*, bool, CorsairError), void* context);
+        internal static bool CorsairSetLedsColors(int size, IntPtr ledsColors)
+        {
+            return _corsairSetLedsColorsPointer(size, ledsColors);
+        }
 
         /// <summary>
         /// CUE-SDK: returns number of connected Corsair devices that support lighting control.
         /// </summary>
-        [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int CorsairGetDeviceCount();
+        internal static int CorsairGetDeviceCount()
+        {
+            return _corsairGetDeviceCountPointer();
+        }
 
         /// <summary>
         /// CUE-SDK: returns information about device at provided index
         /// </summary>
-        [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr CorsairGetDeviceInfo(int deviceIndex);
+        internal static IntPtr CorsairGetDeviceInfo(int deviceIndex)
+        {
+            return _corsairGetDeviceInfoPointer(deviceIndex);
+        }
 
         /// <summary>
         /// CUE-SDK: provides list of keyboard LEDs with their physical positions.
         /// </summary>
-        [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr CorsairGetLedPositions();
+        internal static IntPtr CorsairGetLedPositions()
+        {
+            return _corsairGetLedPositionsPointer();
+        }
 
         /// <summary>
         /// CUE-SDK: retrieves led id for key name taking logical layout into account.
         /// </summary>
-        [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern CorsairKeyboardKeyId CorsairGetLedIdForKeyName(char keyName);
+        internal static CorsairKeyboardKeyId CorsairGetLedIdForKeyName(char keyName)
+        {
+            return _corsairGetLedIdForKeyNamePointer(keyName);
+        }
 
         /// <summary>
         /// CUE-SDK: requestes control using specified access mode.
         /// By default client has shared control over lighting so there is no need to call CorsairRequestControl unless client requires exclusive control
         /// </summary>
-        [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern bool CorsairRequestControl(CorsairAccessMode accessMode);
+        internal static bool CorsairRequestControl(CorsairAccessMode accessMode)
+        {
+            return _corsairRequestControlPointer(accessMode);
+        }
 
         /// <summary>
         /// CUE-SDK: checks file and protocol version of CUE to understand which of SDK functions can be used with this version of CUE
         /// </summary>
-        [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern _CorsairProtocolDetails CorsairPerformProtocolHandshake();
+        internal static _CorsairProtocolDetails CorsairPerformProtocolHandshake()
+        {
+            return _corsairPerformProtocolHandshakePointer();
+        }
 
         /// <summary>
         /// CUE-SDK: returns last error that occured while using any of Corsair* functions
         /// </summary>
-        [DllImport("CUESDK_2013.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern CorsairError CorsairGetLastError();
+        internal static CorsairError CorsairGetLastError()
+        {
+            return _corsairGetLastErrorPointer();
+        }
+
+        // ReSharper restore EventExceptionNotDocumented
 
         #endregion
     }
