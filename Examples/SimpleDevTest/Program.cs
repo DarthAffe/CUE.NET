@@ -44,8 +44,9 @@ namespace SimpleDevTest
 
                 Wait(3);
 
-                keyboard.Brush = CueProfiles.LoadProfileByID()[null];
-                keyboard.Update();
+                CueSDK.Reinitialize();
+                //keyboard.Brush = CueProfiles.LoadProfileByID()[null];
+                //keyboard.Update();
 
                 Wait(3);
 
@@ -54,8 +55,8 @@ namespace SimpleDevTest
                 // OR work with a key group containing all keys and leave the background black - this should be always the prefered solution
                 keyboard.Brush = new SolidColorBrush(Color.Black);
                 keyboard.Update();
-                keyboard.Brush = CueProfiles.LoadProfileByID()["K95 RGB Default 2"];
-                keyboard.Update();
+                //keyboard.Brush = CueProfiles.LoadProfileByID()["K95 RGB Default 2"];
+                //keyboard.Update();
 
                 Wait(3);
 

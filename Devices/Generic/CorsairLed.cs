@@ -54,17 +54,31 @@ namespace CUE.NET.Devices.Generic
         #endregion
 
         #region Constructors
-        
+
         internal CorsairLed() { }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Updates the LED to the requested color.
+        /// </summary>
         internal void Update()
         {
             _color = RequestedColor;
             IsUpdated = false;
+        }
+
+        /// <summary>
+        /// Resets the LED back to default
+        /// </summary>
+        internal void Reset()
+        {
+            _color = Color.Transparent;
+            RequestedColor = Color.Transparent;
+            IsUpdated = false;
+            IsLocked = false;
         }
 
         #endregion

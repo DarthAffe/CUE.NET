@@ -1,5 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
@@ -122,6 +123,74 @@ namespace CUE.NET
                 if (error != CorsairError.Success)
                     Throw(error);
             }
+        }
+
+        /// <summary>
+        /// Reinitialize the CUE-SDK and temporarily hand back full control to CUE.
+        /// </summary>
+        public static void Reinitialize()
+        {
+            Reinitialize(HasExclusiveAccess);
+        }
+
+        /// <summary>
+        /// Reinitialize the CUE-SDK and temporarily hand back full control to CUE.
+        /// </summary>
+        /// <param name="exclusiveAccess">Specifies whether the application should request exclusive access or not.</param>
+        public static void Reinitialize(bool exclusiveAccess)
+        {
+            if (ProtocolDetails == null)
+                throw new WrapperException("CueSDK isn't initialized.");
+
+            KeyboardSDK?.ResetLeds();
+            MouseSDK?.ResetLeds();
+            HeadsetSDK?.ResetLeds();
+
+            _CUESDK.Reload();
+
+            _CUESDK.CorsairPerformProtocolHandshake();
+
+            CorsairError error = LastError;
+            if (error != CorsairError.Success)
+                Throw(error);
+
+            if (ProtocolDetails.BreakingChanges)
+                throw new WrapperException("The SDK currently used isn't compatible with the installed version of CUE.\r\n" +
+                    $"CUE-Version: {ProtocolDetails.ServerVersion} (Protocol {ProtocolDetails.ServerProtocolVersion})\r\n" +
+                    $"SDK-Version: {ProtocolDetails.SdkVersion} (Protocol {ProtocolDetails.SdkProtocolVersion})");
+
+            if (exclusiveAccess)
+                if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
+                    Throw(LastError);
+            HasExclusiveAccess = exclusiveAccess;
+
+            int deviceCount = _CUESDK.CorsairGetDeviceCount();
+            Dictionary<CorsairDeviceType, GenericDeviceInfo> reloadedDevices = new Dictionary<CorsairDeviceType, GenericDeviceInfo>();
+            for (int i = 0; i < deviceCount; i++)
+            {
+                GenericDeviceInfo info = new GenericDeviceInfo((_CorsairDeviceInfo)Marshal.PtrToStructure(_CUESDK.CorsairGetDeviceInfo(i), typeof(_CorsairDeviceInfo)));
+                if (!info.CapsMask.HasFlag(CorsairDeviceCaps.Lighting))
+                    continue; // Everything that doesn't support lighting control is useless
+
+                reloadedDevices.Add(info.Type, info);
+
+                error = LastError;
+                if (error != CorsairError.Success)
+                    Throw(error);
+            }
+
+            if (KeyboardSDK != null)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Keyboard)
+                || KeyboardSDK.KeyboardDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Keyboard].Model)
+                    throw new WrapperException("The previously loaded Keyboard got disconnected.");
+            if (MouseSDK != null)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Mouse)
+                || MouseSDK.MouseDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Mouse].Model)
+                    throw new WrapperException("The previously loaded Mouse got disconnected.");
+            if (HeadsetSDK != null)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Headset)
+                || HeadsetSDK.HeadsetDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Headset].Model)
+                    throw new WrapperException("The previously loaded Headset got disconnected.");
         }
 
         private static void Throw(CorsairError error)
