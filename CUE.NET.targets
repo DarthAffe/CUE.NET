@@ -15,6 +15,13 @@
     <CueNETSDKFiles Condition="'$(MSBuildThisFileDirectory)' != '' And
                                    HasTrailingSlash('$(MSBuildThisFileDirectory)')"
                         Include="$(MSBuildThisFileDirectory)libs\**\*.dll" />
+
+    <AdditionalPublishFilex86 Include="$(MSBuildThisFileDirectory)libs\x86\*.dll">
+      <Visible>False</Visible>
+    </AdditionalPublishFilex86>
+    <AdditionalPublishFilex64 Include="$(MSBuildThisFileDirectory)libs\x64\*.dll">
+      <Visible>False</Visible>
+    </AdditionalPublishFilex64>
   </ItemGroup>
 
   <!--
@@ -49,7 +56,7 @@
         NOTE: Copy "CUESDK*.dll" and all related files, for every
               architecture that we support, to the build output directory.
     -->
-  <Message Text="Copying SDK files..." Importance="high" />
+    <Message Text="Copying SDK files..." Importance="high" />
     <Copy SourceFiles="@(CueNETSDKFiles)"
           DestinationFiles="@(CueNETSDKFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
@@ -68,9 +75,9 @@
         NOTE: Delete "CUESDK*.dll" and all related files, for every
               architecture that we support, from the build output directory.
     -->
-  <Message Text="this file $(MSBuildThisFileDirectory)" Importance="high"/>
-  <Message Text="Cleaning SDK files..." Importance="high" />
-  
+    <Message Text="this file $(MSBuildThisFileDirectory)" Importance="high"/>
+    <Message Text="Cleaning SDK files..." Importance="high" />
+
     <Delete Files="@(CueNETSDKFiles -> '$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
@@ -80,7 +87,7 @@
 
   <Target Name="CollectCueNETSDKFiles"
           Condition="'$(CollectCueNETSDKFiles)' != 'false'">
-      <Message Text="Collecting SDK files..." Importance="high" />
+    <Message Text="Collecting SDK files..." Importance="high" />
     <ItemGroup>
       <FilesForPackagingFromProject Include="@(CueNETSDKFiles)">
         <DestinationRelativePath>bin\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
@@ -88,6 +95,22 @@
     </ItemGroup>
   </Target>
 
+  <!--
+  ******************************************************************************
+  -->
+
+  <Target Name="BeforePublish">
+    <Touch Files="@(IntermediateAssembly)" />
+  </Target>
+  <Target Name="BeforeBuild">
+    <CreateItem Include="@(AdditionalPublishFilex86)" AdditionalMetadata="TargetPath=x86\%(FileName)%(Extension);IsDataFile=false">
+      <Output TaskParameter="Include" ItemName="_DeploymentManifestFiles" />
+    </CreateItem>
+    <CreateItem Include="@(AdditionalPublishFilex64)" AdditionalMetadata="TargetPath=x64\%(FileName)%(Extension);IsDataFile=false">
+      <Output TaskParameter="Include" ItemName="_DeploymentManifestFiles" />
+    </CreateItem>
+  </Target>
+  
   <!--
   ******************************************************************************
   **                            Build Properties                              **
