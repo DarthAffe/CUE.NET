@@ -3,14 +3,14 @@
   <metadata>
     <id>CUE.NET</id>
     <title>CUE.NET</title>
-    <version>1.0.2</version>
+    <version>1.0.2.1</version>
     <authors>Darth Affe</authors>
     <owners>Darth Affe</owners>
     <projectUrl>https://github.com/DarthAffe/CUE.NET</projectUrl>
     <licenseUrl>https://raw.githubusercontent.com/DarthAffe/CUE.NET/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Corsair HID SDK Wrapper</description>
-    <releaseNotes>Added Profile-API</releaseNotes>
+    <releaseNotes>Improved build-target to support VS-publishing</releaseNotes>
     <summary>C# (.NET) Wrapper library around the Corsair CUE-SDK</summary>
     <copyright>Copyright © Wyrez 2016</copyright>
     <language>en-US</language>
