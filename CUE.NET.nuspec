@@ -10,7 +10,7 @@
     <licenseUrl>https://raw.githubusercontent.com/DarthAffe/CUE.NET/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Corsair HID SDK Wrapper</description>
-    <releaseNotes>Improved build-target to support VS-publishing</releaseNotes>
+    <releaseNotes>Updated SDK to v1.15.28</releaseNotes>
     <summary>C# (.NET) Wrapper library around the Corsair CUE-SDK</summary>
     <copyright>Copyright © Wyrez 2016</copyright>
     <language>en-US</language>
