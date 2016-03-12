@@ -44,6 +44,7 @@ namespace CUE.NET.Native
             _corsairGetLedPositionsPointer = (CorsairGetLedPositionsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedPositions"), typeof(CorsairGetLedPositionsPointer));
             _corsairGetLedIdForKeyNamePointer = (CorsairGetLedIdForKeyNamePointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedIdForKeyName"), typeof(CorsairGetLedIdForKeyNamePointer));
             _corsairRequestControlPointer = (CorsairRequestControlPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairRequestControl"), typeof(CorsairRequestControlPointer));
+            _corsairReleaseControlPointer = (CorsairReleaseControlPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairReleaseControl"), typeof(CorsairReleaseControlPointer));
             _corsairPerformProtocolHandshakePointer = (CorsairPerformProtocolHandshakePointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairPerformProtocolHandshake"), typeof(CorsairPerformProtocolHandshakePointer));
             _corsairGetLastErrorPointer = (CorsairGetLastErrorPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLastError"), typeof(CorsairGetLastErrorPointer));
         }
@@ -78,6 +79,7 @@ namespace CUE.NET.Native
         private static CorsairGetLedPositionsPointer _corsairGetLedPositionsPointer;
         private static CorsairGetLedIdForKeyNamePointer _corsairGetLedIdForKeyNamePointer;
         private static CorsairRequestControlPointer _corsairRequestControlPointer;
+        private static CorsairReleaseControlPointer _corsairReleaseControlPointer;
         private static CorsairPerformProtocolHandshakePointer _corsairPerformProtocolHandshakePointer;
         private static CorsairGetLastErrorPointer _corsairGetLastErrorPointer;
 
@@ -102,6 +104,9 @@ namespace CUE.NET.Native
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate bool CorsairRequestControlPointer(CorsairAccessMode accessMode);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate bool CorsairReleaseControlPointer(CorsairAccessMode accessMode);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate _CorsairProtocolDetails CorsairPerformProtocolHandshakePointer();
@@ -160,6 +165,14 @@ namespace CUE.NET.Native
         internal static bool CorsairRequestControl(CorsairAccessMode accessMode)
         {
             return _corsairRequestControlPointer(accessMode);
+        }
+
+        /// <summary>
+        /// CUE-SDK: releases previously requested control for specified access mode.
+        /// </summary>
+        internal static bool CorsairReleaseControl(CorsairAccessMode accessMode)
+        {
+            return _corsairReleaseControlPointer(accessMode);
         }
 
         /// <summary>
