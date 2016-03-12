@@ -119,7 +119,7 @@ namespace CUE.NET.Native
         // ReSharper disable EventExceptionNotDocumented
 
         /// <summary>
-        /// CUE-SDK: set specified leds to some colors. The color is retained until changed by successive calls. This function does not take logical layout into account
+        /// CUE-SDK: set specified leds to some colors. The color is retained until changed by successive calls. This function does not take logical layout into account.
         /// </summary>
         internal static bool CorsairSetLedsColors(int size, IntPtr ledsColors)
         {
@@ -135,7 +135,7 @@ namespace CUE.NET.Native
         }
 
         /// <summary>
-        /// CUE-SDK: returns information about device at provided index
+        /// CUE-SDK: returns information about device at provided index.
         /// </summary>
         internal static IntPtr CorsairGetDeviceInfo(int deviceIndex)
         {
@@ -160,7 +160,7 @@ namespace CUE.NET.Native
 
         /// <summary>
         /// CUE-SDK: requestes control using specified access mode.
-        /// By default client has shared control over lighting so there is no need to call CorsairRequestControl unless client requires exclusive control
+        /// By default client has shared control over lighting so there is no need to call CorsairRequestControl unless client requires exclusive control.
         /// </summary>
         internal static bool CorsairRequestControl(CorsairAccessMode accessMode)
         {
@@ -176,7 +176,7 @@ namespace CUE.NET.Native
         }
 
         /// <summary>
-        /// CUE-SDK: checks file and protocol version of CUE to understand which of SDK functions can be used with this version of CUE
+        /// CUE-SDK: checks file and protocol version of CUE to understand which of SDK functions can be used with this version of CUE.
         /// </summary>
         internal static _CorsairProtocolDetails CorsairPerformProtocolHandshake()
         {
@@ -184,7 +184,7 @@ namespace CUE.NET.Native
         }
 
         /// <summary>
-        /// CUE-SDK: returns last error that occured while using any of Corsair* functions
+        /// CUE-SDK: returns last error that occured while using any of Corsair* functions.
         /// </summary>
         internal static CorsairError CorsairGetLastError()
         {
