@@ -10,13 +10,15 @@ namespace CUE.NET.Helper
     public static class RectangleHelper
     {
         /// <summary>
-        /// Calculates the center-point of a rectangle.
+        /// Calculates the center-point of a rectangle adding a offset.
         /// </summary>
         /// <param name="rectangle">The rectangle.</param>
+        /// <param name="offsetX">The offset for the x-value</param>
+        /// <param name="offsetY">The offset for the y-value</param>
         /// <returns>The center point of the rectangle.</returns>
-        public static PointF GetCenter(this RectangleF rectangle)
+        public static PointF GetCenter(this RectangleF rectangle, float offsetX = 0f, float offsetY = 0f)
         {
-            return new PointF(rectangle.Left + rectangle.Width / 2f, rectangle.Top + rectangle.Height / 2f);
+            return new PointF((rectangle.Left + rectangle.Width / 2f) + offsetX, (rectangle.Top + rectangle.Height / 2f) + offsetY);
         }
 
         /// <summary>

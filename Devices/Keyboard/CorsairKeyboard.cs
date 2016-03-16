@@ -179,8 +179,13 @@ namespace CUE.NET.Devices.Keyboard
             try
             {
                 RectangleF brushRectangle = RectangleHelper.CreateRectangleFromRectangles(keys.Select(x => x.KeyRectangle));
+                //TODO DarthAffe 16.03.2016: Rework brushes and replace this workaround with a proper selection of absolute/relative calculations
+                float offsetX = -brushRectangle.X;
+                float offsetY = -brushRectangle.Y;
+                brushRectangle.X = 0;
+                brushRectangle.Y = 0;
                 foreach (CorsairKey key in keys)
-                    key.Led.Color = brush.GetColorAtPoint(brushRectangle, key.KeyRectangle.GetCenter());
+                    key.Led.Color = brush.GetColorAtPoint(brushRectangle, key.KeyRectangle.GetCenter(offsetX, offsetY));
             }
             // ReSharper disable once CatchAllClause
             catch (Exception ex) { ManageException(ex); }

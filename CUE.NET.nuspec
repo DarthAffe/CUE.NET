@@ -10,7 +10,8 @@
     <licenseUrl>https://raw.githubusercontent.com/DarthAffe/CUE.NET/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Corsair HID SDK Wrapper</description>
-    <releaseNotes>Updated SDK to v1.15.28</releaseNotes>
+    <releaseNotes>Updated SDK to v1.15.28, 
+    Fixed a calculation bug while calculating the parameters for the brush calculation (THIS MIGHT BREAK EXISTING IMPLEMENTATIONS AND WILL BE CHANGED AGAIN IN THE NEXT VERSION)</releaseNotes>
     <summary>C# (.NET) Wrapper library around the Corsair CUE-SDK</summary>
     <copyright>Copyright © Wyrez 2016</copyright>
     <language>en-US</language>
