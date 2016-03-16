@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brushes\ImageBrush.cs" />
     <Compile Include="Brushes\ProfileBrush.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairAccessMode.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceCaps.cs" />
