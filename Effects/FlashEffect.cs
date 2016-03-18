@@ -61,7 +61,7 @@ namespace CUE.NET.Effects
         public float Interval { get; set; } = 1f;
 
         /// <summary>
-        /// Gets or sets the amount of repetitions the effect should do until it's finished. Zero means infinite. (default: 0f)
+        /// Gets or sets the amount of repetitions the effect should do until it's finished. Zero means infinite. (default: 0)
         /// </summary>
         public int Repetitions { get; set; } = 0;
 
