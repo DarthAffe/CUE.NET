@@ -52,6 +52,7 @@
     <Compile Include="Devices\Generic\Enums\CorsairDeviceType.cs" />
     <Compile Include="Devices\Generic\ExceptionEventArgs.cs" />
     <Compile Include="Brushes\AbstractBrush.cs" />
+    <Compile Include="Devices\Keyboard\Enums\BrushCalculationMode.cs" />
     <Compile Include="Gradients\AbstractGradient.cs" />
     <Compile Include="Gradients\GradientStop.cs" />
     <Compile Include="Gradients\IGradient.cs" />

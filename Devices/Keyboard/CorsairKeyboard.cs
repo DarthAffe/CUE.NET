@@ -106,6 +106,11 @@ namespace CUE.NET.Devices.Keyboard
         public int ZIndex { get; set; } = 0;
 
         /// <summary>
+        /// Gets or sets the calculation mode used for the rectangle/points used for color-selection in brushes.
+        /// </summary>
+        public BrushCalculationMode BrushCalculationMode { get; set; } = BrushCalculationMode.Relative;
+
+        /// <summary>
         /// Gets a value indicating if the keyboard has an active effect to deal with or not.
         /// </summary>
         protected override bool HasEffect
@@ -178,14 +183,24 @@ namespace CUE.NET.Devices.Keyboard
         {
             try
             {
-                RectangleF brushRectangle = RectangleHelper.CreateRectangleFromRectangles(keys.Select(x => x.KeyRectangle));
-                //TODO DarthAffe 16.03.2016: Rework brushes and replace this workaround with a proper selection of absolute/relative calculations
-                float offsetX = -brushRectangle.X;
-                float offsetY = -brushRectangle.Y;
-                brushRectangle.X = 0;
-                brushRectangle.Y = 0;
-                foreach (CorsairKey key in keys)
-                    key.Led.Color = brush.GetColorAtPoint(brushRectangle, key.KeyRectangle.GetCenter(offsetX, offsetY));
+                switch (BrushCalculationMode)
+                {
+                    case BrushCalculationMode.Relative:
+                        RectangleF brushRectangle = RectangleHelper.CreateRectangleFromRectangles(keys.Select(x => x.KeyRectangle));
+                        float offsetX = -brushRectangle.X;
+                        float offsetY = -brushRectangle.Y;
+                        brushRectangle.X = 0;
+                        brushRectangle.Y = 0;
+                        foreach (CorsairKey key in keys)
+                            key.Led.Color = brush.GetColorAtPoint(KeyboardRectangle, key.KeyRectangle.GetCenter(offsetX, offsetY));
+                        break;
+                    case BrushCalculationMode.Absolute:
+                        foreach (CorsairKey key in keys)
+                            key.Led.Color = brush.GetColorAtPoint(KeyboardRectangle, key.KeyRectangle.GetCenter());
+                        break;
+                    default:
+                        throw new ArgumentException();
+                }
             }
             // ReSharper disable once CatchAllClause
             catch (Exception ex) { ManageException(ex); }
