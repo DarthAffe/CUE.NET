@@ -17,10 +17,21 @@ namespace CUE.NET.Devices.Keyboard.Keys
     {
         #region Properties & Fields
 
+        private IList<CorsairKey> _keyCache;
+
+        private RectangleF _rectangle;
         /// <summary>
         /// Gets or sets the rectangle the keys should be taken from.
         /// </summary>
-        public RectangleF Rectangle { get; set; }
+        public RectangleF Rectangle
+        {
+            get { return _rectangle; }
+            set
+            {
+                _rectangle = value;
+                _keyCache = null;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the minimal percentage overlay a key must have with the <see cref="Rectangle" /> to be taken into the keygroup.
@@ -91,7 +102,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// <returns>The list containing the keys.</returns>
         protected override IList<CorsairKey> GetGroupKeys()
         {
-            return Keyboard.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, Rectangle) >= MinOverlayPercentage).ToList();
+            return _keyCache ?? (_keyCache = Keyboard.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, Rectangle) >= MinOverlayPercentage).ToList());
         }
 
         #endregion
