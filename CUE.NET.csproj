@@ -50,7 +50,7 @@
     <Compile Include="Devices\Generic\Enums\CorsairAccessMode.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceCaps.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceType.cs" />
-    <Compile Include="Devices\Generic\OnExceptionEventArgs.cs" />
+    <Compile Include="Devices\Generic\ExceptionEventArgs.cs" />
     <Compile Include="Brushes\AbstractBrush.cs" />
     <Compile Include="Gradients\AbstractGradient.cs" />
     <Compile Include="Gradients\GradientStop.cs" />

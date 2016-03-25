@@ -53,7 +53,7 @@ namespace Example_AudioAnalyzer_full
             //_keyboard.UpdateFrequency = 1f / 60f; // 60 updates per second
 
             // This is useful for debugging-purposes
-            _keyboard.OnException += (sender, args) => Console.WriteLine(args.Exception.Message);
+            _keyboard.Exception += (sender, args) => Console.WriteLine(args.Exception.Message);
 
             Console.WriteLine("CUE.NET initialized!");
         }

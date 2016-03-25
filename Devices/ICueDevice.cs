@@ -7,11 +7,11 @@ using CUE.NET.Devices.Generic.Enums;
 namespace CUE.NET.Devices
 {
     /// <summary>
-    /// Represents the event-handler of the OnException-event.
+    /// Represents the event-handler of the Exception-event.
     /// </summary>
     /// <param name="sender">The sender of the event.</param>
     /// <param name="args">The arguments provided by the event.</param>
-    public delegate void OnExceptionEventHandler(object sender, OnExceptionEventArgs args);
+    public delegate void ExceptionEventHandler(object sender, ExceptionEventArgs args);
 
     /// <summary>
     /// Represents a generic cue device.
@@ -37,7 +37,7 @@ namespace CUE.NET.Devices
         /// <summary>
         /// Occurs when a catched exception is thrown inside the device.
         /// </summary>
-        event OnExceptionEventHandler OnException;
+        event ExceptionEventHandler Exception;
 
         /// <summary>
         /// Perform an update for all dirty keys, or all keys if flushLeds is set to true.

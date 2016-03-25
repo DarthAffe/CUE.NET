@@ -71,7 +71,7 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Occurs when a catched exception is thrown inside the device.
         /// </summary>
-        public event OnExceptionEventHandler OnException;
+        public event ExceptionEventHandler Exception;
 
         #endregion
 
@@ -290,10 +290,10 @@ namespace CUE.NET.Devices.Generic
         /// Handles the needed event-calls for an exception.
         /// </summary>
         /// <param name="ex"></param>
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+        /// <exception cref="System.Exception">A delegate callback throws an exception.</exception>
         protected void ManageException(Exception ex)
         {
-            OnException?.Invoke(this, new OnExceptionEventArgs(ex));
+            Exception?.Invoke(this, new ExceptionEventArgs(ex));
         }
 
         /// <summary>

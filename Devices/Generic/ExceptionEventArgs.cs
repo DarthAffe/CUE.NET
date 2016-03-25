@@ -6,9 +6,9 @@ using System;
 namespace CUE.NET.Devices.Generic
 {
     /// <summary>
-    /// Represents the information supplied with an OnException-event.
+    /// Represents the information supplied with an Exception-event.
     /// </summary>
-    public class OnExceptionEventArgs : EventArgs
+    public class ExceptionEventArgs : EventArgs
     {
         #region Properties & Fields
 
@@ -22,10 +22,10 @@ namespace CUE.NET.Devices.Generic
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OnExceptionEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ExceptionEventArgs"/> class.
         /// </summary>
         /// <param name="exception">The exception which is responsible for the event-call.</param>
-        public OnExceptionEventArgs(Exception exception)
+        public ExceptionEventArgs(Exception exception)
         {
             this.Exception = exception;
         }
