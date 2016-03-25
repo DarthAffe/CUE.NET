@@ -44,12 +44,33 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
         /// </summary>
         /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
+        /// <param name="keys">The initial keys of this keygroup.</param>
+        public ListKeyGroup(CorsairKeyboard keyboard, IEnumerable<CorsairKey> keys)
+            : this(keyboard, true, keys)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
+        /// </summary>
+        /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
+        /// <param name="autoAttach">Specifies whether this keygroup should be automatically attached or not.</param>
+        /// <param name="keys">The initial keys of this keygroup.</param>
+        public ListKeyGroup(CorsairKeyboard keyboard, bool autoAttach, IEnumerable<CorsairKey> keys)
+            : base(keyboard, autoAttach)
+        {
+            AddKeys(keys);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
+        /// </summary>
+        /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
         /// <param name="autoAttach">Specifies whether this keygroup should be automatically attached or not.</param>
         /// <param name="keys">The initial keys of this keygroup.</param>
         public ListKeyGroup(CorsairKeyboard keyboard, bool autoAttach, params CorsairKey[] keys)
             : base(keyboard, autoAttach)
         {
-            AddKey(keys);
+            AddKeys(keys);
         }
 
         /// <summary>
@@ -65,12 +86,33 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
         /// </summary>
         /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
+        /// <param name="keys">The IDs of the initial keys of this keygroup.</param>
+        public ListKeyGroup(CorsairKeyboard keyboard, IEnumerable<CorsairKeyboardKeyId> keys)
+            : this(keyboard, true, keys)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
+        /// </summary>
+        /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
         /// <param name="autoAttach">Specifies whether this keygroup should be automatically attached or not.</param>
         /// <param name="keys">The IDs of the initial keys of this keygroup.</param>
         public ListKeyGroup(CorsairKeyboard keyboard, bool autoAttach, params CorsairKeyboardKeyId[] keys)
             : base(keyboard, autoAttach)
         {
-            AddKey(keys);
+            AddKeys(keys);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ListKeyGroup"/> class.
+        /// </summary>
+        /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
+        /// <param name="autoAttach">Specifies whether this keygroup should be automatically attached or not.</param>
+        /// <param name="keys">The IDs of the initial keys of this keygroup.</param>
+        public ListKeyGroup(CorsairKeyboard keyboard, bool autoAttach, IEnumerable<CorsairKeyboardKeyId> keys)
+            : base(keyboard, autoAttach)
+        {
+            AddKeys(keys);
         }
 
         #endregion
@@ -83,11 +125,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// <param name="keys">The key(s) to add.</param>
         public void AddKey(params CorsairKey[] keys)
         {
-            if (keys != null)
-                foreach (CorsairKey key in keys)
-                    if (key != null && !ContainsKey(key))
-                        GroupKeys.Add(key);
-
+            AddKeys(keys);
         }
 
         /// <summary>
@@ -95,6 +133,27 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// </summary>
         /// <param name="keyIds">The ID(s) of the key(s) to add.</param>
         public void AddKey(params CorsairKeyboardKeyId[] keyIds)
+        {
+            AddKeys(keyIds);
+        }
+
+        /// <summary>
+        /// Adds the given keys to the keygroup.
+        /// </summary>
+        /// <param name="keys">The keys to add.</param>
+        public void AddKeys(IEnumerable<CorsairKey> keys)
+        {
+            if (keys != null)
+                foreach (CorsairKey key in keys)
+                    if (key != null && !ContainsKey(key))
+                        GroupKeys.Add(key);
+        }
+
+        /// <summary>
+        /// Adds the given keys to the keygroup.
+        /// </summary>
+        /// <param name="keyIds">The IDs of the keys to add.</param>
+        public void AddKeys(IEnumerable<CorsairKeyboardKeyId> keyIds)
         {
             if (keyIds != null)
                 foreach (CorsairKeyboardKeyId keyId in keyIds)
@@ -107,10 +166,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// <param name="keys">The key(s) to remove.</param>
         public void RemoveKey(params CorsairKey[] keys)
         {
-            if (keys != null)
-                foreach (CorsairKey key in keys)
-                    if (key != null)
-                        GroupKeys.Remove(key);
+            RemoveKeys(keys);
         }
 
         /// <summary>
@@ -118,6 +174,27 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// </summary>
         /// <param name="keyIds">The ID(s) of the key(s) to remove.</param>
         public void RemoveKey(params CorsairKeyboardKeyId[] keyIds)
+        {
+            RemoveKeys(keyIds);
+        }
+
+        /// <summary>
+        /// Removes the given keys from the keygroup.
+        /// </summary>
+        /// <param name="keys">The keys to remove.</param>
+        public void RemoveKeys(IEnumerable<CorsairKey> keys)
+        {
+            if (keys != null)
+                foreach (CorsairKey key in keys)
+                    if (key != null)
+                        GroupKeys.Remove(key);
+        }
+
+        /// <summary>
+        /// Removes the given keys from the keygroup.
+        /// </summary>
+        /// <param name="keyIds">The IDs of the keys to remove.</param>
+        public void RemoveKeys(IEnumerable<CorsairKeyboardKeyId> keyIds)
         {
             if (keyIds != null)
                 foreach (CorsairKeyboardKeyId keyId in keyIds)
