@@ -33,10 +33,6 @@ namespace Example_AudioAnalyzer_full
 
         public override void Update(float deltaTime)
         {
-            // calculate new data ... - we don't need to do this, since we know that the song beat-effect already calculated them
-            //_dataProcessor.Process();
-
-            // ... and update the brush
             _audioSpectrumBrush.BarData = _dataProcessor.BarValues;
         }
 

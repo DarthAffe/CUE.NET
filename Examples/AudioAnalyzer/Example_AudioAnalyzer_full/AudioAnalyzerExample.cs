@@ -63,13 +63,15 @@ namespace Example_AudioAnalyzer_full
             // Add a lack background. We want this to be semi-transparent to add some sort of fade-effect - this will smooth everything out a bit
             // Note that this isn't a 'real effect' since it's update-rate dependent. A real effect would do always the same thing not mather how fast the keyboard updates.
             _keyboard.Brush = new SolidColorBrush(Color.FromArgb(96, 0, 0, 0));
-
             // Add our song-beat-effect. Remember to uncomment the update in the spectrum effect if you want to remove this.
             _keyboard.AttachEffect(new SongBeatEffect(_soundDataProcessor, Color.FromArgb(127, 164, 164, 164)));
 
             // Add our spectrum-effect using the soundDataProcessor and a rainbow from purple to red as gradient
             _keyboard.AttachEffect(new AudioSpectrumEffect(_soundDataProcessor, new RainbowGradient(300, -14)));
 
+            // Hook onto the keyboard update and process data
+            _keyboard.Updating += (sender, args) => _soundDataProcessor.Process();
+            
             // If you don't like rainbows replace the gradient with anything you like. For example:
             //_keyboard.AttachEffect(new AudioSpectrumEffect(_soundDataProcessor, new LinearGradient(new GradientStop(0f, Color.Blue), new GradientStop(1f, Color.Red))));
 

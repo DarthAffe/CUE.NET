@@ -41,9 +41,6 @@ namespace Example_AudioAnalyzer_full
 
         public override void Update(float deltaTime)
         {
-            // calculate new data ...
-            _dataProcessor.Process();
-
             // ... update the effect-data ...
             if (_dataProcessor.SongBeat >= SONG_BEAT_THRESHOLD)
                 _currentEffect = FLASH_DURATION;
