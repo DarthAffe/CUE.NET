@@ -186,7 +186,7 @@ namespace CUE.NET.Devices.Generic
             DeviceUpdate();
             UpdateEffects();
 
-            IList<KeyValuePair<int, CorsairLed>> ledsToUpdate = (flushLeds ? Leds : Leds.Where(x => x.Value.IsDirty)).ToList();
+            ICollection<LedUpateRequest> ledsToUpdate = (flushLeds ? Leds : Leds.Where(x => x.Value.IsDirty)).Select(x => new LedUpateRequest(x.Key, x.Value.RequestedColor)).ToList();
 
             foreach (CorsairLed led in Leds.Values)
                 led.Update();
@@ -244,35 +244,35 @@ namespace CUE.NET.Devices.Generic
         /// <param name="effect">The effect to apply.</param>
         protected abstract void ApplyEffect(IEffect effect);
 
-        private void UpdateLeds(ICollection<KeyValuePair<int, CorsairLed>> ledsToUpdate)
+        private void UpdateLeds(ICollection<LedUpateRequest> updateRequests)
         {
-            ledsToUpdate = ledsToUpdate.Where(x => x.Value.Color != Color.Transparent).ToList();
+            updateRequests = updateRequests.Where(x => x.Color != Color.Transparent).ToList();
 
-            OnLedsUpdating(ledsToUpdate);
+            OnLedsUpdating(updateRequests);
 
-            if (ledsToUpdate.Any()) // CUE seems to crash if 'CorsairSetLedsColors' is called with a zero length array
+            if (updateRequests.Any()) // CUE seems to crash if 'CorsairSetLedsColors' is called with a zero length array
             {
                 int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
-                IntPtr ptr = Marshal.AllocHGlobal(structSize * ledsToUpdate.Count);
+                IntPtr ptr = Marshal.AllocHGlobal(structSize * updateRequests.Count);
                 IntPtr addPtr = new IntPtr(ptr.ToInt64());
-                foreach (KeyValuePair<int, CorsairLed> led in ledsToUpdate)
+                foreach (LedUpateRequest ledUpdateRequest in updateRequests)
                 {
                     _CorsairLedColor color = new _CorsairLedColor
                     {
-                        ledId = led.Key,
-                        r = led.Value.Color.R,
-                        g = led.Value.Color.G,
-                        b = led.Value.Color.B
+                        ledId = ledUpdateRequest.LedId,
+                        r = ledUpdateRequest.Color.R,
+                        g = ledUpdateRequest.Color.G,
+                        b = ledUpdateRequest.Color.B
                     };
 
                     Marshal.StructureToPtr(color, addPtr, false);
                     addPtr = new IntPtr(addPtr.ToInt64() + structSize);
                 }
-                _CUESDK.CorsairSetLedsColors(ledsToUpdate.Count, ptr);
+                _CUESDK.CorsairSetLedsColors(updateRequests.Count, ptr);
                 Marshal.FreeHGlobal(ptr);
             }
 
-            OnLedsUpdated(ledsToUpdate);
+            OnLedsUpdated(updateRequests);
         }
 
         /// <summary>
@@ -382,7 +382,7 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Handles the needed event-calls before the leds are updated.
         /// </summary>
-        protected virtual void OnLedsUpdating(ICollection<KeyValuePair<int, CorsairLed>> updatingLeds)
+        protected virtual void OnLedsUpdating(ICollection<LedUpateRequest> updatingLeds)
         {
             try
             {
@@ -397,7 +397,7 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Handles the needed event-calls after the leds are updated.
         /// </summary>
-        protected virtual void OnLedsUpdated(IEnumerable<KeyValuePair<int, CorsairLed>> updatedLeds)
+        protected virtual void OnLedsUpdated(IEnumerable<LedUpateRequest> updatedLeds)
         {
             try
             {

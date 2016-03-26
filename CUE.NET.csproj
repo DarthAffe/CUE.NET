@@ -56,6 +56,7 @@
     <Compile Include="Devices\Generic\EventArgs\LedsUpdatingEventArgs.cs" />
     <Compile Include="Devices\Generic\EventArgs\UpdatedEventArgs.cs" />
     <Compile Include="Devices\Generic\EventArgs\UpdatingEventArgs.cs" />
+    <Compile Include="Devices\Generic\LedUpateRequest.cs" />
     <Compile Include="Devices\Keyboard\Enums\BrushCalculationMode.cs" />
     <Compile Include="Gradients\AbstractGradient.cs" />
     <Compile Include="Gradients\GradientStop.cs" />

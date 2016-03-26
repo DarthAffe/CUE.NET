@@ -183,7 +183,7 @@ namespace CUE.NET.Devices.Keyboard
                         brushRectangle.X = 0;
                         brushRectangle.Y = 0;
                         foreach (CorsairKey key in keys)
-                            key.Led.Color = brush.GetColorAtPoint(KeyboardRectangle, key.KeyRectangle.GetCenter(offsetX, offsetY));
+                            key.Led.Color = brush.GetColorAtPoint(brushRectangle, key.KeyRectangle.GetCenter(offsetX, offsetY));
                         break;
                     case BrushCalculationMode.Absolute:
                         foreach (CorsairKey key in keys)

@@ -1,4 +1,5 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 using System.Collections.Generic;
 
@@ -8,15 +9,15 @@ namespace CUE.NET.Devices.Generic.EventArgs
     {
         #region Properties & Fields
 
-        public IEnumerable<KeyValuePair<int, CorsairLed>> UpdatedLeds { get; private set; }
+        public IEnumerable<LedUpateRequest> UpdatedLeds { get; }
 
         #endregion
 
         #region Constructors
 
-        public LedsUpdatedEventArgs(IEnumerable<KeyValuePair<int, CorsairLed>> updatedLeds)
+        public LedsUpdatedEventArgs(IEnumerable<LedUpateRequest> updatedLeds)
         {
-            this.UpdatedLeds = new List<KeyValuePair<int, CorsairLed>>(updatedLeds); // Copy this - we don't want anyone to change the original led list.
+            this.UpdatedLeds = updatedLeds;
         }
 
         #endregion
