@@ -1,4 +1,7 @@
-﻿using System;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+using System;
 using System.Drawing;
 
 namespace CUE.NET.Brushes

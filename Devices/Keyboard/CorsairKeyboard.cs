@@ -1,5 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 // ReSharper disable UnusedMember.Global
 
 using System;
@@ -92,7 +93,7 @@ namespace CUE.NET.Devices.Keyboard
         /// <summary>
         /// Gets the rectangle containing all keys of the keyboard.
         /// </summary>
-        public RectangleF KeyboardRectangle { get; private set; }
+        public RectangleF KeyboardRectangle { get; }
 
         /// <summary>
         /// Gets or sets the background brush of the keyboard.
