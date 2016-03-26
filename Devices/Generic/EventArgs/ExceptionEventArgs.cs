@@ -3,12 +3,12 @@
 
 using System;
 
-namespace CUE.NET.Devices.Generic
+namespace CUE.NET.Devices.Generic.EventArgs
 {
     /// <summary>
     /// Represents the information supplied with an Exception-event.
     /// </summary>
-    public class ExceptionEventArgs : EventArgs
+    public class ExceptionEventArgs : System.EventArgs
     {
         #region Properties & Fields
 

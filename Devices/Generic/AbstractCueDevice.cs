@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using CUE.NET.Devices.Generic.Enums;
+using CUE.NET.Devices.Generic.EventArgs;
 using CUE.NET.Effects;
 using CUE.NET.Native;
 
@@ -72,6 +73,26 @@ namespace CUE.NET.Devices.Generic
         /// Occurs when a catched exception is thrown inside the device.
         /// </summary>
         public event ExceptionEventHandler Exception;
+
+        /// <summary>
+        /// Occurs when the device starts updating.
+        /// </summary>
+        public event UpdatingEventHandler Updating;
+
+        /// <summary>
+        /// Occurs when the device update is done.
+        /// </summary>
+        public event UpdatedEventHandler Updated;
+
+        /// <summary>
+        /// Occurs when the device starts to update the leds.
+        /// </summary>
+        public event LedsUpdatingEventHandler LedsUpdating;
+
+        /// <summary>
+        /// Occurs when the device updated the leds.
+        /// </summary>
+        public event LedsUpdatedEventHandler LedsUpdated;
 
         #endregion
 
@@ -158,8 +179,11 @@ namespace CUE.NET.Devices.Generic
         /// Performs an update for all dirty keys, or all keys if flushLeds is set to true.
         /// </summary>
         /// <param name="flushLeds">Specifies whether all keys (including clean ones) should be updated.</param>
-        public virtual void Update(bool flushLeds = false)
+        public void Update(bool flushLeds = false)
         {
+            OnUpdating();
+
+            DeviceUpdate();
             UpdateEffects();
 
             IList<KeyValuePair<int, CorsairLed>> ledsToUpdate = (flushLeds ? Leds : Leds.Where(x => x.Value.IsDirty)).ToList();
@@ -168,7 +192,15 @@ namespace CUE.NET.Devices.Generic
                 led.Update();
 
             UpdateLeds(ledsToUpdate);
+
+            OnUpdated();
         }
+
+        /// <summary>
+        /// Empty method which can be overwritten to perform device specific updates.
+        /// </summary>
+        protected virtual void DeviceUpdate()
+        { }
 
         private void UpdateEffects()
         {
@@ -198,7 +230,7 @@ namespace CUE.NET.Devices.Generic
                             effectsToRemove.Add(effect.Effect);
                     }
                     // ReSharper disable once CatchAllClause
-                    catch (Exception ex) { ManageException(ex); }
+                    catch (Exception ex) { OnException(ex); }
                 }
             }
 
@@ -212,31 +244,35 @@ namespace CUE.NET.Devices.Generic
         /// <param name="effect">The effect to apply.</param>
         protected abstract void ApplyEffect(IEffect effect);
 
-        private static void UpdateLeds(ICollection<KeyValuePair<int, CorsairLed>> ledsToUpdate)
+        private void UpdateLeds(ICollection<KeyValuePair<int, CorsairLed>> ledsToUpdate)
         {
             ledsToUpdate = ledsToUpdate.Where(x => x.Value.Color != Color.Transparent).ToList();
 
-            if (!ledsToUpdate.Any())
-                return; // CUE seems to crash if 'CorsairSetLedsColors' is called with a zero length array
+            OnLedsUpdating(ledsToUpdate);
 
-            int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
-            IntPtr ptr = Marshal.AllocHGlobal(structSize * ledsToUpdate.Count);
-            IntPtr addPtr = new IntPtr(ptr.ToInt64());
-            foreach (KeyValuePair<int, CorsairLed> led in ledsToUpdate)
+            if (ledsToUpdate.Any()) // CUE seems to crash if 'CorsairSetLedsColors' is called with a zero length array
             {
-                _CorsairLedColor color = new _CorsairLedColor
+                int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
+                IntPtr ptr = Marshal.AllocHGlobal(structSize * ledsToUpdate.Count);
+                IntPtr addPtr = new IntPtr(ptr.ToInt64());
+                foreach (KeyValuePair<int, CorsairLed> led in ledsToUpdate)
                 {
-                    ledId = led.Key,
-                    r = led.Value.Color.R,
-                    g = led.Value.Color.G,
-                    b = led.Value.Color.B
-                };
+                    _CorsairLedColor color = new _CorsairLedColor
+                    {
+                        ledId = led.Key,
+                        r = led.Value.Color.R,
+                        g = led.Value.Color.G,
+                        b = led.Value.Color.B
+                    };
 
-                Marshal.StructureToPtr(color, addPtr, false);
-                addPtr = new IntPtr(addPtr.ToInt64() + structSize);
+                    Marshal.StructureToPtr(color, addPtr, false);
+                    addPtr = new IntPtr(addPtr.ToInt64() + structSize);
+                }
+                _CUESDK.CorsairSetLedsColors(ledsToUpdate.Count, ptr);
+                Marshal.FreeHGlobal(ptr);
             }
-            _CUESDK.CorsairSetLedsColors(ledsToUpdate.Count, ptr);
-            Marshal.FreeHGlobal(ptr);
+
+            OnLedsUpdated(ledsToUpdate);
         }
 
         /// <summary>
@@ -287,16 +323,6 @@ namespace CUE.NET.Devices.Generic
         }
 
         /// <summary>
-        /// Handles the needed event-calls for an exception.
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <exception cref="System.Exception">A delegate callback throws an exception.</exception>
-        protected void ManageException(Exception ex)
-        {
-            Exception?.Invoke(this, new ExceptionEventArgs(ex));
-        }
-
-        /// <summary>
         /// Resets all loaded LEDs back to default.
         /// </summary>
         internal void ResetLeds()
@@ -304,6 +330,85 @@ namespace CUE.NET.Devices.Generic
             foreach (CorsairLed led in Leds.Values)
                 led.Reset();
         }
+
+        #region EventCaller
+
+        /// <summary>
+        /// Handles the needed event-calls for an exception.
+        /// </summary>
+        /// <param name="ex">The exception previously thrown.</param>
+        protected virtual void OnException(Exception ex)
+        {
+            try
+            {
+                Exception?.Invoke(this, new ExceptionEventArgs(ex));
+            }
+            catch
+            {
+                // Well ... that's not my fault
+            }
+        }
+
+        /// <summary>
+        /// Handles the needed event-calls before updating.
+        /// </summary>
+        protected virtual void OnUpdating()
+        {
+            try
+            {
+                Updating?.Invoke(this, new UpdatingEventArgs());
+            }
+            catch
+            {
+                // Well ... that's not my fault
+            }
+        }
+
+        /// <summary>
+        /// Handles the needed event-calls after an update.
+        /// </summary>
+        protected virtual void OnUpdated()
+        {
+            try
+            {
+                Updated?.Invoke(this, new UpdatedEventArgs());
+            }
+            catch
+            {
+                // Well ... that's not my fault
+            }
+        }
+
+        /// <summary>
+        /// Handles the needed event-calls before the leds are updated.
+        /// </summary>
+        protected virtual void OnLedsUpdating(ICollection<KeyValuePair<int, CorsairLed>> updatingLeds)
+        {
+            try
+            {
+                LedsUpdating?.Invoke(this, new LedsUpdatingEventArgs(updatingLeds));
+            }
+            catch
+            {
+                // Well ... that's not my fault
+            }
+        }
+
+        /// <summary>
+        /// Handles the needed event-calls after the leds are updated.
+        /// </summary>
+        protected virtual void OnLedsUpdated(IEnumerable<KeyValuePair<int, CorsairLed>> updatedLeds)
+        {
+            try
+            {
+                LedsUpdated?.Invoke(this, new LedsUpdatedEventArgs(updatedLeds));
+            }
+            catch
+            {
+                // Well ... that's not my fault
+            }
+        }
+        #endregion
 
         #endregion
     }

@@ -50,8 +50,12 @@
     <Compile Include="Devices\Generic\Enums\CorsairAccessMode.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceCaps.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceType.cs" />
-    <Compile Include="Devices\Generic\ExceptionEventArgs.cs" />
+    <Compile Include="Devices\Generic\EventArgs\ExceptionEventArgs.cs" />
     <Compile Include="Brushes\AbstractBrush.cs" />
+    <Compile Include="Devices\Generic\EventArgs\LedsUpdatedEventArgs.cs" />
+    <Compile Include="Devices\Generic\EventArgs\LedsUpdatingEventArgs.cs" />
+    <Compile Include="Devices\Generic\EventArgs\UpdatedEventArgs.cs" />
+    <Compile Include="Devices\Generic\EventArgs\UpdatingEventArgs.cs" />
     <Compile Include="Devices\Keyboard\Enums\BrushCalculationMode.cs" />
     <Compile Include="Gradients\AbstractGradient.cs" />
     <Compile Include="Gradients\GradientStop.cs" />
