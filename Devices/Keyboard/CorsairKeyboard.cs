@@ -146,18 +146,9 @@ namespace CUE.NET.Devices.Keyboard
         #region Update
 
         /// <summary>
-        /// Updates all groups and effects and perform an update for all dirty keys, or all keys if flushLeds is set to true.
+        /// Updates all brushes on the keyboard and on groups. 
         /// </summary>
-        /// <param name="flushLeds">Specifies whether all keys (including clean ones) should be updated.</param>
-        public override void Update(bool flushLeds = false)
-        {
-            UpdateBrushes();
-
-            // Perform 'real' update
-            base.Update(flushLeds);
-        }
-
-        private void UpdateBrushes()
+        protected override void DeviceUpdate()
         {
             if (Brush != null)
                 ApplyBrush(this.ToList(), Brush);
@@ -203,7 +194,7 @@ namespace CUE.NET.Devices.Keyboard
                 }
             }
             // ReSharper disable once CatchAllClause
-            catch (Exception ex) { ManageException(ex); }
+            catch (Exception ex) { OnException(ex); }
         }
 
         public IEnumerable<CorsairLed> GetLeds()
