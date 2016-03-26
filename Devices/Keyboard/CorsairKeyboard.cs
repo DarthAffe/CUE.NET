@@ -151,13 +151,13 @@ namespace CUE.NET.Devices.Keyboard
         /// <param name="flushLeds">Specifies whether all keys (including clean ones) should be updated.</param>
         public override void Update(bool flushLeds = false)
         {
-            UpdateKeyGroups();
+            UpdateBrushes();
 
             // Perform 'real' update
             base.Update(flushLeds);
         }
 
-        private void UpdateKeyGroups()
+        private void UpdateBrushes()
         {
             if (Brush != null)
                 ApplyBrush(this.ToList(), Brush);
