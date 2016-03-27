@@ -107,11 +107,6 @@ namespace CUE.NET.Devices.Keyboard
         public int ZIndex { get; set; } = 0;
 
         /// <summary>
-        /// Gets or sets the calculation mode used for the rectangle/points used for color-selection in brushes.
-        /// </summary>
-        public BrushCalculationMode BrushCalculationMode { get; set; } = BrushCalculationMode.Relative;
-
-        /// <summary>
         /// Gets a value indicating if the keyboard has an active effect to deal with or not.
         /// </summary>
         protected override bool HasEffect
@@ -175,7 +170,7 @@ namespace CUE.NET.Devices.Keyboard
         {
             try
             {
-                switch (BrushCalculationMode)
+                switch (brush.BrushCalculationMode)
                 {
                     case BrushCalculationMode.Relative:
                         RectangleF brushRectangle = RectangleHelper.CreateRectangleFromRectangles(keys.Select(x => x.KeyRectangle));

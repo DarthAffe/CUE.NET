@@ -1,6 +1,7 @@
 // ReSharper disable UnusedMemberInSuper.Global
 
 using System.Drawing;
+using CUE.NET.Devices.Keyboard.Enums;
 
 namespace CUE.NET.Brushes
 {
@@ -9,6 +10,11 @@ namespace CUE.NET.Brushes
     /// </summary>
     public interface IBrush
     {
+        /// <summary>
+        /// Gets or sets the calculation mode used for the rectangle/points used for color-selection in brushes.
+        /// </summary>
+        BrushCalculationMode BrushCalculationMode { get; set; }
+
         /// <summary>
         /// Gets or sets the overall percentage brightness of the brush.
         /// </summary>

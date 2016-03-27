@@ -1,6 +1,7 @@
 ﻿// ReSharper disable VirtualMemberNeverOverriden.Global
 
 using System.Drawing;
+using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Helper;
 
 namespace CUE.NET.Brushes
@@ -11,6 +12,11 @@ namespace CUE.NET.Brushes
     public abstract class AbstractBrush : IBrush
     {
         #region Properties & Fields
+
+        /// <summary>
+        /// Gets or sets the calculation mode used for the rectangle/points used for color-selection in brushes.
+        /// </summary>
+        public BrushCalculationMode BrushCalculationMode { get; set; } = BrushCalculationMode.Relative;
 
         /// <summary>
         /// Gets or sets the overall percentage brightness of the brush.
