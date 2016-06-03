@@ -64,6 +64,7 @@ namespace CUE.NET.Devices.Generic
         private CancellationTokenSource _updateTokenSource;
         private CancellationToken _updateToken;
         private Task _updateTask;
+        private DateTime _lastUpdate = DateTime.Now;
 
         #endregion
 
@@ -356,7 +357,9 @@ namespace CUE.NET.Devices.Generic
         {
             try
             {
-                Updating?.Invoke(this, new UpdatingEventArgs());
+                long lastUpdateTicks = _lastUpdate.Ticks;
+                _lastUpdate = DateTime.Now;
+                Updating?.Invoke(this, new UpdatingEventArgs((float)((DateTime.Now.Ticks - lastUpdateTicks) / 10000000f)));
             }
             catch
             {
