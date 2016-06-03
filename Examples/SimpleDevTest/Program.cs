@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,149 +40,201 @@ namespace SimpleDevTest
                 if (keyboard == null)
                     throw new WrapperException("No keyboard found");
 
+                const float SPEED = 100f; // mm/sec
+                const float BRUSH_MODE_CHANGE_TIMER = 2f;
+                Random random = new Random();
+
+                keyboard.UpdateMode = UpdateMode.Continuous;
                 keyboard.Brush = new SolidColorBrush(Color.Black);
-                keyboard.Update();
 
-                Wait(3);
+                RectangleF spot = new RectangleF(keyboard.KeyboardRectangle.Width / 2f, keyboard.KeyboardRectangle.Y / 2f, 160, 80);
+                PointF target = new PointF(spot.X, spot.Y);
+                RectangleKeyGroup spotGroup = new RectangleKeyGroup(keyboard, spot) { Brush = new LinearGradientBrush(new RainbowGradient()) };
 
-                CueSDK.Reinitialize();
-                //keyboard.Brush = CueProfiles.LoadProfileByID()[null];
+                float brushModeTimer = BRUSH_MODE_CHANGE_TIMER;
+                keyboard.Updating += (sender, eventArgs) =>
+                {
+                    brushModeTimer -= eventArgs.DeltaTime;
+                    if (brushModeTimer <= 0)
+                    {
+                        spotGroup.Brush.BrushCalculationMode = spotGroup.Brush.BrushCalculationMode == BrushCalculationMode.Relative
+                                                                ? BrushCalculationMode.Absolute : BrushCalculationMode.Relative;
+                        brushModeTimer = BRUSH_MODE_CHANGE_TIMER + brushModeTimer;
+                    }
+
+                    if (spot.Contains(target))
+                        target = new PointF((float)(keyboard.KeyboardRectangle.X + (random.NextDouble() * keyboard.KeyboardRectangle.Width)),
+                                (float)(keyboard.KeyboardRectangle.Y + (random.NextDouble() * keyboard.KeyboardRectangle.Height)));
+                    else
+                        spot.Location = Interpolate(spot.Location, target, eventArgs.DeltaTime * SPEED);
+                    spotGroup.Rectangle = spot;
+                };
+
+                //keyboard.Brush = new SolidColorBrush(Color.Black);
+                //IKeyGroup group = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.F1, CorsairKeyboardKeyId.RightShift);
+                //group.Brush = new LinearGradientBrush(new RainbowGradient());
+                //bool tmp = false;
+                //while (true)
+                //{
+                //    group.Brush.BrushCalculationMode = tmp ? BrushCalculationMode.Absolute : BrushCalculationMode.Relative;
+
+                //    tmp = !tmp;
+                //    keyboard.Update();
+                //    Wait(1);
+                //}
+
+                //keyboard.Brush = new SolidColorBrush(Color.Aqua);
                 //keyboard.Update();
 
-                Wait(3);
-
-                // My Profile 'K95 RGB Default 2' is all black - this could lead to different behavior than cue has since transparent isn't black in CUE.NET
-                // To swap a profile like CUE does we would need to black out the keyboard before 
-                // OR work with a key group containing all keys and leave the background black - this should be always the prefered solution
-                keyboard.Brush = new SolidColorBrush(Color.Black);
-                keyboard.Update();
-                //keyboard.Brush = CueProfiles.LoadProfileByID()["K95 RGB Default 2"];
+                //IKeyGroup specialKeyGroup = new ListKeyGroup(keyboard, CorsairKeyboardKeyId.Brightness, CorsairKeyboardKeyId.WinLock);
+                //specialKeyGroup.Brush = new SolidColorBrush(Color.Aqua);
                 //keyboard.Update();
 
-                Wait(3);
+                //// Replacing the specialKeyGroup with this won't work
+                //keyboard[CorsairKeyboardKeyId.Brightness].Led.Color = Color.Aqua;
+                //keyboard[CorsairKeyboardKeyId.Brightness].Led.IsLocked = true;
+                //keyboard[CorsairKeyboardKeyId.WinLock].Led.Color = Color.Aqua;
+                //keyboard[CorsairKeyboardKeyId.WinLock].Led.IsLocked = true;
+                //keyboard.Update();
 
-                return;
+                //Wait(3);
 
-                ListKeyGroup keyGroup = new ListKeyGroup(keyboard, keyboard['R'].KeyId);
-                keyGroup.Brush = new SolidColorBrush(Color.White);
-                keyboard.Update();
-                Wait(2);
-                keyGroup.RemoveKey(keyboard['R'].KeyId);
-                keyboard['R'].Led.Color = Color.Black;
-                keyGroup.AddKey(keyboard['T'].KeyId);
-                keyboard.Update();
+                //CueSDK.Reinitialize();
+                ////keyboard.Brush = CueProfiles.LoadProfileByID()[null];
+                ////keyboard.Update();
 
-                Wait(10);
+                //Wait(3);
 
-                return;
+                //// My Profile 'K95 RGB Default 2' is all black - this could lead to different behavior than cue has since transparent isn't black in CUE.NET
+                //// To swap a profile like CUE does we would need to black out the keyboard before 
+                //// OR work with a key group containing all keys and leave the background black - this should be always the prefered solution
+                //keyboard.Brush = new SolidColorBrush(Color.Black);
+                //keyboard.Update();
+                ////keyboard.Brush = CueProfiles.LoadProfileByID()["K95 RGB Default 2"];
+                ////keyboard.Update();
+
+                //Wait(3);
+
+                //ListKeyGroup keyGroup = new ListKeyGroup(keyboard, keyboard['R'].KeyId);
+                //keyGroup.Brush = new SolidColorBrush(Color.White);
+                //keyboard.Update();
+                //Wait(2);
+                //keyGroup.RemoveKey(keyboard['R'].KeyId);
+                //keyboard['R'].Led.Color = Color.Black;
+                //keyGroup.AddKey(keyboard['T'].KeyId);
+                //keyboard.Update();
+
+                //Wait(10);
+
+                //return;
 
                 // ---------------------------------------------------------------------------
                 // First we'll look at some basic coloring
 
-                Console.WriteLine("Basic color-test ...");
-                // Ink all numbers on the keypad except the '5' purple, we want that to be gray
-                ListKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
-                { Brush = new SolidColorBrush(Color.Purple) }
-                .Exclude(CorsairKeyboardKeyId.Keypad5);
-                keyboard[CorsairKeyboardKeyId.Keypad5].Led.Color = Color.Gray;
+                //Console.WriteLine("Basic color-test ...");
+                //// Ink all numbers on the keypad except the '5' purple, we want that to be gray
+                //ListKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
+                //{ Brush = new SolidColorBrush(Color.Purple) }
+                //.Exclude(CorsairKeyboardKeyId.Keypad5);
+                //keyboard[CorsairKeyboardKeyId.Keypad5].Led.Color = Color.Gray;
 
-                // Ink the Keys 'r', 'g', 'b' in their respective color
-                // The char access fails for everything except letters (SDK doesn't return a valid keyId)
-                keyboard['R'].Led.Color = Color.Red;
-                keyboard[CorsairKeyboardKeyId.G].Led.Color = Color.Green;
-                keyboard['B'].Led.Color = Color.Blue;
+                //// Ink the Keys 'r', 'g', 'b' in their respective color
+                //// The char access fails for everything except letters (SDK doesn't return a valid keyId)
+                //keyboard['R'].Led.Color = Color.Red;
+                //keyboard[CorsairKeyboardKeyId.G].Led.Color = Color.Green;
+                //keyboard['B'].Led.Color = Color.Blue;
 
-                // Lock the 'r', 'g', 'b' keys. We want them to stay like this forever (commented since it looks quite stupid later, but feel free tu uncomment this)
-                //keyboard['R'].Led.IsLocked = true;
-                //keyboard['G'].Led.IsLocked = true;
-                //keyboard['B'].Led.IsLocked = true;
+                //// Lock the 'r', 'g', 'b' keys. We want them to stay like this forever (commented since it looks quite stupid later, but feel free tu uncomment this)
+                ////keyboard['R'].Led.IsLocked = true;
+                ////keyboard['G'].Led.IsLocked = true;
+                ////keyboard['B'].Led.IsLocked = true;
 
-                // Ink the letters of 'white' white
-                ListKeyGroup whiteGroup = new ListKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E)
-                { Brush = new SolidColorBrush(Color.White) };
+                //// Ink the letters of 'white' white
+                //ListKeyGroup whiteGroup = new ListKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E)
+                //{ Brush = new SolidColorBrush(Color.White) };
 
-                // Ink the keys '1' to '0' yellow
-                RectangleKeyGroup yellowGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.D1, CorsairKeyboardKeyId.D0)
-                { Brush = new SolidColorBrush(Color.Yellow) };
+                //// Ink the keys '1' to '0' yellow
+                //RectangleKeyGroup yellowGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.D1, CorsairKeyboardKeyId.D0)
+                //{ Brush = new SolidColorBrush(Color.Yellow) };
 
-                // Update the keyboard to show the configured colors, (your CUE settings defines the rest)
-                keyboard.Update();
+                //// Update the keyboard to show the configured colors, (your CUE settings defines the rest)
+                //keyboard.Update();
 
-                Wait(3);
+                //Wait(3);
 
-                // Remove all the groups we created above to clear the keyboard
-                purpleGroup.Detach();
-                whiteGroup.Detach();
-                yellowGroup.Detach();
+                //// Remove all the groups we created above to clear the keyboard
+                //purpleGroup.Detach();
+                //whiteGroup.Detach();
+                //yellowGroup.Detach();
 
 
-                // ---------------------------------------------------------------------------
-                // Next we add a nice linear gradient brush over the keyboard and play around with the offset of one stop
+                //// ---------------------------------------------------------------------------
+                //// Next we add a nice linear gradient brush over the keyboard and play around with the offset of one stop
 
-                Console.WriteLine("gradient-brush-test");
+                //Console.WriteLine("gradient-brush-test");
 
-                // Create our gradient stop to play with
-                GradientStop moveableStop = new GradientStop(0, Color.FromArgb(0, 255, 0));
+                //// Create our gradient stop to play with
+                //GradientStop moveableStop = new GradientStop(0, Color.FromArgb(0, 255, 0));
 
-                // Create a basic (by default horizontal) brush ...
-                LinearGradientBrush linearBrush = new LinearGradientBrush(new LinearGradient(new GradientStop(0, Color.Blue), moveableStop, new GradientStop(1f, Color.White)));
+                //// Create a basic (by default horizontal) brush ...
+                //LinearGradientBrush linearBrush = new LinearGradientBrush(new LinearGradient(new GradientStop(0, Color.Blue), moveableStop, new GradientStop(1f, Color.White)));
 
-                // ... and add it as the keyboard background
-                keyboard.Brush = linearBrush;
+                //// ... and add it as the keyboard background
+                //keyboard.Brush = linearBrush;
 
-                // Move the brush from left to right
-                for (float offset = 0; offset <= 1f; offset += 0.02f)
-                {
-                    moveableStop.Offset = offset;
-                    keyboard.Update();
-                    Thread.Sleep(100);
-                }
+                //// Move the brush from left to right
+                //for (float offset = 0; offset <= 1f; offset += 0.02f)
+                //{
+                //    moveableStop.Offset = offset;
+                //    keyboard.Update();
+                //    Thread.Sleep(100);
+                //}
 
-                // And back to center
-                for (float offset = 1f; offset >= 0.5f; offset -= 0.02f)
-                {
-                    moveableStop.Offset = offset;
-                    keyboard.Update();
-                    Thread.Sleep(100);
-                }
+                //// And back to center
+                //for (float offset = 1f; offset >= 0.5f; offset -= 0.02f)
+                //{
+                //    moveableStop.Offset = offset;
+                //    keyboard.Update();
+                //    Thread.Sleep(100);
+                //}
 
-                // "Rotate" the brush (this is of course not the best implementation for this but you see the point)
-                for (float rotateX = 0, rotateY = 0; rotateX <= 1f; rotateX += 0.02f, rotateY = 0.04f)
-                {
-                    if (rotateY > 1f)
-                        rotateY = 1f - (rotateY - 1f);
+                //// "Rotate" the brush (this is of course not the best implementation for this but you see the point)
+                //for (float rotateX = 0, rotateY = 0; rotateX <= 1f; rotateX += 0.02f, rotateY = 0.04f)
+                //{
+                //    if (rotateY > 1f)
+                //        rotateY = 1f - (rotateY - 1f);
 
-                    linearBrush.StartPoint = new PointF(rotateX, rotateY);
-                    linearBrush.EndPoint = new PointF(1f - rotateX, 1f - rotateY);
+                //    linearBrush.StartPoint = new PointF(rotateX, rotateY);
+                //    linearBrush.EndPoint = new PointF(1f - rotateX, 1f - rotateY);
 
-                    keyboard.Update();
-                    Thread.Sleep(100);
-                }
+                //    keyboard.Update();
+                //    Thread.Sleep(100);
+                //}
 
-                Wait(2);
+                //Wait(2);
 
-                // ---------------------------------------------------------------------------
-                // Time for an even better brush: rainbow
+                //// ---------------------------------------------------------------------------
+                //// Time for an even better brush: rainbow
 
-                Console.WriteLine("rainbow-test");
+                //Console.WriteLine("rainbow-test");
 
-                // Create an simple horizontal rainbow containing two times the full spectrum
-                RainbowGradient rainbowGradient = new RainbowGradient(0, 720);
+                //// Create an simple horizontal rainbow containing two times the full spectrum
+                //RainbowGradient rainbowGradient = new RainbowGradient(0, 720);
 
-                // Add the rainbow to the keyboard and perform an initial update
-                keyboard.Brush = new LinearGradientBrush(rainbowGradient);
-                keyboard.Update();
+                //// Add the rainbow to the keyboard and perform an initial update
+                //keyboard.Brush = new LinearGradientBrush(rainbowGradient);
+                //keyboard.Update();
 
-                // Let the rainbow move around for 10 secs
-                for (int i = 0; i < 100; i++)
-                {
-                    rainbowGradient.StartHue += 10f;
-                    rainbowGradient.EndHue += 10f;
-                    keyboard.Update();
-                    Thread.Sleep(100);
-                }
+                //// Let the rainbow move around for 10 secs
+                //for (int i = 0; i < 100; i++)
+                //{
+                //    rainbowGradient.StartHue += 10f;
+                //    rainbowGradient.EndHue += 10f;
+                //    keyboard.Update();
+                //    Thread.Sleep(100);
+                //}
 
-                Wait(2);
+                //Wait(2);
 
 
                 // ---------------------------------------------------------------------------
@@ -189,75 +242,75 @@ namespace SimpleDevTest
                 // Something like this could become some sort of effect
 
                 // Initialize needed stuff
-                const float SPEED = 6f; // mm/tick
-                Random random = new Random();
+                //    const float SPEED = 6f; // mm/tick
+                //Random random = new Random();
 
-                // Flash whole keyboard three times to ... well ... just to make it happen
-                for (int i = 0; i < 3; i++)
-                {
-                    keyboard.Brush = new SolidColorBrush(Color.Aquamarine);
-                    keyboard.Update();
-                    Thread.Sleep(160);
-                    keyboard.Brush = new SolidColorBrush(Color.Black);
-                    keyboard.Update();
-                    Thread.Sleep(200);
-                }
+                //// Flash whole keyboard three times to ... well ... just to make it happen
+                //for (int i = 0; i < 3; i++)
+                //{
+                //    keyboard.Brush = new SolidColorBrush(Color.Aquamarine);
+                //    keyboard.Update();
+                //    Thread.Sleep(160);
+                //    keyboard.Brush = new SolidColorBrush(Color.Black);
+                //    keyboard.Update();
+                //    Thread.Sleep(200);
+                //}
 
-                // Set keyboard 'background' to black with low alpha (this will add a nice "fade" effect instead of just clearing the keyboard every frame)
-                keyboard.Brush = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
+                //// Set keyboard 'background' to black with low alpha (this will add a nice "fade" effect instead of just clearing the keyboard every frame)
+                //keyboard.Brush = new SolidColorBrush(Color.FromArgb(25, 0, 0, 0));
 
-                // Define how many points we have
-                const int NUM_POINTS = 6;
+                //// Define how many points we have
+                //const int NUM_POINTS = 6;
 
-                // The points we want to draw (rectangle since circles are too hard to calculate :p)
-                RectangleF[] points = new RectangleF[NUM_POINTS];
+                //// The points we want to draw (rectangle since circles are too hard to calculate :p)
+                //RectangleF[] points = new RectangleF[NUM_POINTS];
 
-                // KeyGroups which represents our point on the keyboard
-                RectangleKeyGroup[] pointGroups = new RectangleKeyGroup[NUM_POINTS];
+                //// KeyGroups which represents our point on the keyboard
+                //RectangleKeyGroup[] pointGroups = new RectangleKeyGroup[NUM_POINTS];
 
-                // Target of our movement
-                PointF[] targets = new PointF[NUM_POINTS];
+                //// Target of our movement
+                //PointF[] targets = new PointF[NUM_POINTS];
 
-                // Initialize all the stuff
-                for (int i = 0; i < NUM_POINTS; i++)
-                {
-                    // Spawn our point  in the top-left corner (right over G1 or on ESC depending on your keyboard)
-                    points[i] = new RectangleF(keyboard.KeyboardRectangle.X, keyboard.KeyboardRectangle.Y, 60, 60);
-                    pointGroups[i] = new RectangleKeyGroup(keyboard, points[i], 0.1f) { Brush = new SolidColorBrush(Color.White) };
-                    targets[i] = new PointF(points[i].X, points[i].Y);
-                }
+                //// Initialize all the stuff
+                //for (int i = 0; i < NUM_POINTS; i++)
+                //{
+                //    // Spawn our point  in the top-left corner (right over G1 or on ESC depending on your keyboard)
+                //    points[i] = new RectangleF(keyboard.KeyboardRectangle.X, keyboard.KeyboardRectangle.Y, 60, 60);
+                //    pointGroups[i] = new RectangleKeyGroup(keyboard, points[i], 0.1f) { Brush = new SolidColorBrush(Color.White) };
+                //    targets[i] = new PointF(points[i].X, points[i].Y);
+                //}
 
-                // We set colors manually since white points are kinda boring (notice, that we use alpha values)
-                pointGroups[0].Brush = new SolidColorBrush(Color.FromArgb(127, 255, 0, 0));
-                pointGroups[1].Brush = new SolidColorBrush(Color.FromArgb(127, 0, 255, 0));
-                pointGroups[2].Brush = new SolidColorBrush(Color.FromArgb(127, 0, 0, 255));
-                pointGroups[3].Brush = new SolidColorBrush(Color.FromArgb(127, 255, 0, 255));
-                pointGroups[4].Brush = new SolidColorBrush(Color.FromArgb(127, 255, 255, 0));
-                pointGroups[5].Brush = new SolidColorBrush(Color.FromArgb(127, 0, 255, 255));
+                //// We set colors manually since white points are kinda boring (notice, that we use alpha values)
+                //pointGroups[0].Brush = new RadialGradientBrush(new LinearGradient(new GradientStop(0, Color.FromArgb(127, 255, 0, 0)), new GradientStop(0.5f, Color.FromArgb(127, 255, 0, 0)), new GradientStop(1, Color.FromArgb(0, 255, 0, 0))));
+                //pointGroups[1].Brush = new RadialGradientBrush(new LinearGradient(new GradientStop(0, Color.FromArgb(127, 0, 255, 0)), new GradientStop(0.5f, Color.FromArgb(127, 0, 255, 0)), new GradientStop(1, Color.FromArgb(0, 0, 255, 0))));
+                //pointGroups[2].Brush = new RadialGradientBrush(new LinearGradient(new GradientStop(0, Color.FromArgb(127, 0, 0, 255)), new GradientStop(0.5f, Color.FromArgb(127, 0, 0, 255)), new GradientStop(1, Color.FromArgb(0, 0, 0, 255))));
+                //pointGroups[3].Brush = new RadialGradientBrush(new LinearGradient(new GradientStop(0, Color.FromArgb(127, 255, 0, 255)), new GradientStop(0.5f, Color.FromArgb(127, 255, 0, 255)), new GradientStop(1, Color.FromArgb(0, 255, 0, 255))));
+                //pointGroups[4].Brush = new RadialGradientBrush(new LinearGradient(new GradientStop(0, Color.FromArgb(127, 255, 255, 0)), new GradientStop(0.5f, Color.FromArgb(127, 255, 255, 0)), new GradientStop(1, Color.FromArgb(0, 255, 255, 0))));
+                //pointGroups[5].Brush = new RadialGradientBrush(new LinearGradient(new GradientStop(0, Color.FromArgb(127, 0, 255, 255)), new GradientStop(0.5f, Color.FromArgb(127, 0, 255, 255)), new GradientStop(1, Color.FromArgb(0, 0, 255, 255))));
 
-                while (true)
-                {
-                    // Calculate all the points
-                    for (int i = 0; i < NUM_POINTS; i++)
-                    {
-                        // Choose new target if we arrived
-                        if (points[i].Contains(targets[i]))
-                            targets[i] = new PointF((float)(keyboard.KeyboardRectangle.X + (random.NextDouble() * keyboard.KeyboardRectangle.Width)),
-                                    (float)(keyboard.KeyboardRectangle.Y + (random.NextDouble() * keyboard.KeyboardRectangle.Height)));
-                        else
-                            // Calculate movement
-                            points[i].Location = Interpolate(points[i].Location, targets[i], SPEED); // It would be better to calculate from the center of our rectangle but the easy way is enough here
+                //while (true)
+                //{
+                //    // Calculate all the points
+                //    for (int i = 0; i < NUM_POINTS; i++)
+                //    {
+                //        // Choose new target if we arrived
+                //        if (points[i].Contains(targets[i]))
+                //            targets[i] = new PointF((float)(keyboard.KeyboardRectangle.X + (random.NextDouble() * keyboard.KeyboardRectangle.Width)),
+                //                    (float)(keyboard.KeyboardRectangle.Y + (random.NextDouble() * keyboard.KeyboardRectangle.Height)));
+                //        else
+                //            // Calculate movement
+                //            points[i].Location = Interpolate(points[i].Location, targets[i], SPEED); // It would be better to calculate from the center of our rectangle but the easy way is enough here
 
-                        // Move our rectangle to the new position
-                        pointGroups[i].Rectangle = points[i];
-                    }
+                //        // Move our rectangle to the new position
+                //        pointGroups[i].Rectangle = points[i];
+                //    }
 
-                    // Update changed leds
-                    keyboard.Update();
+                //    // Update changed leds
+                //    keyboard.Update();
 
-                    // 20 updates per sec should be enought for this
-                    Thread.Sleep(50);
-                }
+                //    // 20 updates per sec should be enought for this
+                //    Thread.Sleep(50);
+                //}
             }
             catch (CUEException ex)
             {
