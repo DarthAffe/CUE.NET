@@ -6,6 +6,9 @@ using System.Drawing;
 
 namespace CUE.NET.Brushes
 {
+    /// <summary>
+    /// Represents a brush drawing an image.
+    /// </summary>
     public class ImageBrush : AbstractBrush
     {
         #region Enums
