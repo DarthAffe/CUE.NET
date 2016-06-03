@@ -16,6 +16,8 @@ namespace CUE.NET
     {
         #region Properties & Fields
 
+        private static bool _isInitialized;
+
         // ReSharper disable UnusedAutoPropertyAccessor.Global
 
         /// <summary>
@@ -62,6 +64,47 @@ namespace CUE.NET
 
         #region Methods
 
+        public static bool IsSDKAvailable(CorsairDeviceType? sdkType = null)
+        {
+            try
+            {
+                if (_isInitialized)
+                {
+                    switch (sdkType)
+                    {
+                        case CorsairDeviceType.Keyboard:
+                            return KeyboardSDK != null;
+                        case CorsairDeviceType.Mouse:
+                            return MouseSDK != null;
+                        case CorsairDeviceType.Headset:
+                            return HeadsetSDK != null;
+                        default:
+                            return true;
+                    }
+                }
+                else
+                {
+                    _CUESDK.CorsairPerformProtocolHandshake();
+
+                    if (sdkType == null || sdkType == CorsairDeviceType.Unknown)
+                        return LastError == CorsairError.Success;
+
+                    int deviceCount = _CUESDK.CorsairGetDeviceCount();
+                    for (int i = 0; i < deviceCount; i++)
+                    {
+                        GenericDeviceInfo info = new GenericDeviceInfo((_CorsairDeviceInfo)Marshal.PtrToStructure(_CUESDK.CorsairGetDeviceInfo(i), typeof(_CorsairDeviceInfo)));
+                        if (info.CapsMask.HasFlag(CorsairDeviceCaps.Lighting) && info.Type == sdkType.Value)
+                            return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return false;
+        }
+
         // ReSharper disable once ExceptionNotThrown
         /// <summary>
         /// Initializes the CUE-SDK. This method should be called exactly ONE time, before anything else is done.
@@ -71,7 +114,7 @@ namespace CUE.NET
         /// <exception cref="CUEException">Thrown if the CUE-SDK provides an error.</exception>
         public static void Initialize(bool exclusiveAccess = false)
         {
-            if (ProtocolDetails != null)
+            if (_isInitialized)
                 throw new WrapperException("CueSDK is already initialized.");
 
             ProtocolDetails = new CorsairProtocolDetails(_CUESDK.CorsairPerformProtocolHandshake());
@@ -81,9 +124,7 @@ namespace CUE.NET
                 Throw(error);
 
             if (ProtocolDetails.BreakingChanges)
-                throw new WrapperException("The SDK currently used isn't compatible with the installed version of CUE.\r\n" +
-                    $"CUE-Version: {ProtocolDetails.ServerVersion} (Protocol {ProtocolDetails.ServerProtocolVersion})\r\n" +
-                    $"SDK-Version: {ProtocolDetails.SdkVersion} (Protocol {ProtocolDetails.SdkProtocolVersion})");
+                throw new WrapperException("The SDK currently used isn't compatible with the installed version of CUE.\r\n" + $"CUE-Version: {ProtocolDetails.ServerVersion} (Protocol {ProtocolDetails.ServerProtocolVersion})\r\n" + $"SDK-Version: {ProtocolDetails.SdkVersion} (Protocol {ProtocolDetails.SdkProtocolVersion})");
 
             if (exclusiveAccess)
             {
@@ -123,6 +164,8 @@ namespace CUE.NET
                 if (error != CorsairError.Success)
                     Throw(error);
             }
+
+            _isInitialized = true;
         }
 
         /// <summary>
@@ -139,7 +182,7 @@ namespace CUE.NET
         /// <param name="exclusiveAccess">Specifies whether the application should request exclusive access or not.</param>
         public static void Reinitialize(bool exclusiveAccess)
         {
-            if (ProtocolDetails == null)
+            if (!_isInitialized)
                 throw new WrapperException("CueSDK isn't initialized.");
 
             KeyboardSDK?.ResetLeds();
@@ -155,9 +198,7 @@ namespace CUE.NET
                 Throw(error);
 
             if (ProtocolDetails.BreakingChanges)
-                throw new WrapperException("The SDK currently used isn't compatible with the installed version of CUE.\r\n" +
-                    $"CUE-Version: {ProtocolDetails.ServerVersion} (Protocol {ProtocolDetails.ServerProtocolVersion})\r\n" +
-                    $"SDK-Version: {ProtocolDetails.SdkVersion} (Protocol {ProtocolDetails.SdkProtocolVersion})");
+                throw new WrapperException("The SDK currently used isn't compatible with the installed version of CUE.\r\n" + $"CUE-Version: {ProtocolDetails.ServerVersion} (Protocol {ProtocolDetails.ServerProtocolVersion})\r\n" + $"SDK-Version: {ProtocolDetails.SdkVersion} (Protocol {ProtocolDetails.SdkProtocolVersion})");
 
             if (exclusiveAccess)
                 if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
@@ -180,17 +221,16 @@ namespace CUE.NET
             }
 
             if (KeyboardSDK != null)
-                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Keyboard)
-                || KeyboardSDK.KeyboardDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Keyboard].Model)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Keyboard) || KeyboardSDK.KeyboardDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Keyboard].Model)
                     throw new WrapperException("The previously loaded Keyboard got disconnected.");
             if (MouseSDK != null)
-                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Mouse)
-                || MouseSDK.MouseDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Mouse].Model)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Mouse) || MouseSDK.MouseDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Mouse].Model)
                     throw new WrapperException("The previously loaded Mouse got disconnected.");
             if (HeadsetSDK != null)
-                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Headset)
-                || HeadsetSDK.HeadsetDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Headset].Model)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Headset) || HeadsetSDK.HeadsetDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Headset].Model)
                     throw new WrapperException("The previously loaded Headset got disconnected.");
+
+            _isInitialized = true;
         }
 
         private static void Throw(CorsairError error)
@@ -200,6 +240,7 @@ namespace CUE.NET
             KeyboardSDK = null;
             MouseSDK = null;
             HeadsetSDK = null;
+            _isInitialized = false;
 
             throw new CUEException(error);
         }
