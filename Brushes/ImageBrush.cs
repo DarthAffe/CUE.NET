@@ -76,7 +76,7 @@ namespace CUE.NET.Brushes
             x = Math.Max(0, Math.Min(x, Image.Width - 1));
             y = Math.Max(0, Math.Min(y, Image.Height - 1));
 
-            return Image.GetPixel(x, y);
+            return FinalizeColor(Image.GetPixel(x, y));
         }
 
         #endregion
