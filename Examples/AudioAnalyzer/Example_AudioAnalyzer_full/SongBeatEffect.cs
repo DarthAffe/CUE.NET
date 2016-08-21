@@ -1,11 +1,9 @@
-﻿using System.Drawing;
-using CUE.NET.Brushes;
-using CUE.NET.Effects;
+﻿using CUE.NET.Effects;
 using Example_AudioAnalyzer_full.TakeAsIs;
 
 namespace Example_AudioAnalyzer_full
 {
-    public class SongBeatEffect : AbstractEffect
+    public class SongBeatEffect : AbstractBrushEffect
     {
         #region Constants
 
@@ -22,17 +20,13 @@ namespace Example_AudioAnalyzer_full
 
         private float _currentEffect = -1f;
 
-        private SolidColorBrush _brush;
-        public override IBrush EffectBrush => _brush;
-
         #endregion
 
         #region Constructors
 
-        public SongBeatEffect(SoundDataProcessor dataProcessor, Color color)
+        public SongBeatEffect(SoundDataProcessor dataProcessor)
         {
             this._dataProcessor = dataProcessor;
-            _brush = new SolidColorBrush(color);
         }
 
         #endregion
@@ -48,7 +42,7 @@ namespace Example_AudioAnalyzer_full
                 _currentEffect -= deltaTime;
 
             // and set the current brush-opacity
-            _brush.Opacity = _currentEffect > 0f ? (_currentEffect / FLASH_DURATION) : 0f;
+            Brush.Opacity = _currentEffect > 0f ? (_currentEffect / FLASH_DURATION) : 0f;
         }
 
         #endregion

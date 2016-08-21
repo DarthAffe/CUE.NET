@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="AudioAnalyzerExample.cs" />
     <Compile Include="AudioSpectrumBrush.cs" />
-    <Compile Include="AudioSpectrumEffect.cs" />
     <Compile Include="SongBeatEffect.cs" />
     <Compile Include="TakeAsIs\BassHelper.cs" />
     <Compile Include="TakeAsIs\SoundDataProcessor.cs" />

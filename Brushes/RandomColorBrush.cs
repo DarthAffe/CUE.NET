@@ -15,6 +15,8 @@ namespace CUE.NET.Brushes
     {
         #region Properties & Fields
 
+        protected override IBrush EffectTarget => this;
+
         private Random _random = new Random();
 
         #endregion

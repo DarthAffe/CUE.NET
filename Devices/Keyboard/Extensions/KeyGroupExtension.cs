@@ -13,11 +13,11 @@ namespace CUE.NET.Devices.Keyboard.Extensions
     public static class KeyGroupExtension
     {
         /// <summary>
-        /// Converts the given <see cref="BaseKeyGroup" /> to a <see cref="ListKeyGroup" />.
+        /// Converts the given <see cref="AbstractKeyGroup" /> to a <see cref="ListKeyGroup" />.
         /// </summary>
-        /// <param name="keyGroup">The <see cref="BaseKeyGroup" /> to convert.</param>
+        /// <param name="keyGroup">The <see cref="AbstractKeyGroup" /> to convert.</param>
         /// <returns>The converted <see cref="ListKeyGroup" />.</returns>
-        public static ListKeyGroup ToSimpleKeyGroup(this BaseKeyGroup keyGroup)
+        public static ListKeyGroup ToSimpleKeyGroup(this AbstractKeyGroup keyGroup)
         {
             ListKeyGroup simpleKeyGroup = keyGroup as ListKeyGroup;
             if (simpleKeyGroup == null)
@@ -34,7 +34,7 @@ namespace CUE.NET.Devices.Keyboard.Extensions
         /// <param name="keyGroup">The base keygroup.</param>
         /// <param name="keyIds">The ids of the keys to exclude.</param>
         /// <returns>The new <see cref="ListKeyGroup" />.</returns>
-        public static ListKeyGroup Exclude(this BaseKeyGroup keyGroup, params CorsairKeyboardKeyId[] keyIds)
+        public static ListKeyGroup Exclude(this AbstractKeyGroup keyGroup, params CorsairKeyboardKeyId[] keyIds)
         {
             ListKeyGroup simpleKeyGroup = keyGroup.ToSimpleKeyGroup();
             foreach (CorsairKeyboardKeyId keyId in keyIds)
@@ -48,7 +48,7 @@ namespace CUE.NET.Devices.Keyboard.Extensions
         /// <param name="keyGroup">The base keygroup.</param>
         /// <param name="keyIds">The keys to exclude.</param>
         /// <returns>The new <see cref="ListKeyGroup" />.</returns>
-        public static ListKeyGroup Exclude(this BaseKeyGroup keyGroup, params CorsairKey[] keyIds)
+        public static ListKeyGroup Exclude(this AbstractKeyGroup keyGroup, params CorsairKey[] keyIds)
         {
             ListKeyGroup simpleKeyGroup = keyGroup.ToSimpleKeyGroup();
             foreach (CorsairKey key in keyIds)
@@ -62,7 +62,7 @@ namespace CUE.NET.Devices.Keyboard.Extensions
         /// </summary>
         /// <param name="keyGroup">The keygroup to attach.</param>
         /// <returns><c>true</c> if the keygroup could be attached; otherwise, <c>false</c>.</returns>
-        public static bool Attach(this BaseKeyGroup keyGroup)
+        public static bool Attach(this AbstractKeyGroup keyGroup)
         {
             return keyGroup.Keyboard?.AttachKeyGroup(keyGroup) ?? false;
         }
@@ -72,7 +72,7 @@ namespace CUE.NET.Devices.Keyboard.Extensions
         /// </summary>
         /// <param name="keyGroup">The keygroup to attach.</param>
         /// <returns><c>true</c> if the keygroup could be detached; otherwise, <c>false</c>.</returns>
-        public static bool Detach(this BaseKeyGroup keyGroup)
+        public static bool Detach(this AbstractKeyGroup keyGroup)
         {
             return keyGroup.Keyboard?.DetachKeyGroup(keyGroup) ?? false;
         }

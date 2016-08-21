@@ -13,17 +13,12 @@ namespace CUE.NET.Effects
         /// <summary>
         /// Gets or sets the wrapped effect.
         /// </summary>
-        public IEffect Effect { get; set; }
+        public IEffect Effect { get; }
 
         /// <summary>
         /// Gets or sets the tick-count from the last time the effect was updated.
         /// </summary>
         public long TicksAtLastUpdate { get; set; }
-
-        /// <summary>
-        /// Gets the z-index of the effect.
-        /// </summary>
-        public int ZIndex => Effect?.ZIndex ?? 0;
 
         #endregion
 

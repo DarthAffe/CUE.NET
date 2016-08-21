@@ -12,6 +12,8 @@ namespace CUE.NET.Brushes
     {
         #region Properties & Fields
 
+        protected override IBrush EffectTarget => this;
+
         /// <summary>
         /// Gets or sets the color drawn by the brush.
         /// </summary>

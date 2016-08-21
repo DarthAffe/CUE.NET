@@ -5,11 +5,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Mouse.Enums;
-using CUE.NET.Effects;
 using CUE.NET.Exceptions;
 
 namespace CUE.NET.Devices.Mouse
@@ -45,11 +43,6 @@ namespace CUE.NET.Devices.Mouse
         public CorsairMouseDeviceInfo MouseDeviceInfo { get; }
 
         /// <summary>
-        /// Gets a value indicating if the mouse has an active effect to deal with or not.
-        /// </summary>
-        protected override bool HasEffect => false;
-
-        /// <summary>
         /// Gets a read-only collection containing all LEDs of the mouse.
         /// </summary>
         public new IEnumerable<CorsairLed> Leds => new ReadOnlyCollection<CorsairLed>(base.Leds.Values.ToList());
@@ -73,13 +66,6 @@ namespace CUE.NET.Devices.Mouse
         #endregion
 
         #region Methods
-
-        protected override void ApplyEffect(IEffect effect)
-        {
-            //TODO DarthAffe 18.10.2015: How should brushes be applied to mice?
-            foreach (CorsairLed led in effect.LedList)
-                led.Color = effect.EffectBrush.GetColorAtPoint(new RectangleF(0, 0, 2, 2), new PointF(1, 1));
-        }
 
         private void InitializeLeds()
         {
@@ -106,6 +92,16 @@ namespace CUE.NET.Devices.Mouse
                 default:
                     throw new WrapperException($"Can't initial mouse with layout '{MouseDeviceInfo.PhysicalLayout}'");
             }
+        }
+
+        protected override void DeviceUpdate()
+        {
+            //TODO DarthAffe 21.08.2016: Create something fancy for mice
+        }
+
+        protected override void DeviceUpdateEffects()
+        {
+            //TODO DarthAffe 21.08.2016: Create something fancy for mice
         }
 
         #region IEnumerable

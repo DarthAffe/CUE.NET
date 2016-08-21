@@ -2,6 +2,7 @@
 
 using System.Drawing;
 using CUE.NET.Devices.Keyboard.Enums;
+using CUE.NET.Effects;
 using CUE.NET.Helper;
 
 namespace CUE.NET.Brushes
@@ -9,7 +10,7 @@ namespace CUE.NET.Brushes
     /// <summary>
     /// Represents a basic brush.
     /// </summary>
-    public abstract class AbstractBrush : IBrush
+    public abstract class AbstractBrush : AbstractEffectTarget<IBrush>, IBrush
     {
         #region Properties & Fields
 

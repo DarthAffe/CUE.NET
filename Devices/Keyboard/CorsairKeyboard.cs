@@ -106,18 +106,6 @@ namespace CUE.NET.Devices.Keyboard
         /// </summary>
         public int ZIndex { get; set; } = 0;
 
-        /// <summary>
-        /// Gets a value indicating if the keyboard has an active effect to deal with or not.
-        /// </summary>
-        protected override bool HasEffect
-        {
-            get
-            {
-                lock (Effects)
-                    return Effects.Any();
-            }
-        }
-
         #endregion
 
         #region Constructors
@@ -156,13 +144,9 @@ namespace CUE.NET.Devices.Keyboard
             }
         }
 
-        protected override void ApplyEffect(IEffect effect)
+        protected override void DeviceUpdateEffects()
         {
-            if (effect == null) return;
-
-            //TODO DarthAffe 18.10.2015: This is really dirty and might have a really negative performance impact - find a better solution.
-            IEnumerable<CorsairKey> keys = effect.LedList?.Select(x => this.FirstOrDefault(y => y.Led == x));
-            ApplyBrush((keys ?? this).ToList(), effect.EffectBrush);
+            UpdateEffects();
         }
 
         // ReSharper disable once MemberCanBeMadeStatic.Local - idc
@@ -199,6 +183,30 @@ namespace CUE.NET.Devices.Keyboard
         }
 
         #endregion
+
+        public void UpdateEffects()
+        {
+            lock (_keyGroups)
+            {
+                foreach (IKeyGroup keyGroup in _keyGroups)
+                {
+                    keyGroup.UpdateEffects();
+                    keyGroup.Brush.UpdateEffects();
+                }
+            }
+
+            Brush.UpdateEffects();
+        }
+
+        public void AddEffect(IEffect<IKeyGroup> effect)
+        {
+            throw new NotSupportedException("Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.");
+        }
+
+        public void RemoveEffect(IEffect<IKeyGroup> effect)
+        {
+            throw new NotSupportedException("Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.");
+        }
 
         /// <summary>
         /// Attaches the given keygroup.

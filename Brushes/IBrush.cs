@@ -2,13 +2,14 @@
 
 using System.Drawing;
 using CUE.NET.Devices.Keyboard.Enums;
+using CUE.NET.Effects;
 
 namespace CUE.NET.Brushes
 {
     /// <summary>
     /// Represents a basic brush.
     /// </summary>
-    public interface IBrush
+    public interface IBrush : IEffectTarget<IBrush>
     {
         /// <summary>
         /// Gets or sets the calculation mode used for the rectangle/points used for color-selection in brushes.

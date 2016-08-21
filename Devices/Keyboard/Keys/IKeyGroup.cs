@@ -4,10 +4,11 @@
 using System.Collections.Generic;
 using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic;
+using CUE.NET.Effects;
 
 namespace CUE.NET.Devices.Keyboard.Keys
 {
-    public interface IKeyGroup
+    public interface IKeyGroup : IEffectTarget<IKeyGroup>
     {
         /// <summary>
         /// Gets a read-only collection containing the keys from this group.

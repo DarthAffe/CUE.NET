@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Generic.EventArgs;
-using CUE.NET.Effects;
 using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Generic
@@ -27,7 +26,7 @@ namespace CUE.NET.Devices.Generic
         /// </summary>
         public IDeviceInfo DeviceInfo { get; }
 
-        private UpdateMode _updateMode = UpdateMode.AutoOnEffect;
+        private UpdateMode _updateMode = UpdateMode.Manual;
         /// <summary>
         /// Gets or sets the update-mode for the device.
         /// </summary>
@@ -50,16 +49,6 @@ namespace CUE.NET.Devices.Generic
         /// Gets a dictionary containing all LEDs of the device.
         /// </summary>
         protected Dictionary<int, CorsairLed> Leds { get; } = new Dictionary<int, CorsairLed>();
-
-        /// <summary>
-        /// Indicates if the device has an active effect to deal with.
-        /// </summary>
-        protected abstract bool HasEffect { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected LinkedList<EffectTimeContainer> Effects { get; } = new LinkedList<EffectTimeContainer>();
 
         private CancellationTokenSource _updateTokenSource;
         private CancellationToken _updateToken;
@@ -139,9 +128,6 @@ namespace CUE.NET.Devices.Generic
                 case UpdateMode.Manual:
                     shouldRun = false;
                     break;
-                case UpdateMode.AutoOnEffect:
-                    shouldRun = HasEffect;
-                    break;
                 case UpdateMode.Continuous:
                     shouldRun = true;
                     break;
@@ -184,8 +170,8 @@ namespace CUE.NET.Devices.Generic
         {
             OnUpdating();
 
+            DeviceUpdateEffects();
             DeviceUpdate();
-            UpdateEffects();
 
             ICollection<LedUpateRequest> ledsToUpdate = (flushLeds ? Leds : Leds.Where(x => x.Value.IsDirty)).Select(x => new LedUpateRequest(x.Key, x.Value.RequestedColor)).ToList();
 
@@ -198,53 +184,15 @@ namespace CUE.NET.Devices.Generic
         }
 
         /// <summary>
-        /// Empty method which can be overwritten to perform device specific updates.
+        /// Performs device specific updates.
         /// </summary>
-        protected virtual void DeviceUpdate()
-        { }
-
-        private void UpdateEffects()
-        {
-            List<IEffect> effectsToRemove = new List<IEffect>();
-            lock (Effects)
-            {
-                long currentTicks = DateTime.Now.Ticks;
-                foreach (EffectTimeContainer effect in Effects.OrderBy(x => x.ZIndex))
-                {
-                    try
-                    {
-                        float deltaTime;
-                        if (effect.TicksAtLastUpdate < 0)
-                        {
-                            effect.TicksAtLastUpdate = currentTicks;
-                            deltaTime = 0f;
-                        }
-                        else
-                            deltaTime = (currentTicks - effect.TicksAtLastUpdate) / 10000000f;
-
-                        effect.TicksAtLastUpdate = currentTicks;
-                        effect.Effect.Update(deltaTime);
-
-                        ApplyEffect(effect.Effect);
-
-                        if (effect.Effect.IsDone)
-                            effectsToRemove.Add(effect.Effect);
-                    }
-                    // ReSharper disable once CatchAllClause
-                    catch (Exception ex) { OnException(ex); }
-                }
-            }
-
-            foreach (IEffect effect in effectsToRemove)
-                DetachEffect(effect);
-        }
+        protected abstract void DeviceUpdate();
 
         /// <summary>
-        /// Applies the given effect to the device LEDs.
+        /// Performs device specific updates effect-updates.
         /// </summary>
-        /// <param name="effect">The effect to apply.</param>
-        protected abstract void ApplyEffect(IEffect effect);
-
+        protected abstract void DeviceUpdateEffects();
+        
         private void UpdateLeds(ICollection<LedUpateRequest> updateRequests)
         {
             updateRequests = updateRequests.Where(x => x.Color != Color.Transparent).ToList();
@@ -274,53 +222,6 @@ namespace CUE.NET.Devices.Generic
             }
 
             OnLedsUpdated(updateRequests);
-        }
-
-        /// <summary>
-        /// Attaches the given effect.
-        /// </summary>
-        /// <param name="effect">The effect to attach.</param>
-        /// <returns><c>true</c> if the effect could be attached; otherwise, <c>false</c>.</returns>
-        public bool AttachEffect(IEffect effect)
-        {
-            bool retVal = false;
-            lock (Effects)
-            {
-                if (effect != null && Effects.All(x => x.Effect != effect))
-                {
-                    effect.OnAttach();
-                    Effects.AddLast(new EffectTimeContainer(effect, -1));
-                    retVal = true;
-                }
-            }
-
-            CheckUpdateLoop();
-            return retVal;
-        }
-
-        /// <summary>
-        /// Detaches the given effect.
-        /// </summary>
-        /// <param name="effect">The effect to detached.</param>
-        /// <returns><c>true</c> if the effect could be detached; otherwise, <c>false</c>.</returns>
-        public bool DetachEffect(IEffect effect)
-        {
-            bool retVal = false;
-            lock (Effects)
-            {
-                if (effect != null)
-                {
-                    EffectTimeContainer val = Effects.FirstOrDefault(x => x.Effect == effect);
-                    if (val != null)
-                    {
-                        effect.OnDetach();
-                        Effects.Remove(val);
-                        retVal = true;
-                    }
-                }
-            }
-            CheckUpdateLoop();
-            return retVal;
         }
 
         /// <summary>

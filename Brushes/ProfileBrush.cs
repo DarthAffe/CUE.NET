@@ -11,7 +11,9 @@ namespace CUE.NET.Brushes
     public class ProfileBrush : AbstractBrush
     {
         #region Properties & Fields
-        
+
+        protected override IBrush EffectTarget => this;
+
         private Dictionary<CorsairKeyboardKeyId, Color> _keyLights;
 
         #endregion

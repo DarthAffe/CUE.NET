@@ -58,6 +58,10 @@
     <Compile Include="Devices\Generic\EventArgs\UpdatingEventArgs.cs" />
     <Compile Include="Devices\Generic\LedUpateRequest.cs" />
     <Compile Include="Devices\Keyboard\Enums\BrushCalculationMode.cs" />
+    <Compile Include="Effects\AbstractKeyGroupEffect.cs" />
+    <Compile Include="Effects\AbstractBrushEffect.cs" />
+    <Compile Include="Effects\AbstractEffectTarget.cs" />
+    <Compile Include="Effects\IEffectTarget.cs" />
     <Compile Include="Gradients\AbstractGradient.cs" />
     <Compile Include="Gradients\GradientStop.cs" />
     <Compile Include="Gradients\IGradient.cs" />
@@ -67,7 +71,6 @@
     <Compile Include="Brushes\RadialGradientBrush.cs" />
     <Compile Include="Brushes\RandomColorBrush.cs" />
     <Compile Include="Brushes\SolidColorBrush.cs" />
-    <Compile Include="Effects\AbstractEffect.cs" />
     <Compile Include="Effects\FlashEffect.cs" />
     <Compile Include="Effects\IEffect.cs" />
     <Compile Include="Effects\EffectTimeContainer.cs" />
@@ -76,7 +79,7 @@
     <Compile Include="Devices\Keyboard\Enums\CorsairKeyboardKeyId.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairPhysicalKeyboardLayout.cs" />
     <Compile Include="Devices\Generic\Enums\UpdateMode.cs" />
-    <Compile Include="Devices\Keyboard\Keys\BaseKeyGroup.cs" />
+    <Compile Include="Devices\Keyboard\Keys\AbstractKeyGroup.cs" />
     <Compile Include="Devices\Keyboard\Keys\IKeyGroup.cs" />
     <Compile Include="Devices\Keyboard\Keys\RectangleKeyGroup.cs" />
     <Compile Include="Devices\Keyboard\Keys\ListKeyGroup.cs" />

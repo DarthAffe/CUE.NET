@@ -9,9 +9,11 @@ namespace CUE.NET.Devices.Keyboard.Keys
     /// <summary>
     /// Represents a keygroup containing arbitrary keys.
     /// </summary>
-    public class ListKeyGroup : BaseKeyGroup
+    public class ListKeyGroup : AbstractKeyGroup
     {
         #region Properties & Fields
+
+        protected override IKeyGroup EffectTarget => this;
 
         /// <summary>
         /// Gets the list containing the keys of this keygroup.

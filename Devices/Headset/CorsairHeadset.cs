@@ -5,11 +5,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Headset.Enums;
-using CUE.NET.Effects;
 
 namespace CUE.NET.Devices.Headset
 {
@@ -44,11 +42,6 @@ namespace CUE.NET.Devices.Headset
         public CorsairHeadsetDeviceInfo HeadsetDeviceInfo { get; }
 
         /// <summary>
-        /// Gets a value indicating if the headset has an active effect to deal with or not.
-        /// </summary>
-        protected override bool HasEffect => false;
-
-        /// <summary>
         /// Gets a read-only collection containing all LEDs of the headset.
         /// </summary>
         public new IEnumerable<CorsairLed> Leds => new ReadOnlyCollection<CorsairLed>(base.Leds.Values.ToList());
@@ -72,17 +65,20 @@ namespace CUE.NET.Devices.Headset
 
         #region Methods
 
-        protected override void ApplyEffect(IEffect effect)
-        {
-            //TODO DarthAffe 18.10.2015: How should brushes be applied to headsets?
-            foreach (CorsairLed led in effect.LedList)
-                led.Color = effect.EffectBrush.GetColorAtPoint(new RectangleF(0, 0, 2, 2), new PointF(1, 1));
-        }
-
         private void InitializeLeds()
         {
             GetLed((int)CorsairHeadsetLedId.LeftLogo);
             GetLed((int)CorsairHeadsetLedId.RightLogo);
+        }
+
+        protected override void DeviceUpdate()
+        {
+            //TODO DarthAffe 21.08.2016: Create something fancy for headsets
+        }
+
+        protected override void DeviceUpdateEffects()
+        {
+            //TODO DarthAffe 21.08.2016: Create something fancy for headsets
         }
 
         #region IEnumerable

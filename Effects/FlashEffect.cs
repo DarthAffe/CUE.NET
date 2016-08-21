@@ -3,7 +3,6 @@
 // ReSharper disable UnusedMember.Global
 
 using System;
-using System.Drawing;
 using CUE.NET.Brushes;
 
 namespace CUE.NET.Effects
@@ -11,14 +10,9 @@ namespace CUE.NET.Effects
     /// <summary>
     /// Represents an effect which allows to flash an brush by modifying his opacity.
     /// </summary>
-    public class FlashEffect : AbstractEffect
+    public class FlashEffect : AbstractBrushEffect
     {
         #region Properties & Fields
-
-        /// <summary>
-        /// Gets the brush which is drawn by the effect.
-        /// </summary>
-        public override IBrush EffectBrush { get; }
 
         /// <summary>
         /// Gets or sets the attack-time (in seconds) of the effect. (default: 0.2f)<br />
@@ -71,27 +65,6 @@ namespace CUE.NET.Effects
 
         #endregion
 
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FlashEffect"/> class.
-        /// </summary>
-        /// <param name="flashColor">The color from which a <see cref="SolidColorBrush" /> should be created and used by this effect.</param>
-        public FlashEffect(Color flashColor)
-            : this(new SolidColorBrush(flashColor))
-        { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FlashEffect"/> class.
-        /// </summary>
-        /// <param name="effectBrush">The brush which should be used by this effect,</param>
-        public FlashEffect(IBrush effectBrush)
-        {
-            this.EffectBrush = effectBrush;
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -106,7 +79,7 @@ namespace CUE.NET.Effects
 
             if (_currentPhase == ADSRPhase.Attack)
                 if (_currentPhaseValue > 0f)
-                    EffectBrush.Opacity = Math.Min(1f, (Attack - _currentPhaseValue) / Attack) * AttackValue;
+                    Brush.Opacity = Math.Min(1f, (Attack - _currentPhaseValue) / Attack) * AttackValue;
                 else
                 {
                     _currentPhaseValue = Decay;
@@ -115,7 +88,7 @@ namespace CUE.NET.Effects
 
             if (_currentPhase == ADSRPhase.Decay)
                 if (_currentPhaseValue > 0f)
-                    EffectBrush.Opacity = SustainValue + (Math.Min(1f, _currentPhaseValue / Decay) * (AttackValue - SustainValue));
+                    Brush.Opacity = SustainValue + (Math.Min(1f, _currentPhaseValue / Decay) * (AttackValue - SustainValue));
                 else
                 {
                     _currentPhaseValue = Sustain;
@@ -124,7 +97,7 @@ namespace CUE.NET.Effects
 
             if (_currentPhase == ADSRPhase.Sustain)
                 if (_currentPhaseValue > 0f)
-                    EffectBrush.Opacity = SustainValue;
+                    Brush.Opacity = SustainValue;
                 else
                 {
                     _currentPhaseValue = Release;
@@ -133,7 +106,7 @@ namespace CUE.NET.Effects
 
             if (_currentPhase == ADSRPhase.Release)
                 if (_currentPhaseValue > 0f)
-                    EffectBrush.Opacity = Math.Min(1f, _currentPhaseValue / Release) * SustainValue;
+                    Brush.Opacity = Math.Min(1f, _currentPhaseValue / Release) * SustainValue;
                 else
                 {
                     _currentPhaseValue = Interval;
@@ -142,7 +115,7 @@ namespace CUE.NET.Effects
 
             if (_currentPhase == ADSRPhase.Pause)
                 if (_currentPhaseValue > 0f)
-                    EffectBrush.Opacity = 0f;
+                    Brush.Opacity = 0f;
                 else
                 {
                     if (++_repetitionCount >= Repetitions && Repetitions > 0)
@@ -155,14 +128,14 @@ namespace CUE.NET.Effects
         /// <summary>
         /// Resets the effect.
         /// </summary>
-        public override void OnAttach()
+        public override void OnAttach(IBrush brush)
         {
-            base.OnAttach();
+            base.OnAttach(brush);
 
             _currentPhase = ADSRPhase.Attack;
             _currentPhaseValue = Attack;
             _repetitionCount = 0;
-            EffectBrush.Opacity = 0f;
+            brush.Opacity = 0f;
         }
 
         #endregion

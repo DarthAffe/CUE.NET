@@ -39,6 +39,8 @@ namespace CUE.NET.Brushes
 
         #region Properties & Fields
 
+        protected override IBrush EffectTarget => this;
+
         /// <summary>
         /// Gets or sets the image drawn by the brush. If null it will default to full transparent.
         /// </summary>

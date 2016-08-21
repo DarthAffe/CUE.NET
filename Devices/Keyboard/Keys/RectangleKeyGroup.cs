@@ -13,9 +13,11 @@ namespace CUE.NET.Devices.Keyboard.Keys
     /// <summary>
     /// Represents a keygroup containing keys which physically lay inside a rectangle.
     /// </summary>
-    public class RectangleKeyGroup : BaseKeyGroup
+    public class RectangleKeyGroup : AbstractKeyGroup
     {
         #region Properties & Fields
+
+        protected override IKeyGroup EffectTarget => this;
 
         private IList<CorsairKey> _keyCache;
 

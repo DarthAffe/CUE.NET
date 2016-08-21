@@ -4,13 +4,14 @@ using System.Linq;
 using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Extensions;
+using CUE.NET.Effects;
 
 namespace CUE.NET.Devices.Keyboard.Keys
 {
     /// <summary>
     /// Represents a basic keygroup.
     /// </summary>
-    public abstract class BaseKeyGroup : IKeyGroup
+    public abstract class AbstractKeyGroup : AbstractEffectTarget<IKeyGroup>, IKeyGroup
     {
         #region Properties & Fields
 
@@ -39,11 +40,11 @@ namespace CUE.NET.Devices.Keyboard.Keys
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseKeyGroup"/> class.
+        /// Initializes a new instance of the <see cref="AbstractKeyGroup"/> class.
         /// </summary>
         /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
         /// <param name="autoAttach">Specifies whether this group should be automatically attached or not.</param>
-        protected BaseKeyGroup(CorsairKeyboard keyboard, bool autoAttach = true)
+        protected AbstractKeyGroup(CorsairKeyboard keyboard, bool autoAttach = true)
         {
             this.Keyboard = keyboard;
 

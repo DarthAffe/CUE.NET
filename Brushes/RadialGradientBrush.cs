@@ -16,6 +16,8 @@ namespace CUE.NET.Brushes
     {
         #region Properties & Fields
 
+        protected override IBrush EffectTarget => this;
+
         /// <summary>
         /// Gets or sets the center point (as percentage in the range [0..1]) around which the brush should be drawn.
         /// </summary>

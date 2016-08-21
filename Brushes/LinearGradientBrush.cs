@@ -18,6 +18,8 @@ namespace CUE.NET.Brushes
     {
         #region Properties & Fields
 
+        protected override IBrush EffectTarget => this;
+
         /// <summary>
         /// Gets or sets the start point (as percentage in the range [0..1]) of the gradient drawn by the brush. (default: 0f, 0.5f)
         /// </summary>
