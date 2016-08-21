@@ -24,14 +24,14 @@ namespace CUE.NET.Brushes
         #region Methods
 
         /// <summary>
-        /// Gets a random color.
+        /// Gets the color at an specific point assuming the brush is drawn into the given rectangle.
         /// </summary>
-        /// <param name="rectangle">This value isn't used.</param>
-        /// <param name="point">This value isn't used.</param>
-        /// <returns>A random color.</returns>
-        public override Color GetColorAtPoint(RectangleF rectangle, PointF point)
+        /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
+        /// <param name="renderTarget">The target (key/point) from which the color should be taken.</param>
+        /// <returns>The color at the specified point.</returns>
+        protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
-            return FinalizeColor(ColorHelper.ColorFromHSV((float)_random.NextDouble() * 360f, 1, 1));
+            return ColorHelper.ColorFromHSV((float)_random.NextDouble() * 360f, 1, 1);
         }
 
         #endregion

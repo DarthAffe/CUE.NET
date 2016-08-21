@@ -34,21 +34,18 @@ namespace CUE.NET.Brushes
         #region Methods
 
         /// <summary>
-        /// Gets the color at an specific point getting the color of the key at the given point.
+        /// Gets the color at an specific point assuming the brush is drawn into the given rectangle.
         /// </summary>
         /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
-        /// <param name="point">The point from which the color should be taken.</param>
-        /// <returns>The color of the key at the specified point.</returns>
-        public override Color GetColorAtPoint(RectangleF rectangle, PointF point)
+        /// <param name="renderTarget">The target (key/point) from which the color should be taken.</param>
+        /// <returns>The color at the specified point.</returns>
+        protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
-            CorsairKey key = CueSDK.KeyboardSDK[point];
+            CorsairKey key = CueSDK.KeyboardSDK[renderTarget.Key];
             if (key == null) return Color.Transparent;
 
             Color color;
-            if (!_keyLights.TryGetValue(key.KeyId, out color))
-                return Color.Transparent;
-
-            return FinalizeColor(color);
+            return !_keyLights.TryGetValue(key.KeyId, out color) ? Color.Transparent : color;
         }
 
         #endregion

@@ -130,10 +130,16 @@ namespace CUE.NET.Devices.Keyboard
         #region Update
 
         /// <summary>
-        /// Updates all brushes on the keyboard and on groups. 
+        /// Updates all brushes and groups on the keyboard.
         /// </summary>
         protected override void DeviceUpdate()
         {
+            lock (_keyGroups)
+            {
+                foreach (IKeyGroup keyGroup in _keyGroups)
+                    keyGroup.UpdateEffects();
+            }
+
             if (Brush != null)
                 ApplyBrush(this.ToList(), Brush);
 
@@ -142,11 +148,6 @@ namespace CUE.NET.Devices.Keyboard
                 foreach (IKeyGroup keyGroup in _keyGroups.OrderBy(x => x.ZIndex))
                     ApplyBrush(keyGroup.Keys.ToList(), keyGroup.Brush);
             }
-        }
-
-        protected override void DeviceUpdateEffects()
-        {
-            UpdateEffects();
         }
 
         // ReSharper disable once MemberCanBeMadeStatic.Local - idc
@@ -162,16 +163,20 @@ namespace CUE.NET.Devices.Keyboard
                         float offsetY = -brushRectangle.Y;
                         brushRectangle.X = 0;
                         brushRectangle.Y = 0;
-                        foreach (CorsairKey key in keys)
-                            key.Led.Color = brush.GetColorAtPoint(brushRectangle, key.KeyRectangle.GetCenter(offsetX, offsetY));
+                        brush.PerformRender(brushRectangle, keys.Select(x => new BrushRenderTarget(x.KeyId, x.KeyRectangle.GetCenter(offsetX, offsetY))));
                         break;
                     case BrushCalculationMode.Absolute:
-                        foreach (CorsairKey key in keys)
-                            key.Led.Color = brush.GetColorAtPoint(KeyboardRectangle, key.KeyRectangle.GetCenter());
+                        brush.PerformRender(KeyboardRectangle, keys.Select(x => new BrushRenderTarget(x.KeyId, x.KeyRectangle.GetCenter())));
                         break;
                     default:
                         throw new ArgumentException();
                 }
+
+                brush.UpdateEffects();
+                brush.PerformFinalize();
+
+                foreach (KeyValuePair<BrushRenderTarget, Color> renders in brush.RenderedTargets)
+                    _keys[renders.Key.Key].Led.Color = renders.Value;
             }
             // ReSharper disable once CatchAllClause
             catch (Exception ex) { OnException(ex); }
@@ -183,30 +188,6 @@ namespace CUE.NET.Devices.Keyboard
         }
 
         #endregion
-
-        public void UpdateEffects()
-        {
-            lock (_keyGroups)
-            {
-                foreach (IKeyGroup keyGroup in _keyGroups)
-                {
-                    keyGroup.UpdateEffects();
-                    keyGroup.Brush.UpdateEffects();
-                }
-            }
-
-            Brush.UpdateEffects();
-        }
-
-        public void AddEffect(IEffect<IKeyGroup> effect)
-        {
-            throw new NotSupportedException("Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.");
-        }
-
-        public void RemoveEffect(IEffect<IKeyGroup> effect)
-        {
-            throw new NotSupportedException("Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.");
-        }
 
         /// <summary>
         /// Attaches the given keygroup.
@@ -259,6 +240,25 @@ namespace CUE.NET.Devices.Keyboard
             }
         }
 
+        #region Effects
+
+        public void UpdateEffects()
+        {
+            throw new NotSupportedException("Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.");
+        }
+
+        public void AddEffect(IEffect<IKeyGroup> effect)
+        {
+            throw new NotSupportedException("Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.");
+        }
+
+        public void RemoveEffect(IEffect<IKeyGroup> effect)
+        {
+            throw new NotSupportedException("Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.");
+        }
+
+        #endregion
+        
         #region IEnumerable
 
         /// <summary>

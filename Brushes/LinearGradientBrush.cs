@@ -74,17 +74,17 @@ namespace CUE.NET.Brushes
         /// Gets the color at an specific point assuming the brush is drawn into the given rectangle.
         /// </summary>
         /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
-        /// <param name="point">The point from which the color should be taken.</param>
+        /// <param name="renderTarget">The target (key/point) from which the color should be taken.</param>
         /// <returns>The color at the specified point.</returns>
-        public override Color GetColorAtPoint(RectangleF rectangle, PointF point)
+        protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
             if (Gradient == null) return Color.Transparent;
 
             PointF startPoint = new PointF(StartPoint.X * rectangle.Width, StartPoint.Y * rectangle.Height);
             PointF endPoint = new PointF(EndPoint.X * rectangle.Width, EndPoint.Y * rectangle.Height);
 
-            float offset = GradientHelper.CalculateLinearGradientOffset(startPoint, endPoint, point);
-            return FinalizeColor(Gradient.GetColor(offset));
+            float offset = GradientHelper.CalculateLinearGradientOffset(startPoint, endPoint, renderTarget.Point);
+            return Gradient.GetColor(offset);
         }
 
         #endregion

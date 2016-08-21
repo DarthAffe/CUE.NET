@@ -61,12 +61,12 @@ namespace CUE.NET.Brushes
         #region Methods
 
         /// <summary>
-        /// Gets the color at an specific point getting the color of the key at the given point.
+        /// Gets the color at an specific point assuming the brush is drawn into the given rectangle.
         /// </summary>
         /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
-        /// <param name="point">The point from which the color should be taken.</param>
-        /// <returns>The color of the key at the specified point.</returns>
-        public override Color GetColorAtPoint(RectangleF rectangle, PointF point)
+        /// <param name="renderTarget">The target (key/point) from which the color should be taken.</param>
+        /// <returns>The color at the specified point.</returns>
+        protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
             if (Image == null || Image.Width == 0 || Image.Height == 0)
                 return Color.Transparent;
@@ -75,13 +75,13 @@ namespace CUE.NET.Brushes
             float scaleX = Image.Width / rectangle.Width;
             float scaleY = Image.Height / rectangle.Height;
 
-            int x = (int)(point.X * scaleX);
-            int y = (int)(point.Y * scaleY);
+            int x = (int)(renderTarget.Point.X * scaleX);
+            int y = (int)(renderTarget.Point.Y * scaleY);
 
             x = Math.Max(0, Math.Min(x, Image.Width - 1));
             y = Math.Max(0, Math.Min(y, Image.Height - 1));
 
-            return FinalizeColor(Image.GetPixel(x, y));
+            return Image.GetPixel(x, y);
         }
 
         #endregion

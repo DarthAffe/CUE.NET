@@ -76,11 +76,6 @@ namespace CUE.NET.Devices.Headset
             //TODO DarthAffe 21.08.2016: Create something fancy for headsets
         }
 
-        protected override void DeviceUpdateEffects()
-        {
-            //TODO DarthAffe 21.08.2016: Create something fancy for headsets
-        }
-
         #region IEnumerable
 
         /// <summary>

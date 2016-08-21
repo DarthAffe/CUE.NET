@@ -1,6 +1,9 @@
 ﻿// ReSharper disable VirtualMemberNeverOverriden.Global
+// ReSharper disable MemberCanBePrivate.Global
 
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Effects;
 using CUE.NET.Helper;
@@ -29,6 +32,16 @@ namespace CUE.NET.Brushes
         /// </summary>
         public float Opacity { get; set; }
 
+        /// <summary>
+        /// Gets the Rectangle used in the last render pass.
+        /// </summary>
+        public RectangleF RenderedRectangle { get; protected set; }
+
+        /// <summary>
+        /// Gets a dictionary containing all colors for points calculated in the last render pass.
+        /// </summary>
+        public Dictionary<BrushRenderTarget, Color> RenderedTargets { get; } = new Dictionary<BrushRenderTarget, Color>();
+
         #endregion
 
         #region Constructors
@@ -49,12 +62,35 @@ namespace CUE.NET.Brushes
         #region Methods
 
         /// <summary>
+        /// Performas the render pass of the brush and calculates the raw colors for all requested points.
+        /// </summary>
+        /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
+        /// <param name="renderTargets">The targets (keys/points) of which the color should be calculated.</param>
+        public virtual void PerformRender(RectangleF rectangle, IEnumerable<BrushRenderTarget> renderTargets)
+        {
+            RenderedRectangle = rectangle;
+            RenderedTargets.Clear();
+
+            foreach (BrushRenderTarget point in renderTargets)
+                RenderedTargets[point] = GetColorAtPoint(rectangle, point);
+        }
+        /// <summary>
+        /// Performs the finalize pass of the brush and calculates the final colors for all previously calculated points.
+        /// </summary>
+        public virtual void PerformFinalize()
+        {
+            List<BrushRenderTarget> renderTargets = RenderedTargets.Keys.ToList();
+            foreach (BrushRenderTarget renderTarget in renderTargets)
+                RenderedTargets[renderTarget] = FinalizeColor(RenderedTargets[renderTarget]);
+        }
+
+        /// <summary>
         /// Gets the color at an specific point assuming the brush is drawn into the given rectangle.
         /// </summary>
         /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
-        /// <param name="point">The point from which the color should be taken.</param>
+        /// <param name="renderTarget">The target (key/point) from which the color should be taken.</param>
         /// <returns>The color at the specified point.</returns>
-        public abstract Color GetColorAtPoint(RectangleF rectangle, PointF point);
+        protected abstract Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget);
 
         /// <summary>
         /// Finalizes the color by appliing the overall brightness and opacity.<br/>

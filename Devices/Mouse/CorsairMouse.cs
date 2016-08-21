@@ -99,11 +99,6 @@ namespace CUE.NET.Devices.Mouse
             //TODO DarthAffe 21.08.2016: Create something fancy for mice
         }
 
-        protected override void DeviceUpdateEffects()
-        {
-            //TODO DarthAffe 21.08.2016: Create something fancy for mice
-        }
-
         #region IEnumerable
 
         /// <summary>

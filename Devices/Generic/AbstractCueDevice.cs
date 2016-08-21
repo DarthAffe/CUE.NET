@@ -169,8 +169,7 @@ namespace CUE.NET.Devices.Generic
         public void Update(bool flushLeds = false)
         {
             OnUpdating();
-
-            DeviceUpdateEffects();
+            
             DeviceUpdate();
 
             ICollection<LedUpateRequest> ledsToUpdate = (flushLeds ? Leds : Leds.Where(x => x.Value.IsDirty)).Select(x => new LedUpateRequest(x.Key, x.Value.RequestedColor)).ToList();
@@ -187,11 +186,6 @@ namespace CUE.NET.Devices.Generic
         /// Performs device specific updates.
         /// </summary>
         protected abstract void DeviceUpdate();
-
-        /// <summary>
-        /// Performs device specific updates effect-updates.
-        /// </summary>
-        protected abstract void DeviceUpdateEffects();
         
         private void UpdateLeds(ICollection<LedUpateRequest> updateRequests)
         {
