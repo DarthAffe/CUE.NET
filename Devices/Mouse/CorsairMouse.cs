@@ -96,7 +96,7 @@ namespace CUE.NET.Devices.Mouse
 
         protected override void DeviceUpdate()
         {
-            //TODO DarthAffe 21.08.2016: Create something fancy for mice
+            //DarthAffe 21.08.2016: Mice can't own brushes or groups - nothing to do here for now
         }
 
         #region IEnumerable

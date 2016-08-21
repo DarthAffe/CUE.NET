@@ -73,7 +73,7 @@ namespace CUE.NET.Devices.Headset
 
         protected override void DeviceUpdate()
         {
-            //TODO DarthAffe 21.08.2016: Create something fancy for headsets
+            //DarthAffe 21.08.2016: Headsets can't own brushes or groups - nothing to do here for now
         }
 
         #region IEnumerable
