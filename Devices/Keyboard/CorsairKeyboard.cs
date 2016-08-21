@@ -181,7 +181,11 @@ namespace CUE.NET.Devices.Keyboard
             // ReSharper disable once CatchAllClause
             catch (Exception ex) { OnException(ex); }
         }
-
+        
+        /// <summary>
+        /// Gets a list containing all LEDs of this group.
+        /// </summary>
+        /// <returns>The list containing all LEDs of this group.</returns>
         public IEnumerable<CorsairLed> GetLeds()
         {
             return this.Select(x => x.Led);
@@ -242,16 +246,27 @@ namespace CUE.NET.Devices.Keyboard
 
         #region Effects
 
+        /// <summary>
+        /// NOT IMPLEMENTED: Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.
+        /// </summary>
         public void UpdateEffects()
         {
             throw new NotSupportedException("Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.");
         }
 
+        /// <summary>
+        /// NOT IMPLEMENTED: Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.
+        /// </summary>
+        /// <param name="effect">The effect to add.</param>
         public void AddEffect(IEffect<IKeyGroup> effect)
         {
             throw new NotSupportedException("Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.");
         }
 
+        /// <summary>
+        /// NOT IMPLEMENTED: Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.
+        /// </summary>
+        /// <param name="effect">The effect to remove.</param>
         public void RemoveEffect(IEffect<IKeyGroup> effect)
         {
             throw new NotSupportedException("Effects can't be applied directly to the keyboard. Add it to the Brush or create a keygroup instead.");
@@ -270,6 +285,10 @@ namespace CUE.NET.Devices.Keyboard
             return _keys.Values.GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates over all keys of the keyboard.
+        /// </summary>
+        /// <returns>An enumerator for all keys of the keyboard.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

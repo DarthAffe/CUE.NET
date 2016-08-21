@@ -74,6 +74,7 @@ namespace CUE.NET.Brushes
             foreach (BrushRenderTarget point in renderTargets)
                 RenderedTargets[point] = GetColorAtPoint(rectangle, point);
         }
+
         /// <summary>
         /// Performs the finalize pass of the brush and calculates the final colors for all previously calculated points.
         /// </summary>

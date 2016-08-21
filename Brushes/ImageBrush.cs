@@ -39,6 +39,9 @@ namespace CUE.NET.Brushes
 
         #region Properties & Fields
 
+        /// <summary>
+        /// Gets the strongly-typed target used for the effect.
+        /// </summary>
         protected override IBrush EffectTarget => this;
 
         /// <summary>
