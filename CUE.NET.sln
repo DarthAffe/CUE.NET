@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUE.NET", "CUE.NET.csproj", "{70A266B5-E9D4-4EAA-A91A-947C0039FFB6}"
 EndProject
@@ -20,12 +20,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{D69EF6D8-6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x86", "x86", "{0525D895-E706-4920-8733-DABD9194BFB1}"
 	ProjectSection(SolutionItems) = preProject
-		libs\x86\CUESDK_2013.dll = libs\x86\CUESDK_2013.dll
+		bin\x86\CUESDK_2015.dll = bin\x86\CUESDK_2015.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x64", "x64", "{2F99124B-FAED-432D-B797-45566D373411}"
 	ProjectSection(SolutionItems) = preProject
-		libs\x64\CUESDK_2013.dll = libs\x64\CUESDK_2013.dll
+		bin\x64\CUESDK_2015.dll = bin\x64\CUESDK_2015.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AudioAnalyzer", "AudioAnalyzer", "{BE16A0BF-6794-4718-AF27-F2A50078D880}"

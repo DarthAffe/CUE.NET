@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CUE.NET;
@@ -10,6 +12,8 @@ using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Devices.Keyboard.Extensions;
 using CUE.NET.Devices.Keyboard.Keys;
+using CUE.NET.Devices.Mousemat;
+using CUE.NET.Devices.Mousemat.Enums;
 using CUE.NET.Exceptions;
 using CUE.NET.Gradients;
 using CUE.NET.Profiles;
@@ -18,6 +22,8 @@ namespace SimpleDevTest
 {
     internal class Program
     {
+        private static readonly Random Rand = new Random();
+
         public static void Main(string[] args)
         {
             Console.WriteLine("Press any key to exit ...");
@@ -69,6 +75,40 @@ namespace SimpleDevTest
                         spot.Location = Interpolate(spot.Location, target, eventArgs.DeltaTime * SPEED);
                     spotGroup.Rectangle = spot;
                 };
+
+                CorsairMousemat mousemat = CueSDK.MousematSDK;
+                mousemat.UpdateMode = UpdateMode.Continuous;
+
+                // Left
+                mousemat[CorsairMousematLedId.Zone1].Color = Color.Red;
+                mousemat[CorsairMousematLedId.Zone2].Color = Color.Red;
+                mousemat[CorsairMousematLedId.Zone3].Color = Color.Red;
+                mousemat[CorsairMousematLedId.Zone4].Color = Color.Red;
+                mousemat[CorsairMousematLedId.Zone5].Color = Color.Red;
+                // Bottom
+                mousemat[CorsairMousematLedId.Zone6].Color = Color.LawnGreen;
+                mousemat[CorsairMousematLedId.Zone7].Color = Color.LawnGreen;
+                mousemat[CorsairMousematLedId.Zone8].Color = Color.LawnGreen;
+                mousemat[CorsairMousematLedId.Zone9].Color = Color.LawnGreen;
+                mousemat[CorsairMousematLedId.Zone10].Color = Color.LawnGreen;
+                // Right
+                mousemat[CorsairMousematLedId.Zone11].Color = Color.Blue;
+                mousemat[CorsairMousematLedId.Zone12].Color = Color.Blue;
+                mousemat[CorsairMousematLedId.Zone13].Color = Color.Blue;
+                mousemat[CorsairMousematLedId.Zone14].Color = Color.Blue;
+                mousemat[CorsairMousematLedId.Zone15].Color = Color.Blue;
+
+                // Random colors to show update rate
+                //foreach (var mousematLed in mousemat.Leds)
+                //    mousematLed.Color = GetRandomRainbowColor();
+
+                //mousemat.Updating += (sender, eventArgs) =>
+                //{
+                //    foreach (var mousematLed in mousemat.Leds)
+                //    {
+                //        mousematLed.Color = ShiftColor(mousematLed.Color, 20);
+                //    }
+                //};
 
                 //keyboard.Brush = new SolidColorBrush(Color.Black);
                 //IKeyGroup group = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.F1, CorsairKeyboardKeyId.RightShift);
@@ -349,6 +389,67 @@ namespace SimpleDevTest
                 return new PointF(xt, yt);
             }
             return p2;
+        }
+
+        /// <summary>
+        ///     Comes up with a 'pure' psuedo-random color
+        /// </summary>
+        /// <returns>The color</returns>
+        public static Color GetRandomRainbowColor()
+        {
+            var colors = new List<int>();
+            for (var i = 0; i < 3; i++)
+                colors.Add(Rand.Next(0, 256));
+
+            var highest = colors.Max();
+            var lowest = colors.Min();
+            colors[colors.FindIndex(c => c == highest)] = 255;
+            colors[colors.FindIndex(c => c == lowest)] = 0;
+
+            var returnColor = Color.FromArgb(255, colors[0], colors[1], colors[2]);
+
+            return returnColor;
+        }
+        public static Color ShiftColor(Color c, int shiftAmount)
+        {
+            int newRed = c.R;
+            int newGreen = c.G;
+            int newBlue = c.B;
+
+            // Red to purple
+            if (c.R == 255 && c.B < 255 && c.G == 0)
+                newBlue = newBlue + shiftAmount;
+            // Purple to blue
+            else if (c.B == 255 && c.R > 0)
+                newRed = newRed - shiftAmount;
+            // Blue to light-blue
+            else if (c.B == 255 && c.G < 255)
+                newGreen = newGreen + shiftAmount;
+            // Light-blue to green
+            else if (c.G == 255 && c.B > 0)
+                newBlue = newBlue - shiftAmount;
+            // Green to yellow
+            else if (c.G == 255 && c.R < 255)
+                newRed = newRed + shiftAmount;
+            // Yellow to red
+            else if (c.R == 255 && c.G > 0)
+                newGreen = newGreen - shiftAmount;
+
+            newRed = BringIntInColorRange(newRed);
+            newGreen = BringIntInColorRange(newGreen);
+            newBlue = BringIntInColorRange(newBlue);
+
+            return Color.FromArgb(c.A, newRed, newGreen, newBlue);
+        }
+
+        private static int BringIntInColorRange(int i)
+        {
+            if (i < 0)
+                return 0;
+            if (i > 255)
+                return 255;
+
+            return i;
         }
     }
 }

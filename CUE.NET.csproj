@@ -58,6 +58,9 @@
     <Compile Include="Devices\Generic\EventArgs\UpdatingEventArgs.cs" />
     <Compile Include="Devices\Generic\LedUpateRequest.cs" />
     <Compile Include="Devices\Keyboard\Enums\BrushCalculationMode.cs" />
+    <Compile Include="Devices\Mousemat\CorsairMousemat.cs" />
+    <Compile Include="Devices\Mousemat\CorsairMousematDeviceInfo.cs" />
+    <Compile Include="Devices\Mousemat\Enums\CorsairMousematLedId.cs" />
     <Compile Include="Gradients\AbstractGradient.cs" />
     <Compile Include="Gradients\GradientStop.cs" />
     <Compile Include="Gradients\IGradient.cs" />
