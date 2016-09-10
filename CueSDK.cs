@@ -1,4 +1,5 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -85,6 +86,7 @@ namespace CUE.NET
             {
                 if (IsInitialized)
                 {
+                    // ReSharper disable once SwitchStatementMissingSomeCases - everything else is true
                     switch (sdkType)
                     {
                         case CorsairDeviceType.Keyboard:

@@ -8,7 +8,7 @@ using CUE.NET.Groups.Extensions;
 namespace CUE.NET.Groups
 {
     /// <summary>
-    /// Represents a basic keygroup.
+    /// Represents a basic ledgroup.
     /// </summary>
     public abstract class AbstractLedGroup : AbstractEffectTarget<ILedGroup>, ILedGroup
     {
@@ -30,7 +30,7 @@ namespace CUE.NET.Groups
         public IBrush Brush { get; set; }
 
         /// <summary>
-        /// Gets or sets the z-index of this keygroup to allow ordering them before drawing. (lowest first) (default: 0)
+        /// Gets or sets the z-index of this ledgroup to allow ordering them before drawing. (lowest first) (default: 0)
         /// </summary>
         public int ZIndex { get; set; } = 0;
 

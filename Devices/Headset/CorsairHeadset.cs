@@ -4,7 +4,6 @@
 
 using System.Drawing;
 using CUE.NET.Devices.Generic;
-using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Headset.Enums;
 
 namespace CUE.NET.Devices.Headset
@@ -39,6 +38,9 @@ namespace CUE.NET.Devices.Headset
 
         #region Methods
 
+        /// <summary>
+        /// Initializes the LEDs of the device.
+        /// </summary>
         protected override void InitializeLeds()
         {
             InitializeLed(CorsairHeadsetLedId.LeftLogo, new RectangleF(0, 0, 1, 1));

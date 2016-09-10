@@ -1,5 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
 
 using CUE.NET.Groups;
 
@@ -8,7 +9,7 @@ namespace CUE.NET.Effects
     /// <summary>
     /// Represents a basic effect targeting an <see cref="ILedGroup"/>.
     /// </summary>
-    public abstract class AbstractKeyGroupEffect : IEffect<ILedGroup>
+    public abstract class AbstractLedGroupEffect : IEffect<ILedGroup>
     {
         #region Properties & Fields
 

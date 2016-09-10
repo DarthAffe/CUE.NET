@@ -4,18 +4,9 @@
 // ReSharper disable UnusedMember.Global
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic;
-using CUE.NET.Devices.Keyboard.Enums;
-using CUE.NET.Effects;
-using CUE.NET.Groups;
-using CUE.NET.Helper;
 using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Keyboard
@@ -50,6 +41,9 @@ namespace CUE.NET.Devices.Keyboard
 
         #region Methods
 
+        /// <summary>
+        /// Initializes the LEDs of the device.
+        /// </summary>
         protected override void InitializeLeds()
         {
             _CorsairLedPositions nativeLedPositions = (_CorsairLedPositions)Marshal.PtrToStructure(_CUESDK.CorsairGetLedPositions(), typeof(_CorsairLedPositions));
@@ -63,6 +57,7 @@ namespace CUE.NET.Devices.Keyboard
                 ptr = new IntPtr(ptr.ToInt64() + structSize);
             }
         }
+
         #endregion
     }
 }

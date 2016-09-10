@@ -126,10 +126,10 @@ namespace CUE.NET.Groups
         /// <summary>
         /// Adds the given LED(s) to the ledgroup.
         /// </summary>
-        /// <param name="LEDs">The LED(s) to add.</param>
-        public void AddLed(params CorsairLed[] LEDs)
+        /// <param name="leds">The LED(s) to add.</param>
+        public void AddLed(params CorsairLed[] leds)
         {
-            AddLeds(LEDs);
+            AddLeds(leds);
         }
 
         /// <summary>
@@ -147,10 +147,11 @@ namespace CUE.NET.Groups
         /// <param name="leds">The LEDs to add.</param>
         public void AddLeds(IEnumerable<CorsairLed> leds)
         {
-            if (leds != null)
-                foreach (CorsairLed led in leds)
-                    if (led != null && !ContainsLed(led))
-                        GroupLeds.Add(led);
+            if (leds == null) return;
+
+            foreach (CorsairLed led in leds)
+                if (led != null && !ContainsLed(led))
+                    GroupLeds.Add(led);
         }
 
         /// <summary>
@@ -159,9 +160,10 @@ namespace CUE.NET.Groups
         /// <param name="ledIds">The IDs of the LEDs to add.</param>
         public void AddLeds(IEnumerable<CorsairLedId> ledIds)
         {
-            if (ledIds != null)
-                foreach (CorsairLedId ledId in ledIds)
-                    AddLed(Device[ledId]);
+            if (ledIds == null) return;
+
+            foreach (CorsairLedId ledId in ledIds)
+                AddLed(Device[ledId]);
         }
 
         /// <summary>
@@ -188,10 +190,11 @@ namespace CUE.NET.Groups
         /// <param name="leds">The LEDs to remove.</param>
         public void RemoveLeds(IEnumerable<CorsairLed> leds)
         {
-            if (leds != null)
-                foreach (CorsairLed led in leds)
-                    if (led != null)
-                        GroupLeds.Remove(led);
+            if (leds == null) return;
+
+            foreach (CorsairLed led in leds)
+                if (led != null)
+                    GroupLeds.Remove(led);
         }
 
         /// <summary>
@@ -200,9 +203,10 @@ namespace CUE.NET.Groups
         /// <param name="ledIds">The IDs of the LEDs to remove.</param>
         public void RemoveLeds(IEnumerable<CorsairLedId> ledIds)
         {
-            if (ledIds != null)
-                foreach (CorsairLedId ledId in ledIds)
-                    RemoveLed(Device[ledId]);
+            if (ledIds == null) return;
+
+            foreach (CorsairLedId ledId in ledIds)
+                RemoveLed(Device[ledId]);
         }
 
         /// <summary>

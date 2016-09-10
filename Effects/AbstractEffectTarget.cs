@@ -14,7 +14,7 @@ namespace CUE.NET.Effects
         where T : IEffectTarget<T>
     {
         #region Properties & Fields
-        
+
         private IList<EffectTimeContainer> _effectTimes = new List<EffectTimeContainer>();
 
         /// <summary>
@@ -68,11 +68,10 @@ namespace CUE.NET.Effects
         /// <param name="effect">The effect to add.</param>
         public void AddEffect(IEffect<T> effect)
         {
-            if (_effectTimes.All(x => x.Effect != effect))
-            {
-                effect.OnAttach(EffectTarget);
-                _effectTimes.Add(new EffectTimeContainer(effect, -1));
-            }
+            if (_effectTimes.Any(x => x.Effect == effect)) return;
+
+            effect.OnAttach(EffectTarget);
+            _effectTimes.Add(new EffectTimeContainer(effect, -1));
         }
 
         /// <summary>
@@ -82,11 +81,10 @@ namespace CUE.NET.Effects
         public void RemoveEffect(IEffect<T> effect)
         {
             EffectTimeContainer effectTimeToRemove = _effectTimes.FirstOrDefault(x => x.Effect == effect);
-            if (effectTimeToRemove != null)
-            {
-                effect.OnDetach(EffectTarget);
-                _effectTimes.Remove(effectTimeToRemove);
-            }
+            if (effectTimeToRemove == null) return;
+
+            effect.OnDetach(EffectTarget);
+            _effectTimes.Remove(effectTimeToRemove);
         }
 
         #endregion

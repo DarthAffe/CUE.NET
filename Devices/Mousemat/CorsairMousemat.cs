@@ -3,9 +3,7 @@
 // ReSharper disable UnusedMember.Global
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -46,6 +44,9 @@ namespace CUE.NET.Devices.Mousemat
 
         #region Methods
 
+        /// <summary>
+        /// Initializes the LEDs of the device.
+        /// </summary>
         protected override void InitializeLeds()
         {
             int deviceCount = _CUESDK.CorsairGetDeviceCount();

@@ -1,5 +1,6 @@
 ﻿// ReSharper disable VirtualMemberNeverOverriden.Global
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 using System.Collections.Generic;
 using System.Drawing;

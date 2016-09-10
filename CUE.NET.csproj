@@ -60,7 +60,7 @@
     <Compile Include="Devices\Generic\EventArgs\UpdatingEventArgs.cs" />
     <Compile Include="Devices\Generic\LedUpateRequest.cs" />
     <Compile Include="Devices\Keyboard\Enums\BrushCalculationMode.cs" />
-    <Compile Include="Effects\AbstractKeyGroupEffect.cs" />
+    <Compile Include="Effects\AbstractLedGroupEffect.cs" />
     <Compile Include="Effects\AbstractBrushEffect.cs" />
     <Compile Include="Effects\AbstractEffectTarget.cs" />
     <Compile Include="Effects\IEffectTarget.cs" />

@@ -1,7 +1,9 @@
-﻿using System;
+﻿// ReSharper disable UnusedMethodReturnValue.Global
+// ReSharper disable UnusedMember.Global
+
+using System;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic.Enums;
-using CUE.NET.Devices.Keyboard.Enums;
 
 namespace CUE.NET.Native
 {

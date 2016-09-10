@@ -1,4 +1,5 @@
 // ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable UnusedMember.Global
 
 using System.Collections.Generic;
 using System.Drawing;

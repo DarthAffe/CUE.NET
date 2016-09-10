@@ -6,7 +6,7 @@
     public enum BrushCalculationMode
     {
         /// <summary>
-        /// The calculation rectangle for brushes will be the rectangle around the keygroup the brush is applied to.
+        /// The calculation rectangle for brushes will be the rectangle around the ledgroup the brush is applied to.
         /// </summary>
         Relative,
         /// <summary>

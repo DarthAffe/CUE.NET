@@ -4,7 +4,6 @@
 
 using System.Drawing;
 using CUE.NET.Devices.Generic;
-using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Mouse.Enums;
 using CUE.NET.Exceptions;
 
@@ -40,6 +39,9 @@ namespace CUE.NET.Devices.Mouse
 
         #region Methods
 
+        /// <summary>
+        /// Initializes the LEDs of the device.
+        /// </summary>
         protected override void InitializeLeds()
         {
             switch (MouseDeviceInfo.PhysicalLayout)

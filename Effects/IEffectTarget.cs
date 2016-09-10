@@ -1,4 +1,6 @@
-﻿namespace CUE.NET.Effects
+﻿// ReSharper disable UnusedMember.Global
+
+namespace CUE.NET.Effects
 {
     /// <summary>
     /// Represents a basic effect-target.

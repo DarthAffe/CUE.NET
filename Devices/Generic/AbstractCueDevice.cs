@@ -1,5 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMethodReturnValue.Global
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 using System;
 using System.Collections;
@@ -32,11 +33,6 @@ namespace CUE.NET.Devices.Generic
         private CancellationToken _updateToken;
         private Task _updateTask;
         private DateTime _lastUpdate = DateTime.Now;
-
-        /// <summary>
-        /// Gets a list of attached ledgroups.
-        /// </summary>
-        protected LinkedList<ILedGroup> LedGroups { get; } = new LinkedList<ILedGroup>();
 
         /// <summary>
         /// Gets generic information provided by CUE for the device.
@@ -76,6 +72,11 @@ namespace CUE.NET.Devices.Generic
         /// Gets a read-only collection containing the LEDs of the device.
         /// </summary>
         public IEnumerable<CorsairLed> Leds => new ReadOnlyCollection<CorsairLed>(LedMapping.Values.ToList());
+
+        /// <summary>
+        /// Gets a list of attached ledgroups.
+        /// </summary>
+        protected LinkedList<ILedGroup> LedGroups { get; } = new LinkedList<ILedGroup>();
 
         /// <summary>
         /// Gets or sets the background brush of the keyboard.
@@ -174,6 +175,11 @@ namespace CUE.NET.Devices.Generic
 
         #region Methods
 
+        #region Initialize
+
+        /// <summary>
+        /// Initializes the LEDs of the device.
+        /// </summary>
         protected abstract void InitializeLeds();
 
         /// <summary>
@@ -184,15 +190,25 @@ namespace CUE.NET.Devices.Generic
         /// <returns></returns>
         protected CorsairLed InitializeLed(CorsairLedId ledId, RectangleF ledRectangle)
         {
-            if (!LedMapping.ContainsKey(ledId))
-            {
-                CorsairLed led = new CorsairLed(ledId, ledRectangle);
-                LedMapping.Add(ledId, led);
-                return led;
-            }
+            if (LedMapping.ContainsKey(ledId)) return null;
 
-            return null;
+            CorsairLed led = new CorsairLed(ledId, ledRectangle);
+            LedMapping.Add(ledId, led);
+            return led;
         }
+
+        /// <summary>
+        /// Resets all loaded LEDs back to default.
+        /// </summary>
+        internal void ResetLeds()
+        {
+            foreach (CorsairLed led in LedMapping.Values)
+                led.Reset();
+        }
+
+        #endregion
+
+        #region Update-Loop
 
         /// <summary>
         /// Checks if automatic updates should occur and starts/stops the update-loop if needed.
@@ -240,6 +256,10 @@ namespace CUE.NET.Devices.Generic
             }
         }
 
+        #endregion
+
+        #region Update
+
         /// <summary>
         /// Performs an update for all dirty keys, or all keys if flushLeds is set to true.
         /// </summary>
@@ -275,41 +295,6 @@ namespace CUE.NET.Devices.Generic
         /// </summary>
         protected virtual void DeviceUpdate()
         { }
-
-        /// <summary>
-        /// Attaches the given ledgroup.
-        /// </summary>
-        /// <param name="ledGroup">The ledgroup to attach.</param>
-        /// <returns><c>true</c> if the ledgroup could be attached; otherwise, <c>false</c>.</returns>
-        public bool AttachLedGroup(ILedGroup ledGroup)
-        {
-            lock (LedGroups)
-            {
-                if (ledGroup == null || LedGroups.Contains(ledGroup)) return false;
-
-                LedGroups.AddLast(ledGroup);
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Detaches the given ledgroup.
-        /// </summary>
-        /// <param name="ledGroup">The ledgroup to detached.</param>
-        /// <returns><c>true</c> if the ledgroup could be detached; otherwise, <c>false</c>.</returns>
-        public bool DetachLedGroup(ILedGroup ledGroup)
-        {
-            lock (LedGroups)
-            {
-                if (ledGroup == null) return false;
-
-                LinkedListNode<ILedGroup> node = LedGroups.Find(ledGroup);
-                if (node == null) return false;
-
-                LedGroups.Remove(node);
-                return true;
-            }
-        }
 
         /// <summary>
         /// Renders a ledgroup.
@@ -381,13 +366,43 @@ namespace CUE.NET.Devices.Generic
             OnLedsUpdated(updateRequests);
         }
 
+        #endregion
+
+        #region LedGroup
+
         /// <summary>
-        /// Resets all loaded LEDs back to default.
+        /// Attaches the given ledgroup.
         /// </summary>
-        internal void ResetLeds()
+        /// <param name="ledGroup">The ledgroup to attach.</param>
+        /// <returns><c>true</c> if the ledgroup could be attached; otherwise, <c>false</c>.</returns>
+        public bool AttachLedGroup(ILedGroup ledGroup)
         {
-            foreach (CorsairLed led in LedMapping.Values)
-                led.Reset();
+            lock (LedGroups)
+            {
+                if (ledGroup == null || LedGroups.Contains(ledGroup)) return false;
+
+                LedGroups.AddLast(ledGroup);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Detaches the given ledgroup.
+        /// </summary>
+        /// <param name="ledGroup">The ledgroup to detached.</param>
+        /// <returns><c>true</c> if the ledgroup could be detached; otherwise, <c>false</c>.</returns>
+        public bool DetachLedGroup(ILedGroup ledGroup)
+        {
+            lock (LedGroups)
+            {
+                if (ledGroup == null) return false;
+
+                LinkedListNode<ILedGroup> node = LedGroups.Find(ledGroup);
+                if (node == null) return false;
+
+                LedGroups.Remove(node);
+                return true;
+            }
         }
 
         /// <summary>
@@ -399,32 +414,34 @@ namespace CUE.NET.Devices.Generic
             return Leds;
         }
 
+        #endregion
+
         #region Effects
 
         /// <summary>
-        /// NOT IMPLEMENTED: Effects can't be applied directly to the device. Add it to the Brush or create a keygroup instead.
+        /// NOT IMPLEMENTED: Effects can't be applied directly to the device. Add it to the Brush or create a ledgroup instead.
         /// </summary>
         public void UpdateEffects()
         {
-            throw new NotSupportedException("Effects can't be applied directly to the device. Add it to the Brush or create a keygroup instead.");
+            throw new NotSupportedException("Effects can't be applied directly to the device. Add it to the Brush or create a ledgroup instead.");
         }
 
         /// <summary>
-        /// NOT IMPLEMENTED: Effects can't be applied directly to the device. Add it to the Brush or create a keygroup instead.
+        /// NOT IMPLEMENTED: Effects can't be applied directly to the device. Add it to the Brush or create a ledgroup instead.
         /// </summary>
         /// <param name="effect">The effect to add.</param>
         public void AddEffect(IEffect<ILedGroup> effect)
         {
-            throw new NotSupportedException("Effects can't be applied directly to the device. Add it to the Brush or create a keygroup instead.");
+            throw new NotSupportedException("Effects can't be applied directly to the device. Add it to the Brush or create a ledgroup instead.");
         }
 
         /// <summary>
-        /// NOT IMPLEMENTED: Effects can't be applied directly to the device. Add it to the Brush or create a keygroup instead.
+        /// NOT IMPLEMENTED: Effects can't be applied directly to the device. Add it to the Brush or create a ledgroup instead.
         /// </summary>
         /// <param name="effect">The effect to remove.</param>
         public void RemoveEffect(IEffect<ILedGroup> effect)
         {
-            throw new NotSupportedException("Effects can't be applied directly to the device. Add it to the Brush or create a keygroup instead.");
+            throw new NotSupportedException("Effects can't be applied directly to the device. Add it to the Brush or create a ledgroup instead.");
         }
 
         #endregion

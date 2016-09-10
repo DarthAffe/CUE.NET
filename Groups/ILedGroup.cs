@@ -16,7 +16,7 @@ namespace CUE.NET.Groups
         IBrush Brush { get; set; }
 
         /// <summary>
-        /// Gets or sets the z-index of this keygroup to allow ordering them before drawing. (lowest first) (default: 0)
+        /// Gets or sets the z-index of this ledgroup to allow ordering them before drawing. (lowest first) (default: 0)
         /// </summary>
         int ZIndex { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
 
 using System;
 using System.Drawing;

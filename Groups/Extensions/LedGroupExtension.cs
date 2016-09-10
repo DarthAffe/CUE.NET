@@ -16,7 +16,7 @@ namespace CUE.NET.Groups.Extensions
         /// </summary>
         /// <param name="ledGroup">The <see cref="AbstractLedGroup" /> to convert.</param>
         /// <returns>The converted <see cref="ListLedGroup" />.</returns>
-        public static ListLedGroup ToSimpleKeyGroup(this AbstractLedGroup ledGroup)
+        public static ListLedGroup ToSimpleLedGroup(this AbstractLedGroup ledGroup)
         {
             ListLedGroup simpleLedGroup = ledGroup as ListLedGroup;
             if (simpleLedGroup == null)
@@ -35,7 +35,7 @@ namespace CUE.NET.Groups.Extensions
         /// <returns>The new <see cref="ListLedGroup" />.</returns>
         public static ListLedGroup Exclude(this AbstractLedGroup ledGroup, params CorsairLedId[] ledIds)
         {
-            ListLedGroup simpleLedGroup = ledGroup.ToSimpleKeyGroup();
+            ListLedGroup simpleLedGroup = ledGroup.ToSimpleLedGroup();
             foreach (CorsairLedId ledId in ledIds)
                 simpleLedGroup.RemoveLed(ledId);
             return simpleLedGroup;
@@ -49,7 +49,7 @@ namespace CUE.NET.Groups.Extensions
         /// <returns>The new <see cref="ListLedGroup" />.</returns>
         public static ListLedGroup Exclude(this AbstractLedGroup ledGroup, params CorsairLed[] ledIds)
         {
-            ListLedGroup simpleLedGroup = ledGroup.ToSimpleKeyGroup();
+            ListLedGroup simpleLedGroup = ledGroup.ToSimpleLedGroup();
             foreach (CorsairLed led in ledIds)
                 simpleLedGroup.RemoveLed(led);
             return simpleLedGroup;

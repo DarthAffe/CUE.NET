@@ -1,4 +1,6 @@
-﻿namespace CUE.NET.Devices.Generic.Enums
+﻿// ReSharper disable InconsistentNaming
+
+namespace CUE.NET.Devices.Generic.Enums
 {
     /// <summary>
     /// Contains list of all LEDs available for all corsair devices.
