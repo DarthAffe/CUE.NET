@@ -3,6 +3,7 @@
 // ReSharper disable UnusedMember.Global
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace CUE.NET.Brushes
@@ -41,11 +42,6 @@ namespace CUE.NET.Brushes
         #region Properties & Fields
 
         /// <summary>
-        /// Gets the strongly-typed target used for the effect.
-        /// </summary>
-        protected override IBrush EffectTarget => this;
-
-        /// <summary>
         /// Gets or sets the image drawn by the brush. If null it will default to full transparent.
         /// </summary>
         public Bitmap Image { get; set; }
@@ -63,7 +59,7 @@ namespace CUE.NET.Brushes
         #endregion
 
         #region Methods
-
+        
         /// <summary>
         /// Gets the color at an specific point assuming the brush is drawn into the given rectangle.
         /// </summary>

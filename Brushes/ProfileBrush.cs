@@ -11,12 +11,7 @@ namespace CUE.NET.Brushes
     public class ProfileBrush : AbstractBrush
     {
         #region Properties & Fields
-
-        /// <summary>
-        /// Gets the strongly-typed target used for the effect.
-        /// </summary>
-        protected override IBrush EffectTarget => this;
-
+        
         private Dictionary<CorsairLedId, Color> _colors;
 
         #endregion

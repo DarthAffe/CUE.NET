@@ -14,12 +14,7 @@ namespace CUE.NET.Brushes
     public class RandomColorBrush : AbstractBrush
     {
         #region Properties & Fields
-
-        /// <summary>
-        /// Gets the strongly-typed target used for the effect.
-        /// </summary>
-        protected override IBrush EffectTarget => this;
-
+        
         private Random _random = new Random();
 
         #endregion

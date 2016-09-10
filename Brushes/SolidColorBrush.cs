@@ -11,12 +11,7 @@ namespace CUE.NET.Brushes
     public class SolidColorBrush : AbstractBrush
     {
         #region Properties & Fields
-
-        /// <summary>
-        /// Gets the strongly-typed target used for the effect.
-        /// </summary>
-        protected override IBrush EffectTarget => this;
-
+        
         /// <summary>
         /// Gets or sets the color drawn by the brush.
         /// </summary>

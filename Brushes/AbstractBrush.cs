@@ -43,6 +43,11 @@ namespace CUE.NET.Brushes
         /// </summary>
         public Dictionary<BrushRenderTarget, Color> RenderedTargets { get; } = new Dictionary<BrushRenderTarget, Color>();
 
+        /// <summary>
+        /// Gets the strongly-typed target used for the effect.
+        /// </summary>
+        protected override IBrush EffectTarget => this;
+
         #endregion
 
         #region Constructors

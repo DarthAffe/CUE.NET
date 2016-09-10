@@ -17,11 +17,6 @@ namespace CUE.NET.Brushes
         #region Properties & Fields
 
         /// <summary>
-        /// Gets the strongly-typed target used for the effect.
-        /// </summary>
-        protected override IBrush EffectTarget => this;
-
-        /// <summary>
         /// Gets or sets the center point (as percentage in the range [0..1]) around which the brush should be drawn.
         /// </summary>
         public PointF Center { get; set; } = new PointF(0.5f, 0.5f);

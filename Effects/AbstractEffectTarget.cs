@@ -15,12 +15,12 @@ namespace CUE.NET.Effects
     {
         #region Properties & Fields
 
-        private IList<EffectTimeContainer> _effectTimes = new List<EffectTimeContainer>();
+        protected IList<EffectTimeContainer> EffectTimes = new List<EffectTimeContainer>();
 
         /// <summary>
         /// Gets all <see cref="IEffect{T}" /> attached to this target.
         /// </summary>
-        protected IList<IEffect<T>> Effects => _effectTimes.Select(x => x.Effect).Cast<IEffect<T>>().ToList();
+        protected IList<IEffect<T>> Effects => EffectTimes.Select(x => x.Effect).Cast<IEffect<T>>().ToList();
 
         /// <summary>
         /// Gets the strongly-typed target used for the effect.
@@ -34,13 +34,13 @@ namespace CUE.NET.Effects
         /// <summary>
         /// Updates all effects added to this target.
         /// </summary>
-        public void UpdateEffects()
+        public virtual void UpdateEffects()
         {
             lock (Effects)
             {
-                for (int i = _effectTimes.Count - 1; i >= 0; i--)
+                for (int i = EffectTimes.Count - 1; i >= 0; i--)
                 {
-                    EffectTimeContainer effectTime = _effectTimes[i];
+                    EffectTimeContainer effectTime = EffectTimes[i];
                     long currentTicks = DateTime.Now.Ticks;
 
                     float deltaTime;
@@ -57,7 +57,7 @@ namespace CUE.NET.Effects
 
 
                     if (effectTime.Effect.IsDone)
-                        _effectTimes.RemoveAt(i);
+                        EffectTimes.RemoveAt(i);
                 }
             }
         }
@@ -66,25 +66,25 @@ namespace CUE.NET.Effects
         /// Adds an affect.
         /// </summary>
         /// <param name="effect">The effect to add.</param>
-        public void AddEffect(IEffect<T> effect)
+        public virtual void AddEffect(IEffect<T> effect)
         {
-            if (_effectTimes.Any(x => x.Effect == effect)) return;
+            if (EffectTimes.Any(x => x.Effect == effect)) return;
 
             effect.OnAttach(EffectTarget);
-            _effectTimes.Add(new EffectTimeContainer(effect, -1));
+            EffectTimes.Add(new EffectTimeContainer(effect, -1));
         }
 
         /// <summary>
         /// Removes an effect
         /// </summary>
         /// <param name="effect">The effect to remove.</param>
-        public void RemoveEffect(IEffect<T> effect)
+        public virtual void RemoveEffect(IEffect<T> effect)
         {
-            EffectTimeContainer effectTimeToRemove = _effectTimes.FirstOrDefault(x => x.Effect == effect);
+            EffectTimeContainer effectTimeToRemove = EffectTimes.FirstOrDefault(x => x.Effect == effect);
             if (effectTimeToRemove == null) return;
 
             effect.OnDetach(EffectTarget);
-            _effectTimes.Remove(effectTimeToRemove);
+            EffectTimes.Remove(effectTimeToRemove);
         }
 
         #endregion

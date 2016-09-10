@@ -19,7 +19,7 @@ namespace CUE.NET.Effects
         /// <summary>
         /// Gets the <see cref="IBrush"/> this effect is targeting.
         /// </summary>
-        protected IBrush Brush { get; private set; }
+        protected IBrush Brush { get; set; }
 
         #endregion
 

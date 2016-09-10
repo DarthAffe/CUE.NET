@@ -21,7 +21,7 @@ namespace CUE.NET.Effects
         /// <summary>
         /// Gets the <see cref="ILedGroup"/> this effect is targeting.
         /// </summary>
-        protected ILedGroup LedGroup { get; private set; }
+        protected ILedGroup LedGroup { get; set; }
 
         #endregion
 
