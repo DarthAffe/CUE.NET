@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Xml.Linq;
 using CUE.NET.Brushes;
-using CUE.NET.Devices.Keyboard.Enums;
+using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET.Profiles
 {
@@ -20,7 +20,7 @@ namespace CUE.NET.Profiles
         /// </summary>
         internal string Name { get; }
 
-        private Dictionary<CorsairKeyboardKeyId, Color> _keyLights;
+        private Dictionary<CorsairLedId, Color> _colors;
 
         #endregion
 
@@ -32,7 +32,7 @@ namespace CUE.NET.Profiles
         /// <param name="profile">The profile mode to convert.</param>
         public static implicit operator ProfileBrush(CueProfileMode profile)
         {
-            return profile != null ? new ProfileBrush(profile._keyLights) : null;
+            return profile != null ? new ProfileBrush(profile._colors) : null;
         }
 
         #endregion
@@ -62,7 +62,7 @@ namespace CUE.NET.Profiles
 
                 return new CueProfileMode(modeRoot.Element("name").Value)
                 {
-                    _keyLights = modeRoot.Element("lightBackgrounds").Element("keyBgLights").Elements("lightBackground")
+                    _colors = modeRoot.Element("lightBackgrounds").Element("keyBgLights").Elements("lightBackground")
                         .Select(x =>
                         {
                             string name = x.Attribute("key").Value;
@@ -71,7 +71,7 @@ namespace CUE.NET.Profiles
 
                             return new
                             {
-                                key = (CorsairKeyboardKeyId)Enum.Parse(typeof(CorsairKeyboardKeyId), name),
+                                key = (CorsairLedId)Enum.Parse(typeof(CorsairLedId), name),
                                 color = ColorTranslator.FromHtml(x.Attribute("color").Value)
                             };
                         })

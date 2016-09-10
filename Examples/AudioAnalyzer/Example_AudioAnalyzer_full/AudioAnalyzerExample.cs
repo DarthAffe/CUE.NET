@@ -5,7 +5,6 @@ using CUE.NET;
 using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Keyboard;
-using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Exceptions;
 using CUE.NET.Gradients;
 using CUE.NET.Groups;

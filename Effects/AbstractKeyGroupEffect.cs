@@ -1,7 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Groups;
 
 namespace CUE.NET.Effects

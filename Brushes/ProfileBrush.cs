@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using CUE.NET.Devices.Keyboard.Enums;
-using CUE.NET.Devices.Keyboard.Keys;
+using CUE.NET.Devices.Generic;
+using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET.Brushes
 {
@@ -17,7 +17,7 @@ namespace CUE.NET.Brushes
         /// </summary>
         protected override IBrush EffectTarget => this;
 
-        private Dictionary<CorsairKeyboardKeyId, Color> _keyLights;
+        private Dictionary<CorsairLedId, Color> _colors;
 
         #endregion
 
@@ -27,9 +27,9 @@ namespace CUE.NET.Brushes
         /// Initializes a new instance of the <see cref="ProfileBrush"/> class.
         /// </summary>
         /// <param name="keyLights">The light settings of the CUE profile.</param>
-        internal ProfileBrush(Dictionary<CorsairKeyboardKeyId, Color> keyLights)
+        internal ProfileBrush(Dictionary<CorsairLedId, Color> keyLights)
         {
-            this._keyLights = keyLights;
+            this._colors = keyLights;
         }
 
         #endregion
@@ -44,11 +44,11 @@ namespace CUE.NET.Brushes
         /// <returns>The color at the specified point.</returns>
         protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
-            CorsairKey key = CueSDK.KeyboardSDK[(CorsairKeyboardKeyId)renderTarget.LedId];
-            if (key == null) return Color.Transparent;
+            CorsairLed led = CueSDK.KeyboardSDK[renderTarget.LedId];
+            if (led == null) return Color.Transparent;
 
             Color color;
-            return !_keyLights.TryGetValue(key.KeyId, out color) ? Color.Transparent : color;
+            return !_colors.TryGetValue(led.Id, out color) ? Color.Transparent : color;
         }
 
         #endregion

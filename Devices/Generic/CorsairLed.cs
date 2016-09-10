@@ -14,7 +14,10 @@ namespace CUE.NET.Devices.Generic
     public class CorsairLed
     {
         #region Properties & Fields
-
+        
+        /// <summary>
+        /// Gets the key-ID of the Led.
+        /// </summary>
         public CorsairLedId Id { get; set; }
 
         /// <summary>

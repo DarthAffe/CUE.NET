@@ -98,7 +98,6 @@
     <Compile Include="Devices\Headset\CorsairHeadset.cs" />
     <Compile Include="Devices\Headset\CorsairHeadsetDeviceInfo.cs" />
     <Compile Include="Devices\IDeviceInfo.cs" />
-    <Compile Include="Devices\Keyboard\Keys\CorsairKey.cs" />
     <Compile Include="Devices\Keyboard\CorsairKeyboard.cs" />
     <Compile Include="Devices\Mouse\CorsairMouseDeviceInfo.cs" />
     <Compile Include="Devices\Mouse\CorsairMouse.cs" />
