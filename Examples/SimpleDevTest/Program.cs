@@ -6,11 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using CUE.NET;
 using CUE.NET.Brushes;
+using CUE.NET.Devices;
 using CUE.NET.Devices.Generic.Enums;
-using CUE.NET.Devices.Keyboard;
-using CUE.NET.Devices.Keyboard.Enums;
-using CUE.NET.Devices.Mousemat;
-using CUE.NET.Devices.Mousemat.Enums;
+using CUE.NET.Effects;
 using CUE.NET.Exceptions;
 using CUE.NET.Gradients;
 using CUE.NET.Groups;
@@ -38,62 +36,72 @@ namespace SimpleDevTest
                 CueSDK.Initialize();
                 Console.WriteLine("Initialized with " + CueSDK.LoadedArchitecture + "-SDK");
 
-                // Get connected keyboard or throw exception if there is no light controllable keyboard connected
-                CorsairKeyboard keyboard = CueSDK.KeyboardSDK;
-                if (keyboard == null)
-                    throw new WrapperException("No keyboard found");
+                IBrush rainbowBrush = new LinearGradientBrush(new RainbowGradient());
+                rainbowBrush.AddEffect(new FlashEffect());
 
-                const float SPEED = 100f; // mm/sec
-                const float BRUSH_MODE_CHANGE_TIMER = 2f;
-                Random random = new Random();
+                AddTestBrush(CueSDK.KeyboardSDK, rainbowBrush);
+                AddTestBrush(CueSDK.MouseSDK, rainbowBrush);
+                AddTestBrush(CueSDK.HeadsetSDK, rainbowBrush);
+                AddTestBrush(CueSDK.MousematSDK, rainbowBrush);
 
-                keyboard.UpdateMode = UpdateMode.Continuous;
-                keyboard.Brush = new SolidColorBrush(Color.Black);
+                Wait(10);
 
-                RectangleF spot = new RectangleF(keyboard.DeviceRectangle.Width / 2f, keyboard.DeviceRectangle.Y / 2f, 160, 80);
-                PointF target = new PointF(spot.X, spot.Y);
-                RectangleLedGroup spotGroup = new RectangleLedGroup(keyboard, spot) { Brush = new LinearGradientBrush(new RainbowGradient()) };
+                //// Get connected keyboard or throw exception if there is no light controllable keyboard connected
+                //CorsairKeyboard keyboard = CueSDK.KeyboardSDK;
+                //if (keyboard == null)
+                //    throw new WrapperException("No keyboard found");
 
-                float brushModeTimer = BRUSH_MODE_CHANGE_TIMER;
-                keyboard.Updating += (sender, eventArgs) =>
-                {
-                    brushModeTimer -= eventArgs.DeltaTime;
-                    if (brushModeTimer <= 0)
-                    {
-                        spotGroup.Brush.BrushCalculationMode = spotGroup.Brush.BrushCalculationMode == BrushCalculationMode.Relative
-                                                                ? BrushCalculationMode.Absolute : BrushCalculationMode.Relative;
-                        brushModeTimer = BRUSH_MODE_CHANGE_TIMER + brushModeTimer;
-                    }
+                //const float SPEED = 100f; // mm/sec
+                //const float BRUSH_MODE_CHANGE_TIMER = 2f;
+                //Random random = new Random();
 
-                    if (spot.Contains(target))
-                        target = new PointF((float)(keyboard.DeviceRectangle.X + (random.NextDouble() * keyboard.DeviceRectangle.Width)),
-                                (float)(keyboard.DeviceRectangle.Y + (random.NextDouble() * keyboard.DeviceRectangle.Height)));
-                    else
-                        spot.Location = Interpolate(spot.Location, target, eventArgs.DeltaTime * SPEED);
-                    spotGroup.Rectangle = spot;
-                };
+                //keyboard.UpdateMode = UpdateMode.Continuous;
+                //keyboard.Brush = new SolidColorBrush(Color.Black);
 
-                CorsairMousemat mousemat = CueSDK.MousematSDK;
-                mousemat.UpdateMode = UpdateMode.Continuous;
+                //RectangleF spot = new RectangleF(keyboard.DeviceRectangle.Width / 2f, keyboard.DeviceRectangle.Y / 2f, 160, 80);
+                //PointF target = new PointF(spot.X, spot.Y);
+                //RectangleLedGroup spotGroup = new RectangleLedGroup(keyboard, spot) { Brush = new LinearGradientBrush(new RainbowGradient()) };
 
-                // Left
-                mousemat[CorsairMousematLedId.Zone1].Color = Color.Red;
-                mousemat[CorsairMousematLedId.Zone2].Color = Color.Red;
-                mousemat[CorsairMousematLedId.Zone3].Color = Color.Red;
-                mousemat[CorsairMousematLedId.Zone4].Color = Color.Red;
-                mousemat[CorsairMousematLedId.Zone5].Color = Color.Red;
-                // Bottom
-                mousemat[CorsairMousematLedId.Zone6].Color = Color.LawnGreen;
-                mousemat[CorsairMousematLedId.Zone7].Color = Color.LawnGreen;
-                mousemat[CorsairMousematLedId.Zone8].Color = Color.LawnGreen;
-                mousemat[CorsairMousematLedId.Zone9].Color = Color.LawnGreen;
-                mousemat[CorsairMousematLedId.Zone10].Color = Color.LawnGreen;
-                // Right
-                mousemat[CorsairMousematLedId.Zone11].Color = Color.Blue;
-                mousemat[CorsairMousematLedId.Zone12].Color = Color.Blue;
-                mousemat[CorsairMousematLedId.Zone13].Color = Color.Blue;
-                mousemat[CorsairMousematLedId.Zone14].Color = Color.Blue;
-                mousemat[CorsairMousematLedId.Zone15].Color = Color.Blue;
+                //float brushModeTimer = BRUSH_MODE_CHANGE_TIMER;
+                //keyboard.Updating += (sender, eventArgs) =>
+                //{
+                //    brushModeTimer -= eventArgs.DeltaTime;
+                //    if (brushModeTimer <= 0)
+                //    {
+                //        spotGroup.Brush.BrushCalculationMode = spotGroup.Brush.BrushCalculationMode == BrushCalculationMode.Relative
+                //                                                ? BrushCalculationMode.Absolute : BrushCalculationMode.Relative;
+                //        brushModeTimer = BRUSH_MODE_CHANGE_TIMER + brushModeTimer;
+                //    }
+
+                //    if (spot.Contains(target))
+                //        target = new PointF((float)(keyboard.DeviceRectangle.X + (random.NextDouble() * keyboard.DeviceRectangle.Width)),
+                //                (float)(keyboard.DeviceRectangle.Y + (random.NextDouble() * keyboard.DeviceRectangle.Height)));
+                //    else
+                //        spot.Location = Interpolate(spot.Location, target, eventArgs.DeltaTime * SPEED);
+                //    spotGroup.Rectangle = spot;
+                //};
+
+                //CorsairMousemat mousemat = CueSDK.MousematSDK;
+                //mousemat.UpdateMode = UpdateMode.Continuous;
+
+                //// Left
+                //mousemat[CorsairMousematLedId.Zone1].Color = Color.Red;
+                //mousemat[CorsairMousematLedId.Zone2].Color = Color.Red;
+                //mousemat[CorsairMousematLedId.Zone3].Color = Color.Red;
+                //mousemat[CorsairMousematLedId.Zone4].Color = Color.Red;
+                //mousemat[CorsairMousematLedId.Zone5].Color = Color.Red;
+                //// Bottom
+                //mousemat[CorsairMousematLedId.Zone6].Color = Color.LawnGreen;
+                //mousemat[CorsairMousematLedId.Zone7].Color = Color.LawnGreen;
+                //mousemat[CorsairMousematLedId.Zone8].Color = Color.LawnGreen;
+                //mousemat[CorsairMousematLedId.Zone9].Color = Color.LawnGreen;
+                //mousemat[CorsairMousematLedId.Zone10].Color = Color.LawnGreen;
+                //// Right
+                //mousemat[CorsairMousematLedId.Zone11].Color = Color.Blue;
+                //mousemat[CorsairMousematLedId.Zone12].Color = Color.Blue;
+                //mousemat[CorsairMousematLedId.Zone13].Color = Color.Blue;
+                //mousemat[CorsairMousematLedId.Zone14].Color = Color.Blue;
+                //mousemat[CorsairMousematLedId.Zone15].Color = Color.Blue;
 
                 // Random colors to show update rate
                 //foreach (var mousematLed in mousemat.Leds)
@@ -364,6 +372,16 @@ namespace SimpleDevTest
 
             while (true)
                 Thread.Sleep(1000); // Don't exit after exception
+        }
+
+        private static void AddTestBrush(ICueDevice device, IBrush brush)
+        {
+            if (device == null) return;
+
+            device.UpdateMode = UpdateMode.Continuous;
+            device.Brush = (SolidColorBrush)Color.Black;
+            ILedGroup leds = new ListLedGroup(device, device);
+            leds.Brush = brush;
         }
 
         private static void Wait(int sec)
