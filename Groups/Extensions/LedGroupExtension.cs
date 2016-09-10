@@ -16,15 +16,15 @@ namespace CUE.NET.Groups.Extensions
         /// </summary>
         /// <param name="ledGroup">The <see cref="AbstractLedGroup" /> to convert.</param>
         /// <returns>The converted <see cref="ListLedGroup" />.</returns>
-        public static ListLedGroup ToSimpleLedGroup(this AbstractLedGroup ledGroup)
+        public static ListLedGroup ToListLedGroup(this AbstractLedGroup ledGroup)
         {
-            ListLedGroup simpleLedGroup = ledGroup as ListLedGroup;
-            if (simpleLedGroup == null)
+            ListLedGroup listLedGroup = ledGroup as ListLedGroup;
+            if (listLedGroup == null)
             {
                 bool wasAttached = ledGroup.Detach();
-                simpleLedGroup = new ListLedGroup(ledGroup.Device, wasAttached, ledGroup.GetLeds()) { Brush = ledGroup.Brush };
+                listLedGroup = new ListLedGroup(ledGroup.Device, wasAttached, ledGroup.GetLeds()) { Brush = ledGroup.Brush };
             }
-            return simpleLedGroup;
+            return listLedGroup;
         }
 
         /// <summary>
@@ -35,10 +35,10 @@ namespace CUE.NET.Groups.Extensions
         /// <returns>The new <see cref="ListLedGroup" />.</returns>
         public static ListLedGroup Exclude(this AbstractLedGroup ledGroup, params CorsairLedId[] ledIds)
         {
-            ListLedGroup simpleLedGroup = ledGroup.ToSimpleLedGroup();
+            ListLedGroup listLedGroup = ledGroup.ToListLedGroup();
             foreach (CorsairLedId ledId in ledIds)
-                simpleLedGroup.RemoveLed(ledId);
-            return simpleLedGroup;
+                listLedGroup.RemoveLed(ledId);
+            return listLedGroup;
         }
 
         /// <summary>
@@ -49,10 +49,10 @@ namespace CUE.NET.Groups.Extensions
         /// <returns>The new <see cref="ListLedGroup" />.</returns>
         public static ListLedGroup Exclude(this AbstractLedGroup ledGroup, params CorsairLed[] ledIds)
         {
-            ListLedGroup simpleLedGroup = ledGroup.ToSimpleLedGroup();
+            ListLedGroup listLedGroup = ledGroup.ToListLedGroup();
             foreach (CorsairLed led in ledIds)
-                simpleLedGroup.RemoveLed(led);
-            return simpleLedGroup;
+                listLedGroup.RemoveLed(led);
+            return listLedGroup;
         }
 
         // ReSharper disable once UnusedMethodReturnValue.Global
