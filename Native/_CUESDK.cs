@@ -105,7 +105,7 @@ namespace CUE.NET.Native
         private delegate IntPtr CorsairGetLedPositionsByDeviceIndexPointer(int deviceIndex);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate CorsairKeyboardKeyId CorsairGetLedIdForKeyNamePointer(char keyName);
+        private delegate CorsairLedId CorsairGetLedIdForKeyNamePointer(char keyName);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate bool CorsairRequestControlPointer(CorsairAccessMode accessMode);
@@ -166,7 +166,7 @@ namespace CUE.NET.Native
         /// <summary>
         /// CUE-SDK: retrieves led id for key name taking logical layout into account.
         /// </summary>
-        internal static CorsairKeyboardKeyId CorsairGetLedIdForKeyName(char keyName)
+        internal static CorsairLedId CorsairGetLedIdForKeyName(char keyName)
         {
             return _corsairGetLedIdForKeyNamePointer(keyName);
         }

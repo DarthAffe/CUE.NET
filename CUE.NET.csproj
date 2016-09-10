@@ -81,14 +81,14 @@
     <Compile Include="Effects\EffectTimeContainer.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairLogicalKeyboardLayout.cs" />
     <Compile Include="Devices\Headset\Enums\CorsairHeadsetLedId.cs" />
-    <Compile Include="Devices\Keyboard\Enums\CorsairKeyboardKeyId.cs" />
+    <Compile Include="Devices\Keyboard\Enums\CorsairKeyboardLedId.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairPhysicalKeyboardLayout.cs" />
     <Compile Include="Devices\Generic\Enums\UpdateMode.cs" />
     <Compile Include="Groups\AbstractLedGroup.cs" />
     <Compile Include="Groups\ILedGroup.cs" />
     <Compile Include="Groups\RectangleLedGroup.cs" />
     <Compile Include="Groups\ListLedGroup.cs" />
-    <Compile Include="Devices\Mouse\Enums\CorsairMouseButtonId.cs" />
+    <Compile Include="Devices\Mouse\Enums\CorsairMouseLedId.cs" />
     <Compile Include="Devices\Mouse\Enums\CorsairPhysicalMouseLayout.cs" />
     <Compile Include="Exceptions\CUEException.cs" />
     <Compile Include="Exceptions\WrapperException.cs" />

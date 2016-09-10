@@ -77,23 +77,23 @@ namespace SimpleDevTest
                 mousemat.UpdateMode = UpdateMode.Continuous;
 
                 // Left
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone1].Color = Color.Red;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone2].Color = Color.Red;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone3].Color = Color.Red;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone4].Color = Color.Red;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone5].Color = Color.Red;
+                mousemat[CorsairMousematLedId.Zone1].Color = Color.Red;
+                mousemat[CorsairMousematLedId.Zone2].Color = Color.Red;
+                mousemat[CorsairMousematLedId.Zone3].Color = Color.Red;
+                mousemat[CorsairMousematLedId.Zone4].Color = Color.Red;
+                mousemat[CorsairMousematLedId.Zone5].Color = Color.Red;
                 // Bottom
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone6].Color = Color.LawnGreen;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone7].Color = Color.LawnGreen;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone8].Color = Color.LawnGreen;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone9].Color = Color.LawnGreen;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone10].Color = Color.LawnGreen;
+                mousemat[CorsairMousematLedId.Zone6].Color = Color.LawnGreen;
+                mousemat[CorsairMousematLedId.Zone7].Color = Color.LawnGreen;
+                mousemat[CorsairMousematLedId.Zone8].Color = Color.LawnGreen;
+                mousemat[CorsairMousematLedId.Zone9].Color = Color.LawnGreen;
+                mousemat[CorsairMousematLedId.Zone10].Color = Color.LawnGreen;
                 // Right
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone11].Color = Color.Blue;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone12].Color = Color.Blue;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone13].Color = Color.Blue;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone14].Color = Color.Blue;
-                mousemat[(CorsairLedId)CorsairMousematLedId.Zone15].Color = Color.Blue;
+                mousemat[CorsairMousematLedId.Zone11].Color = Color.Blue;
+                mousemat[CorsairMousematLedId.Zone12].Color = Color.Blue;
+                mousemat[CorsairMousematLedId.Zone13].Color = Color.Blue;
+                mousemat[CorsairMousematLedId.Zone14].Color = Color.Blue;
+                mousemat[CorsairMousematLedId.Zone15].Color = Color.Blue;
 
                 // Random colors to show update rate
                 //foreach (var mousematLed in mousemat.Leds)

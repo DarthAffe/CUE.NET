@@ -45,22 +45,22 @@ namespace CUE.NET.Devices.Mouse
             switch (MouseDeviceInfo.PhysicalLayout)
             {
                 case CorsairPhysicalMouseLayout.Zones1:
-                    InitializeLed((CorsairLedId)CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
+                    InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
                     break;
                 case CorsairPhysicalMouseLayout.Zones2:
-                    InitializeLed((CorsairLedId)CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
-                    InitializeLed((CorsairLedId)CorsairMouseLedId.B2, new RectangleF(1, 0, 1, 1));
+                    InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
+                    InitializeLed(CorsairMouseLedId.B2, new RectangleF(1, 0, 1, 1));
                     break;
                 case CorsairPhysicalMouseLayout.Zones3:
-                    InitializeLed((CorsairLedId)CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
-                    InitializeLed((CorsairLedId)CorsairMouseLedId.B2, new RectangleF(1, 0, 1, 1));
-                    InitializeLed((CorsairLedId)CorsairMouseLedId.B3, new RectangleF(2, 0, 1, 1));
+                    InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
+                    InitializeLed(CorsairMouseLedId.B2, new RectangleF(1, 0, 1, 1));
+                    InitializeLed(CorsairMouseLedId.B3, new RectangleF(2, 0, 1, 1));
                     break;
                 case CorsairPhysicalMouseLayout.Zones4:
-                    InitializeLed((CorsairLedId)CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
-                    InitializeLed((CorsairLedId)CorsairMouseLedId.B2, new RectangleF(1, 0, 1, 1));
-                    InitializeLed((CorsairLedId)CorsairMouseLedId.B3, new RectangleF(2, 0, 1, 1));
-                    InitializeLed((CorsairLedId)CorsairMouseLedId.B4, new RectangleF(3, 0, 1, 1));
+                    InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
+                    InitializeLed(CorsairMouseLedId.B2, new RectangleF(1, 0, 1, 1));
+                    InitializeLed(CorsairMouseLedId.B3, new RectangleF(2, 0, 1, 1));
+                    InitializeLed(CorsairMouseLedId.B4, new RectangleF(3, 0, 1, 1));
                     break;
                 default:
                     throw new WrapperException($"Can't initial mouse with layout '{MouseDeviceInfo.PhysicalLayout}'");
