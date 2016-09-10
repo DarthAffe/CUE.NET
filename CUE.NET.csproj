@@ -84,10 +84,10 @@
     <Compile Include="Devices\Keyboard\Enums\CorsairKeyboardKeyId.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairPhysicalKeyboardLayout.cs" />
     <Compile Include="Devices\Generic\Enums\UpdateMode.cs" />
-    <Compile Include="Devices\Keyboard\Keys\AbstractKeyGroup.cs" />
-    <Compile Include="Devices\Keyboard\Keys\IKeyGroup.cs" />
-    <Compile Include="Devices\Keyboard\Keys\RectangleKeyGroup.cs" />
-    <Compile Include="Devices\Keyboard\Keys\ListKeyGroup.cs" />
+    <Compile Include="Groups\AbstractLedGroup.cs" />
+    <Compile Include="Groups\ILedGroup.cs" />
+    <Compile Include="Groups\RectangleLedGroup.cs" />
+    <Compile Include="Groups\ListLedGroup.cs" />
     <Compile Include="Devices\Mouse\Enums\CorsairMouseButtonId.cs" />
     <Compile Include="Devices\Mouse\Enums\CorsairPhysicalMouseLayout.cs" />
     <Compile Include="Exceptions\CUEException.cs" />
@@ -102,7 +102,7 @@
     <Compile Include="Devices\Keyboard\CorsairKeyboard.cs" />
     <Compile Include="Devices\Mouse\CorsairMouseDeviceInfo.cs" />
     <Compile Include="Devices\Mouse\CorsairMouse.cs" />
-    <Compile Include="Devices\Keyboard\Extensions\KeyGroupExtension.cs" />
+    <Compile Include="Groups\Extensions\LedGroupExtension.cs" />
     <Compile Include="Helper\ColorHelper.cs" />
     <Compile Include="Gradients\LinearGradient.cs" />
     <Compile Include="Helper\GradientHelper.cs" />

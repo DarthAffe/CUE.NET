@@ -44,7 +44,7 @@ namespace CUE.NET.Brushes
         /// <returns>The color at the specified point.</returns>
         protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
-            CorsairKey key = CueSDK.KeyboardSDK[renderTarget.Key];
+            CorsairKey key = CueSDK.KeyboardSDK[(CorsairKeyboardKeyId)renderTarget.LedId];
             if (key == null) return Color.Transparent;
 
             Color color;

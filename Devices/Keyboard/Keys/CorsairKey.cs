@@ -1,7 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-using System.Drawing;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
 
@@ -37,6 +36,15 @@ namespace CUE.NET.Devices.Keyboard.Keys
         {
             this.KeyId = keyId;
             this.Led = led;
+        }
+
+        #endregion
+
+        #region Operators
+
+        public static implicit operator CorsairLed(CorsairKey key)
+        {
+            return key.Led;
         }
 
         #endregion

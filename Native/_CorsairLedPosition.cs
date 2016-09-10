@@ -3,7 +3,7 @@
 #pragma warning disable 649 // Field 'x' is never assigned
 
 using System.Runtime.InteropServices;
-using CUE.NET.Devices.Keyboard.Enums;
+using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET.Native
 {
@@ -18,7 +18,7 @@ namespace CUE.NET.Native
         /// <summary>
         /// CUE-SDK: identifier of led
         /// </summary>
-        internal CorsairKeyboardKeyId ledId;
+        internal CorsairLedId ledId;
 
         /// <summary>
         /// CUE-SDK: values in mm

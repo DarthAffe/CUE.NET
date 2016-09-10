@@ -2,13 +2,14 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 using CUE.NET.Devices.Keyboard.Keys;
+using CUE.NET.Groups;
 
 namespace CUE.NET.Effects
 {
     /// <summary>
-    /// Represents a basic effect targeting an <see cref="IKeyGroup"/>.
+    /// Represents a basic effect targeting an <see cref="ILedGroup"/>.
     /// </summary>
-    public abstract class AbstractKeyGroupEffect : IEffect<IKeyGroup>
+    public abstract class AbstractKeyGroupEffect : IEffect<ILedGroup>
     {
         #region Properties & Fields
 
@@ -18,9 +19,9 @@ namespace CUE.NET.Effects
         public bool IsDone { get; protected set; }
 
         /// <summary>
-        /// Gets the <see cref="IKeyGroup"/> this effect is targeting.
+        /// Gets the <see cref="ILedGroup"/> this effect is targeting.
         /// </summary>
-        protected IKeyGroup KeyGroup { get; private set; }
+        protected ILedGroup LedGroup { get; private set; }
 
         #endregion
 
@@ -35,19 +36,19 @@ namespace CUE.NET.Effects
         /// <summary>
         /// Hook which is called when the effect is attached to a device.
         /// </summary>
-        /// <param name="target">The <see cref="IKeyGroup"/> this effect is attached to.</param>
-        public virtual void OnAttach(IKeyGroup target)
+        /// <param name="target">The <see cref="ILedGroup"/> this effect is attached to.</param>
+        public virtual void OnAttach(ILedGroup target)
         {
-            KeyGroup = target;
+            LedGroup = target;
         }
 
         /// <summary>
         /// Hook which is called when the effect is detached from a device.
         /// </summary>
-        /// <param name="target">The <see cref="IKeyGroup"/> this effect is detached from.</param>
-        public virtual void OnDetach(IKeyGroup target)
+        /// <param name="target">The <see cref="ILedGroup"/> this effect is detached from.</param>
+        public virtual void OnDetach(ILedGroup target)
         {
-            KeyGroup = null;
+            LedGroup = null;
         }
 
         #endregion

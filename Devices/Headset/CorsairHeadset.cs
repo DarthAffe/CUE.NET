@@ -2,12 +2,9 @@
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
-using System.Linq;
 using CUE.NET.Devices.Generic;
+using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Headset.Enums;
 
 namespace CUE.NET.Devices.Headset
@@ -15,37 +12,14 @@ namespace CUE.NET.Devices.Headset
     /// <summary>
     /// Represents the SDK for a corsair headset.
     /// </summary>
-    public class CorsairHeadset : AbstractCueDevice, IEnumerable<CorsairLed>
+    public class CorsairHeadset : AbstractCueDevice
     {
         #region Properties & Fields
-
-        #region Indexer
-
-        /// <summary>
-        /// Gets the <see cref="CorsairLed" /> with the specified ID.
-        /// </summary>
-        /// <param name="ledId">The ID of the LED to get.</param>
-        /// <returns>The LED with the specified ID.</returns>
-        public CorsairLed this[CorsairHeadsetLedId ledId]
-        {
-            get
-            {
-                CorsairLed led;
-                return base.Leds.TryGetValue((int)ledId, out led) ? led : null;
-            }
-        }
-
-        #endregion
 
         /// <summary>
         /// Gets specific information provided by CUE for the headset.
         /// </summary>
         public CorsairHeadsetDeviceInfo HeadsetDeviceInfo { get; }
-
-        /// <summary>
-        /// Gets a read-only collection containing all LEDs of the headset.
-        /// </summary>
-        public new IEnumerable<CorsairLed> Leds => new ReadOnlyCollection<CorsairLed>(base.Leds.Values.ToList());
 
         #endregion
 
@@ -59,41 +33,17 @@ namespace CUE.NET.Devices.Headset
             : base(info)
         {
             this.HeadsetDeviceInfo = info;
-            InitializeLeds();
         }
 
         #endregion
 
         #region Methods
 
-        private void InitializeLeds()
+        protected override void InitializeLeds()
         {
-            InitializeLed((int)CorsairHeadsetLedId.LeftLogo, new RectangleF(0, 0, 1, 1));
-            InitializeLed((int)CorsairHeadsetLedId.RightLogo, new RectangleF(1, 0, 1, 1));
+            InitializeLed((CorsairLedId)CorsairHeadsetLedId.LeftLogo, new RectangleF(0, 0, 1, 1));
+            InitializeLed((CorsairLedId)CorsairHeadsetLedId.RightLogo, new RectangleF(1, 0, 1, 1));
         }
-
-        protected override void DeviceUpdate()
-        {
-            //DarthAffe 21.08.2016: Headsets can't own brushes or groups - nothing to do here for now
-        }
-
-        #region IEnumerable
-
-        /// <summary>
-        /// Returns an enumerator that iterates over all LEDs of the headset.
-        /// </summary>
-        /// <returns>An enumerator for all LEDS of the headset.</returns>
-        public IEnumerator<CorsairLed> GetEnumerator()
-        {
-            return Leds.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
 
         #endregion
     }

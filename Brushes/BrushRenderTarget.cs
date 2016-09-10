@@ -2,7 +2,7 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 using System.Drawing;
-using CUE.NET.Devices.Keyboard.Enums;
+using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET.Brushes
 {
@@ -14,12 +14,12 @@ namespace CUE.NET.Brushes
         #region Properties & Fields
 
         /// <summary>
-        /// Gets the id of the target-key.
+        /// Gets the ID of the target-LED.
         /// </summary>
-        public CorsairKeyboardKeyId Key { get; }
+        public CorsairLedId LedId { get; }
 
         /// <summary>
-        /// Gets the point representing the position to render the target-key.
+        /// Gets the point representing the position to render the target-LED.
         /// </summary>
         public PointF Point { get; }
 
@@ -30,12 +30,12 @@ namespace CUE.NET.Brushes
         /// <summary>
         /// Initializes a new instance of the <see cref="BrushRenderTarget"/> class.
         /// </summary>
-        /// <param name="key">The id of the target-key.</param>
-        /// <param name="point">The point representing the position to render the target-key.</param>
-        public BrushRenderTarget(CorsairKeyboardKeyId key, PointF point)
+        /// <param name="ledId">The ID of the target-LED.</param>
+        /// <param name="point">The point representing the position to render the target-LED.</param>
+        public BrushRenderTarget(CorsairLedId ledId, PointF point)
         {
             this.Point = point;
-            this.Key = key;
+            this.LedId = ledId;
         }
 
         #endregion

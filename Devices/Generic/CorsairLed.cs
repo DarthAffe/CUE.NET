@@ -3,6 +3,7 @@
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 using System.Drawing;
+using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Helper;
 
 namespace CUE.NET.Devices.Generic
@@ -13,7 +14,9 @@ namespace CUE.NET.Devices.Generic
     public class CorsairLed
     {
         #region Properties & Fields
-        
+
+        public CorsairLedId Id { get; set; }
+
         /// <summary>
         /// Gets a rectangle representing the physical location of the led.
         /// </summary>
@@ -25,18 +28,13 @@ namespace CUE.NET.Devices.Generic
         public bool IsDirty => RequestedColor != _color;
 
         /// <summary>
-        /// Indicate whether the Color of the LED was set since the last update. 
-        /// </summary>
-        public bool IsUpdated { get; private set; }
-
-        /// <summary>
         /// Gets the Color the LED should be set to on the next update.
         /// </summary>
         public Color RequestedColor { get; private set; } = Color.Transparent;
 
         private Color _color = Color.Transparent;
         /// <summary>
-        /// Gets the current color of the LED. Sets the <see cref="RequestedColor" /> for the next update and mark the LED as <see cref="IsUpdated" />.
+        /// Gets the current color of the LED. Sets the <see cref="RequestedColor" /> for the next update. />.
         /// </summary>
         public Color Color
         {
@@ -44,10 +42,7 @@ namespace CUE.NET.Devices.Generic
             set
             {
                 if (!IsLocked)
-                {
                     RequestedColor = RequestedColor.Blend(value);
-                    IsUpdated = true;
-                }
             }
         }
 
@@ -63,9 +58,11 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Initializes a new instance of the <see cref="CorsairLed"/> class.
         /// </summary>
-        /// <param name="ledRectangle">The rectangle representing the physical location of the led.</param>
-        internal CorsairLed(RectangleF ledRectangle)
+        /// <param name="id">The ID of the LED</param>
+        /// <param name="ledRectangle">The rectangle representing the physical location of the LED.</param>
+        internal CorsairLed(CorsairLedId id, RectangleF ledRectangle)
         {
+            this.Id = id;
             this.LedRectangle = ledRectangle;
         }
 
@@ -79,7 +76,6 @@ namespace CUE.NET.Devices.Generic
         internal void Update()
         {
             _color = RequestedColor;
-            IsUpdated = false;
         }
 
         /// <summary>
@@ -89,7 +85,6 @@ namespace CUE.NET.Devices.Generic
         {
             _color = Color.Transparent;
             RequestedColor = Color.Transparent;
-            IsUpdated = false;
             IsLocked = false;
         }
 

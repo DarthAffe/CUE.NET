@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -10,13 +9,11 @@ using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Keyboard.Enums;
-using CUE.NET.Devices.Keyboard.Extensions;
-using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Devices.Mousemat;
 using CUE.NET.Devices.Mousemat.Enums;
 using CUE.NET.Exceptions;
 using CUE.NET.Gradients;
-using CUE.NET.Profiles;
+using CUE.NET.Groups;
 
 namespace SimpleDevTest
 {
@@ -53,9 +50,9 @@ namespace SimpleDevTest
                 keyboard.UpdateMode = UpdateMode.Continuous;
                 keyboard.Brush = new SolidColorBrush(Color.Black);
 
-                RectangleF spot = new RectangleF(keyboard.KeyboardRectangle.Width / 2f, keyboard.KeyboardRectangle.Y / 2f, 160, 80);
+                RectangleF spot = new RectangleF(keyboard.DeviceRectangle.Width / 2f, keyboard.DeviceRectangle.Y / 2f, 160, 80);
                 PointF target = new PointF(spot.X, spot.Y);
-                RectangleKeyGroup spotGroup = new RectangleKeyGroup(keyboard, spot) { Brush = new LinearGradientBrush(new RainbowGradient()) };
+                RectangleLedGroup spotGroup = new RectangleLedGroup(keyboard, spot) { Brush = new LinearGradientBrush(new RainbowGradient()) };
 
                 float brushModeTimer = BRUSH_MODE_CHANGE_TIMER;
                 keyboard.Updating += (sender, eventArgs) =>
@@ -69,8 +66,8 @@ namespace SimpleDevTest
                     }
 
                     if (spot.Contains(target))
-                        target = new PointF((float)(keyboard.KeyboardRectangle.X + (random.NextDouble() * keyboard.KeyboardRectangle.Width)),
-                                (float)(keyboard.KeyboardRectangle.Y + (random.NextDouble() * keyboard.KeyboardRectangle.Height)));
+                        target = new PointF((float)(keyboard.DeviceRectangle.X + (random.NextDouble() * keyboard.DeviceRectangle.Width)),
+                                (float)(keyboard.DeviceRectangle.Y + (random.NextDouble() * keyboard.DeviceRectangle.Height)));
                     else
                         spot.Location = Interpolate(spot.Location, target, eventArgs.DeltaTime * SPEED);
                     spotGroup.Rectangle = spot;
@@ -80,23 +77,23 @@ namespace SimpleDevTest
                 mousemat.UpdateMode = UpdateMode.Continuous;
 
                 // Left
-                mousemat[CorsairMousematLedId.Zone1].Color = Color.Red;
-                mousemat[CorsairMousematLedId.Zone2].Color = Color.Red;
-                mousemat[CorsairMousematLedId.Zone3].Color = Color.Red;
-                mousemat[CorsairMousematLedId.Zone4].Color = Color.Red;
-                mousemat[CorsairMousematLedId.Zone5].Color = Color.Red;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone1].Color = Color.Red;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone2].Color = Color.Red;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone3].Color = Color.Red;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone4].Color = Color.Red;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone5].Color = Color.Red;
                 // Bottom
-                mousemat[CorsairMousematLedId.Zone6].Color = Color.LawnGreen;
-                mousemat[CorsairMousematLedId.Zone7].Color = Color.LawnGreen;
-                mousemat[CorsairMousematLedId.Zone8].Color = Color.LawnGreen;
-                mousemat[CorsairMousematLedId.Zone9].Color = Color.LawnGreen;
-                mousemat[CorsairMousematLedId.Zone10].Color = Color.LawnGreen;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone6].Color = Color.LawnGreen;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone7].Color = Color.LawnGreen;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone8].Color = Color.LawnGreen;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone9].Color = Color.LawnGreen;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone10].Color = Color.LawnGreen;
                 // Right
-                mousemat[CorsairMousematLedId.Zone11].Color = Color.Blue;
-                mousemat[CorsairMousematLedId.Zone12].Color = Color.Blue;
-                mousemat[CorsairMousematLedId.Zone13].Color = Color.Blue;
-                mousemat[CorsairMousematLedId.Zone14].Color = Color.Blue;
-                mousemat[CorsairMousematLedId.Zone15].Color = Color.Blue;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone11].Color = Color.Blue;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone12].Color = Color.Blue;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone13].Color = Color.Blue;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone14].Color = Color.Blue;
+                mousemat[(CorsairLedId)CorsairMousematLedId.Zone15].Color = Color.Blue;
 
                 // Random colors to show update rate
                 //foreach (var mousematLed in mousemat.Leds)
@@ -111,7 +108,7 @@ namespace SimpleDevTest
                 //};
 
                 //keyboard.Brush = new SolidColorBrush(Color.Black);
-                //IKeyGroup group = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.F1, CorsairKeyboardKeyId.RightShift);
+                //ILedGroup group = new RectangleLedGroup(keyboard, CorsairKeyboardKeyId.F1, CorsairKeyboardKeyId.RightShift);
                 //group.Brush = new LinearGradientBrush(new RainbowGradient());
                 //bool tmp = false;
                 //while (true)
@@ -126,7 +123,7 @@ namespace SimpleDevTest
                 //keyboard.Brush = new SolidColorBrush(Color.Aqua);
                 //keyboard.Update();
 
-                //IKeyGroup specialKeyGroup = new ListKeyGroup(keyboard, CorsairKeyboardKeyId.Brightness, CorsairKeyboardKeyId.WinLock);
+                //ILedGroup specialKeyGroup = new ListLedGroup(keyboard, CorsairKeyboardKeyId.Brightness, CorsairKeyboardKeyId.WinLock);
                 //specialKeyGroup.Brush = new SolidColorBrush(Color.Aqua);
                 //keyboard.Update();
 
@@ -155,13 +152,13 @@ namespace SimpleDevTest
 
                 //Wait(3);
 
-                //ListKeyGroup keyGroup = new ListKeyGroup(keyboard, keyboard['R'].KeyId);
-                //keyGroup.Brush = new SolidColorBrush(Color.White);
+                //ListLedGroup ledGroup = new ListLedGroup(keyboard, keyboard['R'].KeyId);
+                //ledGroup.Brush = new SolidColorBrush(Color.White);
                 //keyboard.Update();
                 //Wait(2);
-                //keyGroup.RemoveKey(keyboard['R'].KeyId);
+                //ledGroup.RemoveKey(keyboard['R'].KeyId);
                 //keyboard['R'].Led.Color = Color.Black;
-                //keyGroup.AddKey(keyboard['T'].KeyId);
+                //ledGroup.AddKey(keyboard['T'].KeyId);
                 //keyboard.Update();
 
                 //Wait(10);
@@ -173,7 +170,7 @@ namespace SimpleDevTest
 
                 //Console.WriteLine("Basic color-test ...");
                 //// Ink all numbers on the keypad except the '5' purple, we want that to be gray
-                //ListKeyGroup purpleGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
+                //ListLedGroup purpleGroup = new RectangleLedGroup(keyboard, CorsairKeyboardKeyId.Keypad7, CorsairKeyboardKeyId.Keypad3)
                 //{ Brush = new SolidColorBrush(Color.Purple) }
                 //.Exclude(CorsairKeyboardKeyId.Keypad5);
                 //keyboard[CorsairKeyboardKeyId.Keypad5].Led.Color = Color.Gray;
@@ -190,11 +187,11 @@ namespace SimpleDevTest
                 ////keyboard['B'].Led.IsLocked = true;
 
                 //// Ink the letters of 'white' white
-                //ListKeyGroup whiteGroup = new ListKeyGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E)
+                //ListLedGroup whiteGroup = new ListLedGroup(keyboard, CorsairKeyboardKeyId.W, CorsairKeyboardKeyId.H, CorsairKeyboardKeyId.I, CorsairKeyboardKeyId.T, CorsairKeyboardKeyId.E)
                 //{ Brush = new SolidColorBrush(Color.White) };
 
                 //// Ink the keys '1' to '0' yellow
-                //RectangleKeyGroup yellowGroup = new RectangleKeyGroup(keyboard, CorsairKeyboardKeyId.D1, CorsairKeyboardKeyId.D0)
+                //RectangleLedGroup yellowGroup = new RectangleLedGroup(keyboard, CorsairKeyboardKeyId.D1, CorsairKeyboardKeyId.D0)
                 //{ Brush = new SolidColorBrush(Color.Yellow) };
 
                 //// Update the keyboard to show the configured colors, (your CUE settings defines the rest)
@@ -306,7 +303,7 @@ namespace SimpleDevTest
                 //RectangleF[] points = new RectangleF[NUM_POINTS];
 
                 //// KeyGroups which represents our point on the keyboard
-                //RectangleKeyGroup[] pointGroups = new RectangleKeyGroup[NUM_POINTS];
+                //RectangleLedGroup[] pointGroups = new RectangleLedGroup[NUM_POINTS];
 
                 //// Target of our movement
                 //PointF[] targets = new PointF[NUM_POINTS];
@@ -316,7 +313,7 @@ namespace SimpleDevTest
                 //{
                 //    // Spawn our point  in the top-left corner (right over G1 or on ESC depending on your keyboard)
                 //    points[i] = new RectangleF(keyboard.KeyboardRectangle.X, keyboard.KeyboardRectangle.Y, 60, 60);
-                //    pointGroups[i] = new RectangleKeyGroup(keyboard, points[i], 0.1f) { Brush = new SolidColorBrush(Color.White) };
+                //    pointGroups[i] = new RectangleLedGroup(keyboard, points[i], 0.1f) { Brush = new SolidColorBrush(Color.White) };
                 //    targets[i] = new PointF(points[i].X, points[i].Y);
                 //}
 

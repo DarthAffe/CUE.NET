@@ -1,8 +1,12 @@
 ﻿// ReSharper disable UnusedMemberInSuper.Global
 // ReSharper disable UnusedMember.Global
 
+using System.Collections.Generic;
+using System.Drawing;
+using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Generic.EventArgs;
+using CUE.NET.Groups;
 
 namespace CUE.NET.Devices
 {
@@ -44,7 +48,7 @@ namespace CUE.NET.Devices
     /// <summary>
     /// Represents a generic cue device.
     /// </summary>
-    public interface ICueDevice
+    public interface ICueDevice : ILedGroup, IEnumerable<CorsairLed>
     {
         /// <summary>
         /// Gets generic information provided by CUE for the device.
@@ -60,6 +64,38 @@ namespace CUE.NET.Devices
         /// Gets or sets the update-frequency in seconds. (Calculate by using '1f / updates per second')
         /// </summary>
         float UpdateFrequency { get; set; }
+
+        /// <summary>
+        /// Gets the rectangle containing all LEDs of the device.
+        /// </summary>
+        RectangleF DeviceRectangle { get; }
+
+        /// <summary>
+        /// Gets a read-only collection containing the LEDs of the device.
+        /// </summary>
+        IEnumerable<CorsairLed> Leds { get; }
+
+        /// <summary>
+        /// Gets the <see cref="CorsairLed" /> with the specified ID.
+        /// </summary>
+        /// <param name="ledId">The ID of the LED to get.</param>
+        /// <returns>The LED with the specified ID or null if no LED is found.</returns>
+        CorsairLed this[CorsairLedId ledId] { get; }
+
+        /// <summary>
+        /// Gets the <see cref="CorsairLed" /> at the given physical location.
+        /// </summary>
+        /// <param name="location">The point to get the location from.</param>
+        /// <returns>The LED at the given point or null if no location is found.</returns>
+        CorsairLed this[PointF location] { get; }
+
+        /// <summary>
+        /// Gets a list of <see cref="CorsairLed" /> inside the given rectangle.
+        /// </summary>
+        /// <param name="referenceRect">The rectangle to check.</param>
+        /// <param name="minOverlayPercentage">The minimal percentage overlay a location must have with the <see cref="Rectangle" /> to be taken into the list.</param>
+        /// <returns></returns>
+        IEnumerable<CorsairLed> this[RectangleF referenceRect, float minOverlayPercentage = 0.5f] { get; }
 
         // ReSharper disable EventNeverSubscribedTo.Global
 
@@ -95,5 +131,14 @@ namespace CUE.NET.Devices
         /// </summary>
         /// <param name="flushLeds">Specifies whether all keys (including clean ones) should be updated.</param>
         void Update(bool flushLeds = false);
+
+        bool AttachLedGroup(ILedGroup ledGroup);
+
+        /// <summary>
+        /// Detaches the given ledgroup.
+        /// </summary>
+        /// <param name="ledGroup">The ledgroup to detached.</param>
+        /// <returns><c>true</c> if the ledgroup could be detached; otherwise, <c>false</c>.</returns>
+        bool DetachLedGroup(ILedGroup ledGroup);
     }
 }

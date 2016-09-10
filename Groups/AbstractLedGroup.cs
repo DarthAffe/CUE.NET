@@ -1,29 +1,28 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using CUE.NET.Brushes;
+using CUE.NET.Devices;
 using CUE.NET.Devices.Generic;
-using CUE.NET.Devices.Keyboard.Extensions;
 using CUE.NET.Effects;
+using CUE.NET.Groups.Extensions;
 
-namespace CUE.NET.Devices.Keyboard.Keys
+namespace CUE.NET.Groups
 {
     /// <summary>
     /// Represents a basic keygroup.
     /// </summary>
-    public abstract class AbstractKeyGroup : AbstractEffectTarget<IKeyGroup>, IKeyGroup
+    public abstract class AbstractLedGroup : AbstractEffectTarget<ILedGroup>, ILedGroup
     {
         #region Properties & Fields
 
         /// <summary>
-        /// Gets the keyboard this keygroup belongs to.
+        /// Gets the strongly-typed target used for the effect.
         /// </summary>
-        internal CorsairKeyboard Keyboard { get; }
+        protected override ILedGroup EffectTarget => this;
 
         /// <summary>
-        /// Gets a read-only collection containing the keys from this group.
+        /// Gets the device this ledgroup belongs to.
         /// </summary>
-        public IEnumerable<CorsairKey> Keys => new ReadOnlyCollection<CorsairKey>(GetGroupKeys());
+        public ICueDevice Device { get; }
 
         /// <summary>
         /// Gets or sets the brush which should be drawn over this group.
@@ -40,13 +39,13 @@ namespace CUE.NET.Devices.Keyboard.Keys
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AbstractKeyGroup"/> class.
+        /// Initializes a new instance of the <see cref="AbstractLedGroup"/> class.
         /// </summary>
-        /// <param name="keyboard">The keyboard this keygroup belongs to.</param>
+        /// <param name="device">The device this ledgroup belongs to.</param>
         /// <param name="autoAttach">Specifies whether this group should be automatically attached or not.</param>
-        protected AbstractKeyGroup(CorsairKeyboard keyboard, bool autoAttach = true)
+        protected AbstractLedGroup(ICueDevice device, bool autoAttach = true)
         {
-            this.Keyboard = keyboard;
+            this.Device = device;
 
             if (autoAttach)
                 this.Attach();
@@ -56,16 +55,11 @@ namespace CUE.NET.Devices.Keyboard.Keys
 
         #region Methods
 
-        public IEnumerable<CorsairLed> GetLeds()
-        {
-            return GetGroupKeys().Select(x => x.Led);
-        }
-
         /// <summary>
-        /// Gets a list containing the keys from this group.
+        /// Gets a list containing all LEDs of this group.
         /// </summary>
-        /// <returns>The list containing the keys.</returns>
-        protected abstract IList<CorsairKey> GetGroupKeys();
+        /// <returns>The list containing all LEDs of this group.</returns>
+        public abstract IEnumerable<CorsairLed> GetLeds();
 
         #endregion
     }

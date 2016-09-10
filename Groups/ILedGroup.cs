@@ -6,15 +6,10 @@ using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Effects;
 
-namespace CUE.NET.Devices.Keyboard.Keys
+namespace CUE.NET.Groups
 {
-    public interface IKeyGroup : IEffectTarget<IKeyGroup>
+    public interface ILedGroup : IEffectTarget<ILedGroup>
     {
-        /// <summary>
-        /// Gets a read-only collection containing the keys from this group.
-        /// </summary>
-        IEnumerable<CorsairKey> Keys { get; }
-
         /// <summary>
         /// Gets or sets the brush which should be drawn over this group.
         /// </summary>

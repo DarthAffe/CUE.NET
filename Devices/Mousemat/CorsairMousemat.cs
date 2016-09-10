@@ -11,7 +11,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
-using CUE.NET.Devices.Mousemat.Enums;
 using CUE.NET.Exceptions;
 using CUE.NET.Native;
 
@@ -20,37 +19,14 @@ namespace CUE.NET.Devices.Mousemat
     /// <summary>
     /// Represents the SDK for a corsair mousemat.
     /// </summary>
-    public class CorsairMousemat : AbstractCueDevice, IEnumerable<CorsairLed>
+    public class CorsairMousemat : AbstractCueDevice
     {
         #region Properties & Fields
-
-        #region Indexer
-
-        /// <summary>
-        /// Gets the <see cref="CorsairLed" /> with the specified ID.
-        /// </summary>
-        /// <param name="ledId">The ID of the LED to get.</param>
-        /// <returns>The LED with the specified ID.</returns>
-        public CorsairLed this[CorsairMousematLedId ledId]
-        {
-            get
-            {
-                CorsairLed led;
-                return base.Leds.TryGetValue((int)ledId, out led) ? led : null;
-            }
-        }
-
-        #endregion
 
         /// <summary>
         /// Gets specific information provided by CUE for the mousemat.
         /// </summary>
         public CorsairMousematDeviceInfo MousematDeviceInfo { get; }
-
-        /// <summary>
-        /// Gets a read-only collection containing all LEDs of the mousemat.
-        /// </summary>
-        public new IEnumerable<CorsairLed> Leds => new ReadOnlyCollection<CorsairLed>(base.Leds.Values.ToList());
 
         #endregion
 
@@ -64,14 +40,13 @@ namespace CUE.NET.Devices.Mousemat
             : base(info)
         {
             this.MousematDeviceInfo = info;
-            InitializeLeds();
         }
 
         #endregion
 
         #region Methods
 
-        private void InitializeLeds()
+        protected override void InitializeLeds()
         {
             int deviceCount = _CUESDK.CorsairGetDeviceCount();
 
@@ -105,31 +80,8 @@ namespace CUE.NET.Devices.Mousemat
 
             // Sort for easy iteration by clients
             foreach (_CorsairLedPosition ledPosition in positions.OrderBy(p => p.ledId))
-                InitializeLed((int)ledPosition.ledId, new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height));
+                InitializeLed(ledPosition.ledId, new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height));
         }
-
-        protected override void DeviceUpdate()
-        {
-            //TODO DarthAffe 10.09.2016: Implement
-        }
-
-        #region IEnumerable
-
-        /// <summary>
-        /// Returns an enumerator that iterates over all LEDs of the mousemat.
-        /// </summary>
-        /// <returns>An enumerator for all LEDS of the mousemat.</returns>
-        public IEnumerator<CorsairLed> GetEnumerator()
-        {
-            return Leds.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
 
         #endregion
     }

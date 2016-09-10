@@ -8,6 +8,7 @@ using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Keyboard.Keys;
 using CUE.NET.Exceptions;
 using CUE.NET.Gradients;
+using CUE.NET.Groups;
 using Example_AudioAnalyzer_full.TakeAsIs;
 
 namespace Example_AudioAnalyzer_full
@@ -67,12 +68,12 @@ namespace Example_AudioAnalyzer_full
             // Note that this isn't a 'real effect' since it's update-rate dependent. A real effect would do always the same thing not mather how fast the keyboard updates.
             _keyboard.Brush = new SolidColorBrush(Color.FromArgb(96, 0, 0, 0));
             // Add our song-beat-effect. Remember to uncomment the update in the spectrum effect if you want to remove this.
-            ListKeyGroup songBeatGroup = new ListKeyGroup(_keyboard, _keyboard);
+            ListLedGroup songBeatGroup = new ListLedGroup(_keyboard, _keyboard);
             songBeatGroup.Brush = new SolidColorBrush(Color.FromArgb(127, 164, 164, 164));
             songBeatGroup.Brush.AddEffect(new SongBeatEffect(_soundDataProcessor));
 
             // Add our spectrum-effect using the soundDataProcessor and a rainbow from purple to red as gradient
-            ListKeyGroup spectrumGroup = new ListKeyGroup(_keyboard, _keyboard);
+            ListLedGroup spectrumGroup = new ListLedGroup(_keyboard, _keyboard);
             spectrumGroup.Brush = new AudioSpectrumBrush(_soundDataProcessor, new RainbowGradient(300, -14));
 
             // Hook onto the keyboard update and process data
