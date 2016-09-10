@@ -51,6 +51,7 @@
     <Compile Include="Devices\Generic\Enums\CorsairAccessMode.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceCaps.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceType.cs" />
+    <Compile Include="Devices\Generic\Enums\CorsairLedId.cs" />
     <Compile Include="Devices\Generic\EventArgs\ExceptionEventArgs.cs" />
     <Compile Include="Brushes\AbstractBrush.cs" />
     <Compile Include="Devices\Generic\EventArgs\LedsUpdatedEventArgs.cs" />
