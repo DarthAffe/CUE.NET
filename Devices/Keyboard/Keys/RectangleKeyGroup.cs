@@ -65,7 +65,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// <param name="minOverlayPercentage">(optional) The minimal percentage overlay a key must have with the <see cref="Rectangle" /> to be taken into the keygroup. (default: 0.5f)</param>
         /// <param name="autoAttach">(optional) Specifies whether this group should be automatically attached or not. (default: true)</param>
         public RectangleKeyGroup(CorsairKeyboard keyboard, CorsairKey fromKey, CorsairKey toKey, float minOverlayPercentage = 0.5f, bool autoAttach = true)
-            : this(keyboard, RectangleHelper.CreateRectangleFromRectangles(fromKey.KeyRectangle, toKey.KeyRectangle), minOverlayPercentage, autoAttach)
+            : this(keyboard, RectangleHelper.CreateRectangleFromRectangles(fromKey.Led.LedRectangle, toKey.Led.LedRectangle), minOverlayPercentage, autoAttach)
         { }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// <returns>The list containing the keys.</returns>
         protected override IList<CorsairKey> GetGroupKeys()
         {
-            return _keyCache ?? (_keyCache = Keyboard.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, Rectangle) >= MinOverlayPercentage).ToList());
+            return _keyCache ?? (_keyCache = Keyboard.Where(x => RectangleHelper.CalculateIntersectPercentage(x.Led.LedRectangle, Rectangle) >= MinOverlayPercentage).ToList());
         }
 
         #endregion

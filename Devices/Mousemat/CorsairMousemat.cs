@@ -12,7 +12,6 @@ using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Mousemat.Enums;
-using CUE.NET.Effects;
 using CUE.NET.Exceptions;
 using CUE.NET.Native;
 
@@ -47,7 +46,7 @@ namespace CUE.NET.Devices.Mousemat
         /// Gets specific information provided by CUE for the mousemat.
         /// </summary>
         public CorsairMousematDeviceInfo MousematDeviceInfo { get; }
-        
+
         /// <summary>
         /// Gets a read-only collection containing all LEDs of the mousemat.
         /// </summary>
@@ -105,8 +104,8 @@ namespace CUE.NET.Devices.Mousemat
             }
 
             // Sort for easy iteration by clients
-            foreach (_CorsairLedPosition position in positions.OrderBy(p => p.ledId))
-                GetLed((int)position.ledId);
+            foreach (_CorsairLedPosition ledPosition in positions.OrderBy(p => p.ledId))
+                InitializeLed((int)ledPosition.ledId, new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height));
         }
 
         protected override void DeviceUpdate()

@@ -5,6 +5,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Headset.Enums;
@@ -67,8 +68,8 @@ namespace CUE.NET.Devices.Headset
 
         private void InitializeLeds()
         {
-            GetLed((int)CorsairHeadsetLedId.LeftLogo);
-            GetLed((int)CorsairHeadsetLedId.RightLogo);
+            InitializeLed((int)CorsairHeadsetLedId.LeftLogo, new RectangleF(0, 0, 1, 1));
+            InitializeLed((int)CorsairHeadsetLedId.RightLogo, new RectangleF(1, 0, 1, 1));
         }
 
         protected override void DeviceUpdate()

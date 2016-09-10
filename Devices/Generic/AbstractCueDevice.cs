@@ -104,16 +104,21 @@ namespace CUE.NET.Devices.Generic
         #region Methods
 
         /// <summary>
-        /// Gets the LED-Object with the specified id.
+        /// Initializes the LED-Object with the specified id.
         /// </summary>
-        /// <param name="ledId">The LED-Id to look for.</param>
+        /// <param name="ledId">The LED-Id to initialize.</param>
+        /// <param name="ledRectangle">The rectangle representing the position of the LED to initialize.</param>
         /// <returns></returns>
-        protected CorsairLed GetLed(int ledId)
+        protected CorsairLed InitializeLed(int ledId, RectangleF ledRectangle)
         {
             if (!Leds.ContainsKey(ledId))
-                Leds.Add(ledId, new CorsairLed());
+            {
+                CorsairLed led = new CorsairLed(ledRectangle);
+                Leds.Add(ledId, led);
+                return led;
+            }
 
-            return Leds[ledId];
+            return null;
         }
 
         /// <summary>
@@ -169,7 +174,7 @@ namespace CUE.NET.Devices.Generic
         public void Update(bool flushLeds = false)
         {
             OnUpdating();
-            
+
             DeviceUpdate();
 
             ICollection<LedUpateRequest> ledsToUpdate = (flushLeds ? Leds : Leds.Where(x => x.Value.IsDirty)).Select(x => new LedUpateRequest(x.Key, x.Value.RequestedColor)).ToList();
@@ -186,7 +191,7 @@ namespace CUE.NET.Devices.Generic
         /// Performs device specific updates.
         /// </summary>
         protected abstract void DeviceUpdate();
-        
+
         private void UpdateLeds(ICollection<LedUpateRequest> updateRequests)
         {
             updateRequests = updateRequests.Where(x => x.Color != Color.Transparent).ToList();

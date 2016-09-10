@@ -64,7 +64,7 @@ namespace CUE.NET.Devices.Keyboard
         /// </summary>
         /// <param name="location">The point to get the key from.</param>
         /// <returns>The key at the given point or null if no key is found.</returns>
-        public CorsairKey this[PointF location] => _keys.Values.FirstOrDefault(x => x.KeyRectangle.Contains(location));
+        public CorsairKey this[PointF location] => _keys.Values.FirstOrDefault(x => x.Led.LedRectangle.Contains(location));
 
         /// <summary>
         /// Gets a list of <see cref="CorsairKey" /> inside the given rectangle.
@@ -72,7 +72,8 @@ namespace CUE.NET.Devices.Keyboard
         /// <param name="referenceRect">The rectangle to check.</param>
         /// <param name="minOverlayPercentage">The minimal percentage overlay a key must have with the <see cref="Rectangle" /> to be taken into the list.</param>
         /// <returns></returns>
-        public IEnumerable<CorsairKey> this[RectangleF referenceRect, float minOverlayPercentage = 0.5f] => _keys.Values.Where(x => RectangleHelper.CalculateIntersectPercentage(x.KeyRectangle, referenceRect) >= minOverlayPercentage);
+        public IEnumerable<CorsairKey> this[RectangleF referenceRect, float minOverlayPercentage = 0.5f] => _keys.Values
+            .Where(x => RectangleHelper.CalculateIntersectPercentage(x.Led.LedRectangle, referenceRect) >= minOverlayPercentage);
 
         #endregion
 
@@ -120,7 +121,7 @@ namespace CUE.NET.Devices.Keyboard
             this.KeyboardDeviceInfo = info;
 
             InitializeKeys();
-            KeyboardRectangle = RectangleHelper.CreateRectangleFromRectangles(this.Select(x => x.KeyRectangle));
+            KeyboardRectangle = RectangleHelper.CreateRectangleFromRectangles(this.Select(x => x.Led.LedRectangle));
         }
 
         #endregion
@@ -158,15 +159,15 @@ namespace CUE.NET.Devices.Keyboard
                 switch (brush.BrushCalculationMode)
                 {
                     case BrushCalculationMode.Relative:
-                        RectangleF brushRectangle = RectangleHelper.CreateRectangleFromRectangles(keys.Select(x => x.KeyRectangle));
+                        RectangleF brushRectangle = RectangleHelper.CreateRectangleFromRectangles(keys.Select(x => x.Led.LedRectangle));
                         float offsetX = -brushRectangle.X;
                         float offsetY = -brushRectangle.Y;
                         brushRectangle.X = 0;
                         brushRectangle.Y = 0;
-                        brush.PerformRender(brushRectangle, keys.Select(x => new BrushRenderTarget(x.KeyId, x.KeyRectangle.GetCenter(offsetX, offsetY))));
+                        brush.PerformRender(brushRectangle, keys.Select(x => new BrushRenderTarget(x.KeyId, x.Led.LedRectangle.GetCenter(offsetX, offsetY))));
                         break;
                     case BrushCalculationMode.Absolute:
-                        brush.PerformRender(KeyboardRectangle, keys.Select(x => new BrushRenderTarget(x.KeyId, x.KeyRectangle.GetCenter())));
+                        brush.PerformRender(KeyboardRectangle, keys.Select(x => new BrushRenderTarget(x.KeyId, x.Led.LedRectangle.GetCenter())));
                         break;
                     default:
                         throw new ArgumentException();
@@ -181,7 +182,7 @@ namespace CUE.NET.Devices.Keyboard
             // ReSharper disable once CatchAllClause
             catch (Exception ex) { OnException(ex); }
         }
-        
+
         /// <summary>
         /// Gets a list containing all LEDs of this group.
         /// </summary>
@@ -236,9 +237,8 @@ namespace CUE.NET.Devices.Keyboard
             for (int i = 0; i < nativeLedPositions.numberOfLed; i++)
             {
                 _CorsairLedPosition ledPosition = (_CorsairLedPosition)Marshal.PtrToStructure(ptr, typeof(_CorsairLedPosition));
-                CorsairLed led = GetLed((int)ledPosition.ledId);
-                _keys.Add(ledPosition.ledId, new CorsairKey(ledPosition.ledId, led,
-                    new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height)));
+                CorsairLed led = InitializeLed((int)ledPosition.ledId, new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height));
+                _keys.Add(ledPosition.ledId, new CorsairKey(ledPosition.ledId, led));
 
                 ptr = new IntPtr(ptr.ToInt64() + structSize);
             }
@@ -273,7 +273,7 @@ namespace CUE.NET.Devices.Keyboard
         }
 
         #endregion
-        
+
         #region IEnumerable
 
         /// <summary>

@@ -24,11 +24,6 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// </summary>
         public CorsairLed Led { get; }
 
-        /// <summary>
-        /// Gets a rectangle representing the physical location of the key.
-        /// </summary>
-        public RectangleF KeyRectangle { get; }
-
         #endregion
 
         #region Constructors
@@ -38,12 +33,10 @@ namespace CUE.NET.Devices.Keyboard.Keys
         /// </summary>
         /// <param name="keyId">The key-ID of the key.</param>
         /// <param name="led">The LED of the key.</param>
-        /// <param name="keyRectangle">The rectangle representing the physical location of the key.</param>
-        internal CorsairKey(CorsairKeyboardKeyId keyId, CorsairLed led, RectangleF keyRectangle)
+        internal CorsairKey(CorsairKeyboardKeyId keyId, CorsairLed led)
         {
             this.KeyId = keyId;
             this.Led = led;
-            this.KeyRectangle = keyRectangle;
         }
 
         #endregion

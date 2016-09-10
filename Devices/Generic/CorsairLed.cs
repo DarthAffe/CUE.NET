@@ -13,6 +13,11 @@ namespace CUE.NET.Devices.Generic
     public class CorsairLed
     {
         #region Properties & Fields
+        
+        /// <summary>
+        /// Gets a rectangle representing the physical location of the led.
+        /// </summary>
+        public RectangleF LedRectangle { get; }
 
         /// <summary>
         /// Indicates whether the LED has changed an internal state.
@@ -55,7 +60,14 @@ namespace CUE.NET.Devices.Generic
 
         #region Constructors
 
-        internal CorsairLed() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CorsairLed"/> class.
+        /// </summary>
+        /// <param name="ledRectangle">The rectangle representing the physical location of the led.</param>
+        internal CorsairLed(RectangleF ledRectangle)
+        {
+            this.LedRectangle = ledRectangle;
+        }
 
         #endregion
 
