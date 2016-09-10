@@ -90,7 +90,7 @@ namespace CUE.NET.Devices.Headset
         /// <summary>
         /// Returns an enumerator that iterates over all LEDs of the headset.
         /// </summary>
-        /// <returns>An enumerator for all LDS of the headset.</returns>
+        /// <returns>An enumerator for all LEDS of the headset.</returns>
         public IEnumerator<CorsairLed> GetEnumerator()
         {
             return Leds.GetEnumerator();
