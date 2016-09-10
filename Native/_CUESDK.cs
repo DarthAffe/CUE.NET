@@ -36,12 +36,13 @@ namespace CUE.NET.Native
             if (_dllHandle != IntPtr.Zero) return;
 
             // HACK: Load library at runtime to support both, x86 and x64 with one managed dll
-            _dllHandle = LoadLibrary((LoadedArchitecture = Environment.Is64BitProcess ? "x64" : "x86") + "/CUESDK_2013.dll");
+            _dllHandle = LoadLibrary((LoadedArchitecture = Environment.Is64BitProcess ? "x64" : "x86") + "/CUESDK_2015.dll");
 
             _corsairSetLedsColorsPointer = (CorsairSetLedsColorsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairSetLedsColors"), typeof(CorsairSetLedsColorsPointer));
             _corsairGetDeviceCountPointer = (CorsairGetDeviceCountPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetDeviceCount"), typeof(CorsairGetDeviceCountPointer));
             _corsairGetDeviceInfoPointer = (CorsairGetDeviceInfoPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetDeviceInfo"), typeof(CorsairGetDeviceInfoPointer));
             _corsairGetLedPositionsPointer = (CorsairGetLedPositionsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedPositions"), typeof(CorsairGetLedPositionsPointer));
+            _corsairGetLedPositionsByDeviceIndexPointer = (CorsairGetLedPositionsByDeviceIndexPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedPositionsByDeviceIndex"), typeof(CorsairGetLedPositionsByDeviceIndexPointer));
             _corsairGetLedIdForKeyNamePointer = (CorsairGetLedIdForKeyNamePointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedIdForKeyName"), typeof(CorsairGetLedIdForKeyNamePointer));
             _corsairRequestControlPointer = (CorsairRequestControlPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairRequestControl"), typeof(CorsairRequestControlPointer));
             _corsairReleaseControlPointer = (CorsairReleaseControlPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairReleaseControl"), typeof(CorsairReleaseControlPointer));
@@ -78,6 +79,7 @@ namespace CUE.NET.Native
         private static CorsairGetDeviceInfoPointer _corsairGetDeviceInfoPointer;
         private static CorsairGetLedPositionsPointer _corsairGetLedPositionsPointer;
         private static CorsairGetLedIdForKeyNamePointer _corsairGetLedIdForKeyNamePointer;
+        private static CorsairGetLedPositionsByDeviceIndexPointer _corsairGetLedPositionsByDeviceIndexPointer;
         private static CorsairRequestControlPointer _corsairRequestControlPointer;
         private static CorsairReleaseControlPointer _corsairReleaseControlPointer;
         private static CorsairPerformProtocolHandshakePointer _corsairPerformProtocolHandshakePointer;
@@ -98,6 +100,9 @@ namespace CUE.NET.Native
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr CorsairGetLedPositionsPointer();
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate IntPtr CorsairGetLedPositionsByDeviceIndexPointer(int deviceIndex);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate CorsairKeyboardKeyId CorsairGetLedIdForKeyNamePointer(char keyName);
@@ -148,6 +153,14 @@ namespace CUE.NET.Native
         internal static IntPtr CorsairGetLedPositions()
         {
             return _corsairGetLedPositionsPointer();
+        }
+
+        /// <summary>
+        /// CUE-SDK: provides list of keyboard or mousemat LEDs with their physical positions.
+        /// </summary>
+        internal static IntPtr CorsairGetLedPositionsByDeviceIndex(int deviceIndex)
+        {
+            return _corsairGetLedPositionsByDeviceIndexPointer(deviceIndex);
         }
 
         /// <summary>

@@ -39,5 +39,10 @@ namespace CUE.NET.Native
         /// CUE-SDK: mask that describes device capabilities, formed as logical “or” of CorsairDeviceCaps enum values
         /// </summary>
         internal int capsMask;
+
+        /// <summary>
+        /// CUE-SDK: number of controllable LEDs on the device
+        /// </summary>
+        internal int ledsCount;
     }
 }

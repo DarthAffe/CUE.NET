@@ -7,6 +7,7 @@ using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Headset;
 using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Mouse;
+using CUE.NET.Devices.Mousemat;
 using CUE.NET.Exceptions;
 using CUE.NET.Native;
 
@@ -61,6 +62,12 @@ namespace CUE.NET
         /// </summary>
         public static CorsairHeadset HeadsetSDK { get; private set; }
 
+        /// <summary>
+        /// Gets the managed representation of a moustmat managed by the CUE-SDK.
+        /// Note that currently only one connected mousemat is supported.
+        /// </summary>
+        public static CorsairMousemat MousematSDK { get; private set; }
+
         // ReSharper restore UnusedAutoPropertyAccessor.Global
 
         #endregion
@@ -86,6 +93,8 @@ namespace CUE.NET
                             return MouseSDK != null;
                         case CorsairDeviceType.Headset:
                             return HeadsetSDK != null;
+                        case CorsairDeviceType.Mousemat:
+                            return MousematSDK != null;
                         default:
                             return true;
                     }
@@ -163,7 +172,9 @@ namespace CUE.NET
                     case CorsairDeviceType.Headset:
                         HeadsetSDK = new CorsairHeadset(new CorsairHeadsetDeviceInfo(nativeDeviceInfo));
                         break;
-
+                    case CorsairDeviceType.Mousemat:
+                        MousematSDK = new CorsairMousemat(new CorsairMousematDeviceInfo(nativeDeviceInfo));
+                        break;
                     // ReSharper disable once RedundantCaseLabel
                     case CorsairDeviceType.Unknown:
                     default:
@@ -198,6 +209,7 @@ namespace CUE.NET
             KeyboardSDK?.ResetLeds();
             MouseSDK?.ResetLeds();
             HeadsetSDK?.ResetLeds();
+            MousematSDK?.ResetLeds();
 
             _CUESDK.Reload();
 
@@ -244,6 +256,10 @@ namespace CUE.NET
                 if (!reloadedDevices.ContainsKey(CorsairDeviceType.Headset)
                     || HeadsetSDK.HeadsetDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Headset].Model)
                     throw new WrapperException("The previously loaded Headset got disconnected.");
+            if (MousematSDK != null)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Mousemat)
+                    || MousematSDK.MousematDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Mousemat].Model)
+                    throw new WrapperException("The previously loaded Mousemat got disconnected.");
 
             IsInitialized = true;
         }
@@ -255,6 +271,7 @@ namespace CUE.NET
             KeyboardSDK = null;
             MouseSDK = null;
             HeadsetSDK = null;
+            MousematSDK = null;
             IsInitialized = false;
 
             throw new CUEException(error);

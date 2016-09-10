@@ -11,6 +11,7 @@ namespace CUE.NET.Devices.Generic.Enums
         Unknown = 0,
         Mouse = 1,
         Keyboard = 2,
-        Headset = 3
+        Headset = 3,
+        Mousemat = 4
     };
 }

@@ -8,6 +8,8 @@ namespace CUE.NET.Devices.Headset
     /// </summary>
     public class CorsairHeadsetDeviceInfo : GenericDeviceInfo
     {
+        #region Constructors
+
         /// <summary>
         /// Internal constructor of managed <see cref="CorsairHeadsetDeviceInfo" />.
         /// </summary>
@@ -15,5 +17,7 @@ namespace CUE.NET.Devices.Headset
         internal CorsairHeadsetDeviceInfo(_CorsairDeviceInfo nativeInfo)
             : base(nativeInfo)
         { }
+
+        #endregion
     }
 }
