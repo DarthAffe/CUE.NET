@@ -11,7 +11,7 @@ namespace CUE.NET.Brushes
     public class SolidColorBrush : AbstractBrush
     {
         #region Properties & Fields
-        
+
         /// <summary>
         /// Gets or sets the color drawn by the brush.
         /// </summary>
@@ -43,6 +43,20 @@ namespace CUE.NET.Brushes
         protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
             return Color;
+        }
+
+        #endregion
+
+        #region Operators
+
+        public static explicit operator SolidColorBrush(Color color)
+        {
+            return new SolidColorBrush(color);
+        }
+
+        public static implicit operator Color(SolidColorBrush brush)
+        {
+            return brush.Color;
         }
 
         #endregion
