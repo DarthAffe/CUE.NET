@@ -3,7 +3,7 @@
   <metadata>
     <id>CUE.NET</id>
     <title>CUE.NET</title>
-    <version>1.0.3.0</version>
+    <version>1.1.0.0</version>
     <authors>Darth Affe</authors>
     <owners>Darth Affe</owners>
     <projectUrl>https://github.com/DarthAffe/CUE.NET</projectUrl>
@@ -11,10 +11,17 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Corsair HID SDK Wrapper</description>
     <releaseNotes>
-      Added IEnumerable-overloads to all param-methods,
-      Added events in the update-process,
-      Finished work on BrushCalculationModes,
-      Added a method to check for SDK availability
+      #########                                                                                                     #########
+      ### This release contains a lot of breaking changes and will most likely not work without changes to existing code! ###
+      #########                                                                                                     #########
+
+      Updated SDK to 2.4.67,
+      Adde Corsair RGB Mous Mat support,
+      Rewrote brushes to perform two-pass-rendering,
+      Added own Color-Type to allow easier extension and modification (this type can be implicit converted to .NET-Colors)
+      Refactored everything to work based on LEDs - This will adapt the devices and reduces the importance of the "special case keyboard",
+      Added usable effect-system which allows to modify groups and brushes,
+      Refactored automatic updates to be SDK-wide (moved from device to CueSDK)
     </releaseNotes>
     <summary>C# (.NET) Wrapper library around the Corsair CUE-SDK</summary>
     <copyright>Copyright © Wyrez 2016</copyright>
