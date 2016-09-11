@@ -45,6 +45,8 @@ namespace CUE.NET.Devices.Headset
         {
             InitializeLed(CorsairHeadsetLedId.LeftLogo, new RectangleF(0, 0, 1, 1));
             InitializeLed(CorsairHeadsetLedId.RightLogo, new RectangleF(1, 0, 1, 1));
+
+            base.Initialize();
         }
 
         #endregion

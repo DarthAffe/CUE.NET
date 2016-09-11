@@ -77,6 +77,8 @@ namespace CUE.NET.Devices.Keyboard
 
                 ptr = new IntPtr(ptr.ToInt64() + structSize);
             }
+
+            base.Initialize();
         }
 
         #endregion

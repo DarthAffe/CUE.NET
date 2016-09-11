@@ -82,6 +82,8 @@ namespace CUE.NET.Devices.Mousemat
             // Sort for easy iteration by clients
             foreach (_CorsairLedPosition ledPosition in positions.OrderBy(p => p.ledId))
                 InitializeLed(ledPosition.ledId, new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height));
+
+            base.Initialize();
         }
 
         #endregion

@@ -37,7 +37,7 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Gets the rectangle containing all LEDs of the device.
         /// </summary>
-        public RectangleF DeviceRectangle { get; }
+        public RectangleF DeviceRectangle { get; protected set; }
 
         /// <summary>
         /// Gets a dictionary containing all LEDs of the device.
@@ -139,8 +139,6 @@ namespace CUE.NET.Devices.Generic
         protected AbstractCueDevice(IDeviceInfo info)
         {
             this.DeviceInfo = info;
-
-            DeviceRectangle = RectangleHelper.CreateRectangleFromRectangles((this).Select(x => x.LedRectangle));
         }
 
         #endregion
@@ -152,7 +150,10 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Initializes the device.
         /// </summary>
-        public abstract void Initialize();
+        public virtual void Initialize()
+        {
+            DeviceRectangle = RectangleHelper.CreateRectangleFromRectangles((this).Select(x => x.LedRectangle));
+        }
 
         /// <summary>
         /// Initializes the LED-Object with the specified id.

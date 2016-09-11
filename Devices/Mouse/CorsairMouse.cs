@@ -67,6 +67,8 @@ namespace CUE.NET.Devices.Mouse
                 default:
                     throw new WrapperException($"Can't initial mouse with layout '{MouseDeviceInfo.PhysicalLayout}'");
             }
+
+            base.Initialize();
         }
 
         #endregion
