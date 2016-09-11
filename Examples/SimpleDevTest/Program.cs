@@ -36,9 +36,13 @@ namespace SimpleDevTest
                 CueSDK.Initialize();
                 Console.WriteLine("Initialized with " + CueSDK.LoadedArchitecture + "-SDK");
 
+                CueSDK.UpdateMode = UpdateMode.Continuous;
+
                 IBrush rainbowBrush = new LinearGradientBrush(new RainbowGradient());
                 rainbowBrush.AddEffect(new FlashEffect());
 
+                AddTestBrush(CueSDK.KeyboardSDK, rainbowBrush);
+                AddTestBrush(CueSDK.KeyboardSDK, rainbowBrush);
                 AddTestBrush(CueSDK.KeyboardSDK, rainbowBrush);
                 AddTestBrush(CueSDK.MouseSDK, rainbowBrush);
                 AddTestBrush(CueSDK.HeadsetSDK, rainbowBrush);
@@ -378,7 +382,6 @@ namespace SimpleDevTest
         {
             if (device == null) return;
 
-            device.UpdateMode = UpdateMode.Continuous;
             device.Brush = (SolidColorBrush)Color.Black;
             ILedGroup leds = new ListLedGroup(device, device);
             leds.Brush = brush;

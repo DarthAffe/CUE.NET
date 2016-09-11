@@ -62,7 +62,7 @@ namespace Example_AudioAnalyzer_full
 
         public void Run()
         {
-            _keyboard.UpdateMode = UpdateMode.Continuous;
+            CueSDK.UpdateMode = UpdateMode.Continuous;
             // Add a black background. We want this to be semi-transparent to add some sort of fade-effect - this will smooth everything out a bit
             // Note that this isn't a 'real effect' since it's update-rate dependent. A real effect would do always the same thing not mather how fast the keyboard updates.
             _keyboard.Brush = new SolidColorBrush(Color.FromArgb(96, 0, 0, 0));

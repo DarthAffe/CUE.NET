@@ -10,6 +10,8 @@ using CUE.NET.Groups;
 
 namespace CUE.NET.Devices
 {
+    #region EventHandler
+    
     /// <summary>
     /// Represents the event-handler of the Exception-event.
     /// </summary>
@@ -45,25 +47,19 @@ namespace CUE.NET.Devices
     /// <param name="args">The arguments provided by the event.</param>
     public delegate void LedsUpdatedEventHandler(object sender, LedsUpdatedEventArgs args);
 
+    #endregion
+
     /// <summary>
     /// Represents a generic cue device.
     /// </summary>
     public interface ICueDevice : ILedGroup, IEnumerable<CorsairLed>
     {
+        #region Properties
+
         /// <summary>
         /// Gets generic information provided by CUE for the device.
         /// </summary>
         IDeviceInfo DeviceInfo { get; }
-
-        /// <summary>
-        /// Gets or sets the update-mode for the device.
-        /// </summary>
-        UpdateMode UpdateMode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the update-frequency in seconds. (Calculate by using '1f / updates per second')
-        /// </summary>
-        float UpdateFrequency { get; set; }
 
         /// <summary>
         /// Gets the rectangle containing all LEDs of the device.
@@ -74,6 +70,10 @@ namespace CUE.NET.Devices
         /// Gets a read-only collection containing the LEDs of the device.
         /// </summary>
         IEnumerable<CorsairLed> Leds { get; }
+
+        #endregion
+
+        #region Indexer
 
         /// <summary>
         /// Gets the <see cref="CorsairLed" /> with the specified ID.
@@ -96,6 +96,10 @@ namespace CUE.NET.Devices
         /// <param name="minOverlayPercentage">The minimal percentage overlay a location must have with the <see cref="Rectangle" /> to be taken into the list.</param>
         /// <returns></returns>
         IEnumerable<CorsairLed> this[RectangleF referenceRect, float minOverlayPercentage = 0.5f] { get; }
+
+        #endregion
+
+        #region Events
 
         // ReSharper disable EventNeverSubscribedTo.Global
 
@@ -126,12 +130,21 @@ namespace CUE.NET.Devices
 
         // ReSharper restore EventNeverSubscribedTo.Global
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Perform an update for all dirty keys, or all keys if flushLeds is set to true.
         /// </summary>
         /// <param name="flushLeds">Specifies whether all keys (including clean ones) should be updated.</param>
         void Update(bool flushLeds = false);
 
+        /// <summary>
+        /// Attaches the given ledgroup.
+        /// </summary>
+        /// <param name="ledGroup">The ledgroup to attach.</param>
+        /// <returns><c>true</c> if the ledgroup could be attached; otherwise, <c>false</c>.</returns>
         bool AttachLedGroup(ILedGroup ledGroup);
 
         /// <summary>
@@ -140,5 +153,7 @@ namespace CUE.NET.Devices
         /// <param name="ledGroup">The ledgroup to detached.</param>
         /// <returns><c>true</c> if the ledgroup could be detached; otherwise, <c>false</c>.</returns>
         bool DetachLedGroup(ILedGroup ledGroup);
+
+        #endregion
     }
 }

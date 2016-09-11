@@ -2,7 +2,9 @@
 // ReSharper disable UnusedMember.Global
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
+using CUE.NET.Devices;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Headset;
@@ -14,7 +16,7 @@ using CUE.NET.Native;
 
 namespace CUE.NET
 {
-    public static class CueSDK
+    public static partial class CueSDK
     {
         #region Properties & Fields
 
@@ -44,6 +46,11 @@ namespace CUE.NET
         /// Gets the last error documented by CUE.
         /// </summary>
         public static CorsairError LastError => _CUESDK.CorsairGetLastError();
+
+        /// <summary>
+        /// Gets all initialized devices managed by the CUE-SDK.
+        /// </summary>
+        public static IEnumerable<ICueDevice> InitializedDevices { get; private set; }
 
         /// <summary>
         /// Gets the managed representation of a keyboard managed by the CUE-SDK.
@@ -155,6 +162,7 @@ namespace CUE.NET
                 HasExclusiveAccess = true;
             }
 
+            IList<ICueDevice> devices = new List<ICueDevice>();
             int deviceCount = _CUESDK.CorsairGetDeviceCount();
             for (int i = 0; i < deviceCount; i++)
             {
@@ -166,16 +174,16 @@ namespace CUE.NET
                 switch (info.Type)
                 {
                     case CorsairDeviceType.Keyboard:
-                        KeyboardSDK = new CorsairKeyboard(new CorsairKeyboardDeviceInfo(nativeDeviceInfo));
+                        devices.Add(KeyboardSDK = new CorsairKeyboard(new CorsairKeyboardDeviceInfo(nativeDeviceInfo)));
                         break;
                     case CorsairDeviceType.Mouse:
-                        MouseSDK = new CorsairMouse(new CorsairMouseDeviceInfo(nativeDeviceInfo));
+                        devices.Add(MouseSDK = new CorsairMouse(new CorsairMouseDeviceInfo(nativeDeviceInfo)));
                         break;
                     case CorsairDeviceType.Headset:
-                        HeadsetSDK = new CorsairHeadset(new CorsairHeadsetDeviceInfo(nativeDeviceInfo));
+                        devices.Add(HeadsetSDK = new CorsairHeadset(new CorsairHeadsetDeviceInfo(nativeDeviceInfo)));
                         break;
                     case CorsairDeviceType.Mousemat:
-                        MousematSDK = new CorsairMousemat(new CorsairMousematDeviceInfo(nativeDeviceInfo));
+                        devices.Add(MousematSDK = new CorsairMousemat(new CorsairMousematDeviceInfo(nativeDeviceInfo)));
                         break;
                     // ReSharper disable once RedundantCaseLabel
                     case CorsairDeviceType.Unknown:
@@ -187,6 +195,8 @@ namespace CUE.NET
                 if (error != CorsairError.Success)
                     Throw(error);
             }
+
+            InitializedDevices = new ReadOnlyCollection<ICueDevice>(devices);
 
             IsInitialized = true;
         }
