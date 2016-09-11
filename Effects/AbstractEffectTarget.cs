@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CUE.NET.Exceptions;
 
 namespace CUE.NET.Effects
 {
@@ -69,6 +70,9 @@ namespace CUE.NET.Effects
         public virtual void AddEffect(IEffect<T> effect)
         {
             if (EffectTimes.Any(x => x.Effect == effect)) return;
+
+            if (!effect.CanBeAppliedTo(EffectTarget))
+                throw new WrapperException($"Failed to add effect.\r\nThe effect of type '{effect.GetType()}' can't be applied to the target of type '{EffectTarget.GetType()}'.");
 
             effect.OnAttach(EffectTarget);
             EffectTimes.Add(new EffectTimeContainer(effect, -1));

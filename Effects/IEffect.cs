@@ -39,6 +39,13 @@ namespace CUE.NET.Effects
         #region Methods
 
         /// <summary>
+        /// Checks if the effect can be applied to the target object.
+        /// </summary>
+        /// <param name="target">The <see cref="IEffectTarget{T}"/> this effect is attached to.</param>
+        /// <returns><c>true</c> if the effect can be attached; otherwise, <c>false</c>.</returns>
+        bool CanBeAppliedTo(T target);
+
+        /// <summary>
         /// Hook which is called when the effect is attached to a device.
         /// </summary>
         /// <param name="target">The <see cref="IEffectTarget{T}"/> this effect is attached to.</param>

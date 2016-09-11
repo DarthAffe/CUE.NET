@@ -34,6 +34,16 @@ namespace CUE.NET.Effects
         public abstract void Update(float deltaTime);
 
         /// <summary>
+        /// Checks if the effect can be applied to the target object.
+        /// </summary>
+        /// <param name="target">The <see cref="IEffectTarget{T}"/> this effect is attached to.</param>
+        /// <returns><c>true</c> if the effect can be attached; otherwise, <c>false</c>.</returns>
+        public virtual bool CanBeAppliedTo(ILedGroup target)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Hook which is called when the effect is attached to a device.
         /// </summary>
         /// <param name="target">The <see cref="ILedGroup"/> this effect is attached to.</param>
