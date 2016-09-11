@@ -7,6 +7,7 @@ using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic;
+using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Keyboard
@@ -22,6 +23,26 @@ namespace CUE.NET.Devices.Keyboard
         /// Gets specific information provided by CUE for the keyboard.
         /// </summary>
         public CorsairKeyboardDeviceInfo KeyboardDeviceInfo { get; }
+
+        #region Indexers
+
+        /// <summary>
+        /// Gets the <see cref="CorsairLed" /> representing the given character by calling the SDK-method 'CorsairGetLedIdForKeyName'.<br />
+        /// Note that this currently only works for letters.
+        /// </summary>
+        /// <param name="key">The character of the key.</param>
+        /// <returns>The led representing the given character or null if no led is found.</returns>
+        public CorsairLed this[char key]
+        {
+            get
+            {
+                CorsairLedId ledId = _CUESDK.CorsairGetLedIdForKeyName(key);
+                CorsairLed led;
+                return LedMapping.TryGetValue(ledId, out led) ? led : null;
+            }
+        }
+
+        #endregion
 
         #endregion
 
