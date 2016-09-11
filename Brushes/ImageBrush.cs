@@ -3,7 +3,6 @@
 // ReSharper disable UnusedMember.Global
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using CUE.NET.Devices.Generic;
 

@@ -1,4 +1,7 @@
-﻿namespace CUE.NET.Devices.Generic.EventArgs
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+namespace CUE.NET.Devices.Generic.EventArgs
 {
     public class UpdatingEventArgs : System.EventArgs
     {

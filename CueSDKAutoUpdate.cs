@@ -1,4 +1,7 @@
-﻿using System;
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using CUE.NET.Devices;

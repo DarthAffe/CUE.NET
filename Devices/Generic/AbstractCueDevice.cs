@@ -9,8 +9,6 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
 using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Generic.EventArgs;

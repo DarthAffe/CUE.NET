@@ -43,11 +43,9 @@ namespace SimpleDevTest
                 rainbowBrush.AddEffect(new MoveRainbowEffect());
                 rainbowBrush.AddEffect(new RemoveRedEffect());
 
-                AddTestBrush(CueSDK.KeyboardSDK, rainbowBrush);
-                AddTestBrush(CueSDK.MouseSDK, rainbowBrush);
-                AddTestBrush(CueSDK.HeadsetSDK, rainbowBrush);
-                AddTestBrush(CueSDK.MousematSDK, rainbowBrush);
-                
+                foreach (ICueDevice device in CueSDK.InitializedDevices)
+                    AddTestBrush(device, rainbowBrush);
+
                 //// Get connected keyboard or throw exception if there is no light controllable keyboard connected
                 //CorsairKeyboard keyboard = CueSDK.KeyboardSDK;
                 //if (keyboard == null)

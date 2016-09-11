@@ -1,7 +1,6 @@
 ﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 // ReSharper disable MemberCanBePrivate.Global
 
-using System.Drawing;
 using CUE.NET.Devices.Generic;
 
 namespace CUE.NET.Gradients

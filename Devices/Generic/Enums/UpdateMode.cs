@@ -11,7 +11,7 @@
         Manual,
 
         /// <summary>
-        /// The device will perform automatic updates at the rate set in <see cref="ICueDevice.UpdateFrequency" />.
+        /// The device will perform automatic updates at the rate set in <see cref="CueSDK.UpdateFrequency" />.
         /// </summary>
         Continuous
     }
