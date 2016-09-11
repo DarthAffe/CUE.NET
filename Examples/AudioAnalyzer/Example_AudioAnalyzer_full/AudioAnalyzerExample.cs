@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using CUE.NET;
 using CUE.NET.Brushes;
+using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Keyboard;
 using CUE.NET.Exceptions;
@@ -65,10 +66,10 @@ namespace Example_AudioAnalyzer_full
             CueSDK.UpdateMode = UpdateMode.Continuous;
             // Add a black background. We want this to be semi-transparent to add some sort of fade-effect - this will smooth everything out a bit
             // Note that this isn't a 'real effect' since it's update-rate dependent. A real effect would do always the same thing not mather how fast the keyboard updates.
-            _keyboard.Brush = new SolidColorBrush(Color.FromArgb(96, 0, 0, 0));
+            _keyboard.Brush = new SolidColorBrush(new CorsairColor(96, 0, 0, 0));
             // Add our song-beat-effect. Remember to uncomment the update in the spectrum effect if you want to remove this.
             ListLedGroup songBeatGroup = new ListLedGroup(_keyboard, _keyboard);
-            songBeatGroup.Brush = new SolidColorBrush(Color.FromArgb(127, 164, 164, 164));
+            songBeatGroup.Brush = new SolidColorBrush(new CorsairColor(127, 164, 164, 164));
             songBeatGroup.Brush.AddEffect(new SongBeatEffect(_soundDataProcessor));
 
             // Add our spectrum-effect using the soundDataProcessor and a rainbow from purple to red as gradient

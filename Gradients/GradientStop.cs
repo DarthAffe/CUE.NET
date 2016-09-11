@@ -2,6 +2,7 @@
 // ReSharper disable MemberCanBePrivate.Global
 
 using System.Drawing;
+using CUE.NET.Devices.Generic;
 
 namespace CUE.NET.Gradients
 {
@@ -20,7 +21,7 @@ namespace CUE.NET.Gradients
         /// <summary>
         /// Gets or sets the color of the stop.
         /// </summary>
-        public Color Color { get; set; }
+        public CorsairColor Color { get; set; }
 
         #endregion
 
@@ -31,7 +32,7 @@ namespace CUE.NET.Gradients
         /// </summary>
         /// <param name="offset">The percentage offset to place this stop.</param>
         /// <param name="color">The color of the stop.</param>
-        public GradientStop(float offset, Color color)
+        public GradientStop(float offset, CorsairColor color)
         {
             this.Offset = offset;
             this.Color = color;

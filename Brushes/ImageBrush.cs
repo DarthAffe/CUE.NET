@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using CUE.NET.Devices.Generic;
 
 namespace CUE.NET.Brushes
 {
@@ -66,10 +67,10 @@ namespace CUE.NET.Brushes
         /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
         /// <param name="renderTarget">The target (key/point) from which the color should be taken.</param>
         /// <returns>The color at the specified point.</returns>
-        protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
+        protected override CorsairColor GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
             if (Image == null || Image.Width == 0 || Image.Height == 0)
-                return Color.Transparent;
+                return CorsairColor.Transparent;
 
             //TODO DarthAffe 16.03.2016: Refactor to allow more scale-/interpolation-modes
             float scaleX = Image.Width / rectangle.Width;

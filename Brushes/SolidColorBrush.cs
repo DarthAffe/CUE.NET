@@ -2,6 +2,7 @@
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 using System.Drawing;
+using CUE.NET.Devices.Generic;
 
 namespace CUE.NET.Brushes
 {
@@ -15,7 +16,7 @@ namespace CUE.NET.Brushes
         /// <summary>
         /// Gets or sets the color drawn by the brush.
         /// </summary>
-        public Color Color { get; set; }
+        public CorsairColor Color { get; set; }
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace CUE.NET.Brushes
         /// Initializes a new instance of the <see cref="SolidColorBrush"/> class.
         /// </summary>
         /// <param name="color">The color drawn by the brush.</param>
-        public SolidColorBrush(Color color)
+        public SolidColorBrush(CorsairColor color)
         {
             this.Color = color;
         }
@@ -40,7 +41,7 @@ namespace CUE.NET.Brushes
         /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
         /// <param name="renderTarget">The target (key/point) from which the color should be taken.</param>
         /// <returns>The color at the specified point.</returns>
-        protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
+        protected override CorsairColor GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
             return Color;
         }
@@ -55,6 +56,16 @@ namespace CUE.NET.Brushes
         }
 
         public static implicit operator Color(SolidColorBrush brush)
+        {
+            return brush.Color;
+        }
+
+        public static explicit operator SolidColorBrush(CorsairColor color)
+        {
+            return new SolidColorBrush(color);
+        }
+
+        public static implicit operator CorsairColor(SolidColorBrush brush)
         {
             return brush.Color;
         }

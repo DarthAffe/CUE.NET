@@ -2,6 +2,7 @@
 
 using System.Drawing;
 using System.Linq;
+using CUE.NET.Devices.Generic;
 
 namespace CUE.NET.Gradients
 {
@@ -35,9 +36,9 @@ namespace CUE.NET.Gradients
         /// </summary>
         /// <param name="offset">The percentage offset to take the color from.</param>
         /// <returns>The color at the specific offset.</returns>
-        public override Color GetColor(float offset)
+        public override CorsairColor GetColor(float offset)
         {
-            if (!GradientStops.Any()) return Color.Transparent;
+            if (!GradientStops.Any()) return CorsairColor.Transparent;
             if (GradientStops.Count == 1) return GradientStops.First().Color;
 
             offset = ClipOffset(offset);
@@ -54,7 +55,7 @@ namespace CUE.NET.Gradients
             byte colG = (byte)((gsAfter.Color.G - gsBefore.Color.G) * blendFactor + gsBefore.Color.G);
             byte colB = (byte)((gsAfter.Color.B - gsBefore.Color.B) * blendFactor + gsBefore.Color.B);
 
-            return Color.FromArgb(colA, colR, colG, colB);
+            return new CorsairColor(colA, colR, colG, colB);
         }
 
         #endregion

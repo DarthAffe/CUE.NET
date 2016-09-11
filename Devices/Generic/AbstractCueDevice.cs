@@ -254,7 +254,7 @@ namespace CUE.NET.Devices.Generic
                 brush.UpdateEffects();
                 brush.PerformFinalize();
 
-                foreach (KeyValuePair<BrushRenderTarget, Color> renders in brush.RenderedTargets)
+                foreach (KeyValuePair<BrushRenderTarget, CorsairColor> renders in brush.RenderedTargets)
                     this[renders.Key.LedId].Color = renders.Value;
             }
             // ReSharper disable once CatchAllClause
@@ -263,7 +263,7 @@ namespace CUE.NET.Devices.Generic
 
         private void UpdateLeds(ICollection<LedUpateRequest> updateRequests)
         {
-            updateRequests = updateRequests.Where(x => x.Color != Color.Transparent).ToList();
+            updateRequests = updateRequests.Where(x => x.Color != CorsairColor.Transparent).ToList();
 
             OnLedsUpdating(updateRequests);
 

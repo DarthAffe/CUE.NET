@@ -9,7 +9,8 @@ namespace CUE.NET.Effects
     /// <summary>
     /// Represents a basic effect targeting an <see cref="ILedGroup"/>.
     /// </summary>
-    public abstract class AbstractLedGroupEffect : IEffect<ILedGroup>
+    public abstract class AbstractLedGroupEffect<T> : IEffect<ILedGroup>
+        where T : ILedGroup
     {
         #region Properties & Fields
 
@@ -21,7 +22,7 @@ namespace CUE.NET.Effects
         /// <summary>
         /// Gets the <see cref="ILedGroup"/> this effect is targeting.
         /// </summary>
-        protected ILedGroup LedGroup { get; set; }
+        protected T LedGroup { get; set; }
 
         #endregion
 
@@ -40,7 +41,7 @@ namespace CUE.NET.Effects
         /// <returns><c>true</c> if the effect can be attached; otherwise, <c>false</c>.</returns>
         public virtual bool CanBeAppliedTo(ILedGroup target)
         {
-            return true;
+            return target is T;
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace CUE.NET.Effects
         /// <param name="target">The <see cref="ILedGroup"/> this effect is attached to.</param>
         public virtual void OnAttach(ILedGroup target)
         {
-            LedGroup = target;
+            LedGroup = (T)target;
         }
 
         /// <summary>
@@ -58,9 +59,15 @@ namespace CUE.NET.Effects
         /// <param name="target">The <see cref="ILedGroup"/> this effect is detached from.</param>
         public virtual void OnDetach(ILedGroup target)
         {
-            LedGroup = null;
+            LedGroup = default(T);
         }
 
         #endregion
     }
+
+    /// <summary>
+    /// Represents a basic effect targeting an <see cref="ILedGroup"/>.
+    /// </summary>
+    public abstract class AbstractLedGroupEffect : AbstractLedGroupEffect<ILedGroup>
+    { }
 }

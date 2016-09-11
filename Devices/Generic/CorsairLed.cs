@@ -33,13 +33,13 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Gets the Color the LED should be set to on the next update.
         /// </summary>
-        public Color RequestedColor { get; private set; } = Color.Transparent;
+        public CorsairColor RequestedColor { get; private set; } = CorsairColor.Transparent;
 
-        private Color _color = Color.Transparent;
+        private CorsairColor _color = CorsairColor.Transparent;
         /// <summary>
         /// Gets the current color of the LED. Sets the <see cref="RequestedColor" /> for the next update. />.
         /// </summary>
-        public Color Color
+        public CorsairColor Color
         {
             get { return _color; }
             set
@@ -86,8 +86,8 @@ namespace CUE.NET.Devices.Generic
         /// </summary>
         internal void Reset()
         {
-            _color = Color.Transparent;
-            RequestedColor = Color.Transparent;
+            _color = CorsairColor.Transparent;
+            RequestedColor = CorsairColor.Transparent;
             IsLocked = false;
         }
 

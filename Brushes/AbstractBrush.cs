@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Effects;
 using CUE.NET.Helper;
@@ -41,7 +42,7 @@ namespace CUE.NET.Brushes
         /// <summary>
         /// Gets a dictionary containing all colors for points calculated in the last render pass.
         /// </summary>
-        public Dictionary<BrushRenderTarget, Color> RenderedTargets { get; } = new Dictionary<BrushRenderTarget, Color>();
+        public Dictionary<BrushRenderTarget, CorsairColor> RenderedTargets { get; } = new Dictionary<BrushRenderTarget, CorsairColor>();
 
         /// <summary>
         /// Gets the strongly-typed target used for the effect.
@@ -97,7 +98,7 @@ namespace CUE.NET.Brushes
         /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
         /// <param name="renderTarget">The target (key/point) from which the color should be taken.</param>
         /// <returns>The color at the specified point.</returns>
-        protected abstract Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget);
+        protected abstract CorsairColor GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget);
 
         /// <summary>
         /// Finalizes the color by appliing the overall brightness and opacity.<br/>
@@ -105,14 +106,14 @@ namespace CUE.NET.Brushes
         /// </summary>
         /// <param name="color">The color to finalize.</param>
         /// <returns>The finalized color.</returns>
-        protected virtual Color FinalizeColor(Color color)
+        protected virtual CorsairColor FinalizeColor(CorsairColor color)
         {
             // Since we use HSV to calculate there is no way to make a color 'brighter' than 100%
             // Be carefull with the naming: Since we use HSV the correct term is 'value' but outside we call it 'brightness'
             // THIS IS NOT A HSB CALCULATION!!!
             float finalBrightness = color.GetHSVValue() * (Brightness < 0 ? 0 : (Brightness > 1f ? 1f : Brightness));
             byte finalAlpha = (byte)(color.A * (Opacity < 0 ? 0 : (Opacity > 1f ? 1f : Opacity)));
-            return ColorHelper.ColorFromHSV(color.GetHue(), color.GetHSVSaturation(), finalBrightness, finalAlpha);
+            return ColorHelper.ColorFromHSV(color.GetHSVHue(), color.GetHSVSaturation(), finalBrightness, finalAlpha);
         }
 
         #endregion

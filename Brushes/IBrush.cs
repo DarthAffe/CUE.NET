@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Effects;
 
@@ -36,7 +37,7 @@ namespace CUE.NET.Brushes
         /// <summary>
         /// Gets a dictionary containing all colors for points calculated in the last render pass.
         /// </summary>
-        Dictionary<BrushRenderTarget, Color> RenderedTargets { get; }
+        Dictionary<BrushRenderTarget, CorsairColor> RenderedTargets { get; }
 
         /// <summary>
         /// Performas the render pass of the brush and calculates the raw colors for all requested points.

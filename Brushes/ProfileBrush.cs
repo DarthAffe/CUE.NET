@@ -12,7 +12,7 @@ namespace CUE.NET.Brushes
     {
         #region Properties & Fields
         
-        private Dictionary<CorsairLedId, Color> _colors;
+        private Dictionary<CorsairLedId, CorsairColor> _colors;
 
         #endregion
 
@@ -22,7 +22,7 @@ namespace CUE.NET.Brushes
         /// Initializes a new instance of the <see cref="ProfileBrush"/> class.
         /// </summary>
         /// <param name="keyLights">The light settings of the CUE profile.</param>
-        internal ProfileBrush(Dictionary<CorsairLedId, Color> keyLights)
+        internal ProfileBrush(Dictionary<CorsairLedId, CorsairColor> keyLights)
         {
             this._colors = keyLights;
         }
@@ -37,13 +37,13 @@ namespace CUE.NET.Brushes
         /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
         /// <param name="renderTarget">The target (key/point) from which the color should be taken.</param>
         /// <returns>The color at the specified point.</returns>
-        protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
+        protected override CorsairColor GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
             CorsairLed led = CueSDK.KeyboardSDK[renderTarget.LedId];
-            if (led == null) return Color.Transparent;
+            if (led == null) return CorsairColor.Transparent;
 
-            Color color;
-            return !_colors.TryGetValue(led.Id, out color) ? Color.Transparent : color;
+            CorsairColor color;
+            return !_colors.TryGetValue(led.Id, out color) ? CorsairColor.Transparent : color;
         }
 
         #endregion

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using CUE.NET.Devices.Generic;
 
 namespace CUE.NET.Gradients
 {
@@ -65,7 +66,7 @@ namespace CUE.NET.Gradients
         /// </summary>
         /// <param name="offset">The percentage offset to take the color from.</param>
         /// <returns>The color at the specific offset.</returns>
-        public abstract Color GetColor(float offset);
+        public abstract CorsairColor GetColor(float offset);
 
         #endregion
     }

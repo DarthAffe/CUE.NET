@@ -39,17 +39,15 @@ namespace SimpleDevTest
                 CueSDK.UpdateMode = UpdateMode.Continuous;
 
                 IBrush rainbowBrush = new LinearGradientBrush(new RainbowGradient());
-                rainbowBrush.AddEffect(new FlashEffect());
+                rainbowBrush.AddEffect(new FlashEffect { Attack = 5f, Sustain = 1f, Decay = 0, Release = 5f, Interval = 1f });
+                rainbowBrush.AddEffect(new MoveRainbowEffect());
+                rainbowBrush.AddEffect(new RemoveRedEffect());
 
-                AddTestBrush(CueSDK.KeyboardSDK, rainbowBrush);
-                AddTestBrush(CueSDK.KeyboardSDK, rainbowBrush);
                 AddTestBrush(CueSDK.KeyboardSDK, rainbowBrush);
                 AddTestBrush(CueSDK.MouseSDK, rainbowBrush);
                 AddTestBrush(CueSDK.HeadsetSDK, rainbowBrush);
                 AddTestBrush(CueSDK.MousematSDK, rainbowBrush);
-
-                Wait(10);
-
+                
                 //// Get connected keyboard or throw exception if there is no light controllable keyboard connected
                 //CorsairKeyboard keyboard = CueSDK.KeyboardSDK;
                 //if (keyboard == null)

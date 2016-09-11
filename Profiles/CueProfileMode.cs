@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Xml.Linq;
 using CUE.NET.Brushes;
+using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET.Profiles
@@ -20,7 +21,7 @@ namespace CUE.NET.Profiles
         /// </summary>
         internal string Name { get; }
 
-        private Dictionary<CorsairLedId, Color> _colors;
+        private Dictionary<CorsairLedId, CorsairColor> _colors;
 
         #endregion
 
@@ -72,7 +73,7 @@ namespace CUE.NET.Profiles
                             return new
                             {
                                 key = (CorsairLedId)Enum.Parse(typeof(CorsairLedId), name),
-                                color = ColorTranslator.FromHtml(x.Attribute("color").Value)
+                                color = (CorsairColor)ColorTranslator.FromHtml(x.Attribute("color").Value)
                             };
                         })
                         .ToDictionary(x => x.key, x => x.color)

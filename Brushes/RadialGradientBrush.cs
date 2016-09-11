@@ -4,6 +4,7 @@
 
 using System;
 using System.Drawing;
+using CUE.NET.Devices.Generic;
 using CUE.NET.Gradients;
 using CUE.NET.Helper;
 
@@ -12,7 +13,7 @@ namespace CUE.NET.Brushes
     /// <summary>
     /// Represents a brush drawing a radial gradient around a center point.
     /// </summary>
-    public class RadialGradientBrush : AbstractBrush
+    public class RadialGradientBrush : AbstractBrush, IGradientBrush
     {
         #region Properties & Fields
 
@@ -66,9 +67,9 @@ namespace CUE.NET.Brushes
         /// <param name="rectangle">The rectangle in which the brush should be drawn.</param>
         /// <param name="renderTarget">The target (key/point) from which the color should be taken.</param>
         /// <returns>The color at the specified point.</returns>
-        protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
+        protected override CorsairColor GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
-            if(Gradient == null) return Color.Transparent;
+            if(Gradient == null) return CorsairColor.Transparent;
 
             PointF centerPoint = new PointF(rectangle.X + rectangle.Width * Center.X, rectangle.Y + rectangle.Height * Center.Y);
 

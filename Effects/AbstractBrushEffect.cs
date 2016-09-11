@@ -7,7 +7,8 @@ namespace CUE.NET.Effects
     /// <summary>
     /// Represents a basic effect targeting an <see cref="IBrush"/>.
     /// </summary>
-    public abstract class AbstractBrushEffect : IEffect<IBrush>
+    public abstract class AbstractBrushEffect<T> : IEffect<IBrush>
+        where T : IBrush
     {
         #region Properties & Fields
 
@@ -19,7 +20,7 @@ namespace CUE.NET.Effects
         /// <summary>
         /// Gets the <see cref="IBrush"/> this effect is targeting.
         /// </summary>
-        protected IBrush Brush { get; set; }
+        protected T Brush { get; set; }
 
         #endregion
 
@@ -38,7 +39,7 @@ namespace CUE.NET.Effects
         /// <returns><c>true</c> if the effect can be attached; otherwise, <c>false</c>.</returns>
         public virtual bool CanBeAppliedTo(IBrush target)
         {
-            return true;
+            return target is T;
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace CUE.NET.Effects
         /// <param name="target">The <see cref="IBrush"/> this effect is attached to.</param>
         public virtual void OnAttach(IBrush target)
         {
-            Brush = target;
+            Brush = (T)target;
         }
 
         /// <summary>
@@ -56,9 +57,15 @@ namespace CUE.NET.Effects
         /// <param name="target">The <see cref="IBrush"/> this effect is detached from.</param>
         public virtual void OnDetach(IBrush target)
         {
-            Brush = null;
+            Brush = default(T);
         }
 
         #endregion
     }
+
+    /// <summary>
+    /// Represents a basic effect targeting an <see cref="IBrush"/>.
+    /// </summary>
+    public abstract class AbstractBrushEffect : AbstractBrushEffect<IBrush>
+    { }
 }

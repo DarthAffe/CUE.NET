@@ -1,7 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-using System.Drawing;
 using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET.Devices.Generic
@@ -21,7 +20,7 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Gets the requested color of the led.
         /// </summary>
-        public Color Color { get; set; }
+        public CorsairColor Color { get; set; }
 
         #endregion
 
@@ -32,7 +31,7 @@ namespace CUE.NET.Devices.Generic
         /// </summary>
         /// <param name="ledId">The id of the led to update.</param>
         /// <param name="color">The requested color of the led.</param>
-        public LedUpateRequest(CorsairLedId ledId, Color color)
+        public LedUpateRequest(CorsairLedId ledId, CorsairColor color)
         {
             this.LedId = ledId;
             this.Color = color;

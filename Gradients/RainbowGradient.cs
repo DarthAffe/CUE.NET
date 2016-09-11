@@ -1,7 +1,7 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-using System.Drawing;
+using CUE.NET.Devices.Generic;
 using CUE.NET.Helper;
 
 namespace CUE.NET.Gradients
@@ -50,7 +50,7 @@ namespace CUE.NET.Gradients
         /// </summary>
         /// <param name="offset">The percentage offset to take the color from.</param>
         /// <returns>The color at the specific offset.</returns>
-        public Color GetColor(float offset)
+        public CorsairColor GetColor(float offset)
         {
             float range = EndHue - StartHue;
             float hue = (StartHue + (range * offset)) % 360f;

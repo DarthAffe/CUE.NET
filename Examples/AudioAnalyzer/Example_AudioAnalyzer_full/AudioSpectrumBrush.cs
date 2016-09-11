@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using CUE.NET.Brushes;
+using CUE.NET.Devices.Generic;
 using CUE.NET.Gradients;
 using Example_AudioAnalyzer_full.TakeAsIs;
 
@@ -28,9 +29,9 @@ namespace Example_AudioAnalyzer_full
 
         #region Methods
 
-        protected override Color GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
+        protected override CorsairColor GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
-            if (_soundDataProcessor?.BarValues == null) return Color.Transparent;
+            if (_soundDataProcessor?.BarValues == null) return CorsairColor.Transparent;
 
             // This logic is also stolen from AterialDawn
             int barSampleIndex = (int)Math.Floor(_soundDataProcessor.BarValues.Length * (renderTarget.Point.X / (rectangle.X + rectangle.Width))); // Calculate bar sampling index
@@ -38,7 +39,7 @@ namespace Example_AudioAnalyzer_full
             float verticalPos = (renderTarget.Point.Y / rectangle.Height);
 
             // If the barHeight is lower than the vertical pos currently calculated return the brush value. Otherwise do nothing by returning transparent.
-            return curBarHeight <= verticalPos ? base.GetColorAtPoint(rectangle, renderTarget) : Color.Transparent;
+            return curBarHeight <= verticalPos ? base.GetColorAtPoint(rectangle, renderTarget) : CorsairColor.Transparent;
         }
 
         #endregion
