@@ -39,9 +39,9 @@ namespace CUE.NET.Devices.Headset
         #region Methods
 
         /// <summary>
-        /// Initializes the LEDs of the device.
+        /// Initializes the the headset.
         /// </summary>
-        protected override void InitializeLeds()
+        public override void Initialize()
         {
             InitializeLed(CorsairHeadsetLedId.LeftLogo, new RectangleF(0, 0, 1, 1));
             InitializeLed(CorsairHeadsetLedId.RightLogo, new RectangleF(1, 0, 1, 1));

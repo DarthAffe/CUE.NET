@@ -140,8 +140,6 @@ namespace CUE.NET.Devices.Generic
         {
             this.DeviceInfo = info;
 
-            // ReSharper disable once VirtualMemberCallInConstructor - I know, but I need this ...
-            InitializeLeds();
             DeviceRectangle = RectangleHelper.CreateRectangleFromRectangles((this).Select(x => x.LedRectangle));
         }
 
@@ -152,9 +150,9 @@ namespace CUE.NET.Devices.Generic
         #region Initialize
 
         /// <summary>
-        /// Initializes the LEDs of the device.
+        /// Initializes the device.
         /// </summary>
-        protected abstract void InitializeLeds();
+        public abstract void Initialize();
 
         /// <summary>
         /// Initializes the LED-Object with the specified id.

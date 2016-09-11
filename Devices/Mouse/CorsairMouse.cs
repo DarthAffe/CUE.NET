@@ -40,9 +40,9 @@ namespace CUE.NET.Devices.Mouse
         #region Methods
 
         /// <summary>
-        /// Initializes the LEDs of the device.
+        /// Initializes the mouse.
         /// </summary>
-        protected override void InitializeLeds()
+        public override void Initialize()
         {
             switch (MouseDeviceInfo.PhysicalLayout)
             {

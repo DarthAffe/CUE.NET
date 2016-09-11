@@ -11,7 +11,7 @@ using CUE.NET.Groups;
 namespace CUE.NET.Devices
 {
     #region EventHandler
-    
+
     /// <summary>
     /// Represents the event-handler of the Exception-event.
     /// </summary>
@@ -133,6 +133,11 @@ namespace CUE.NET.Devices
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Initializes the device.
+        /// </summary>
+        void Initialize();
 
         /// <summary>
         /// Perform an update for all dirty keys, or all keys if flushLeds is set to true.

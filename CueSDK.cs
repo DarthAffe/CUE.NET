@@ -171,25 +171,29 @@ namespace CUE.NET
                 if (!info.CapsMask.HasFlag(CorsairDeviceCaps.Lighting))
                     continue; // Everything that doesn't support lighting control is useless
 
+                ICueDevice device;
                 switch (info.Type)
                 {
                     case CorsairDeviceType.Keyboard:
-                        devices.Add(KeyboardSDK = new CorsairKeyboard(new CorsairKeyboardDeviceInfo(nativeDeviceInfo)));
+                        device = KeyboardSDK = new CorsairKeyboard(new CorsairKeyboardDeviceInfo(nativeDeviceInfo));
                         break;
                     case CorsairDeviceType.Mouse:
-                        devices.Add(MouseSDK = new CorsairMouse(new CorsairMouseDeviceInfo(nativeDeviceInfo)));
+                        device = MouseSDK = new CorsairMouse(new CorsairMouseDeviceInfo(nativeDeviceInfo));
                         break;
                     case CorsairDeviceType.Headset:
-                        devices.Add(HeadsetSDK = new CorsairHeadset(new CorsairHeadsetDeviceInfo(nativeDeviceInfo)));
+                        device = HeadsetSDK = new CorsairHeadset(new CorsairHeadsetDeviceInfo(nativeDeviceInfo));
                         break;
                     case CorsairDeviceType.Mousemat:
-                        devices.Add(MousematSDK = new CorsairMousemat(new CorsairMousematDeviceInfo(nativeDeviceInfo)));
+                        device = MousematSDK = new CorsairMousemat(new CorsairMousematDeviceInfo(nativeDeviceInfo));
                         break;
                     // ReSharper disable once RedundantCaseLabel
                     case CorsairDeviceType.Unknown:
                     default:
                         throw new WrapperException("Unknown Device-Type");
                 }
+
+                device.Initialize();
+                devices.Add(device);
 
                 error = LastError;
                 if (error != CorsairError.Success)

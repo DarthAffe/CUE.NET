@@ -42,9 +42,9 @@ namespace CUE.NET.Devices.Keyboard
         #region Methods
 
         /// <summary>
-        /// Initializes the LEDs of the device.
+        /// Initializes the keyboard.
         /// </summary>
-        protected override void InitializeLeds()
+        public override void Initialize()
         {
             _CorsairLedPositions nativeLedPositions = (_CorsairLedPositions)Marshal.PtrToStructure(_CUESDK.CorsairGetLedPositions(), typeof(_CorsairLedPositions));
             int structSize = Marshal.SizeOf(typeof(_CorsairLedPosition));

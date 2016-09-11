@@ -45,9 +45,9 @@ namespace CUE.NET.Devices.Mousemat
         #region Methods
 
         /// <summary>
-        /// Initializes the LEDs of the device.
+        /// Initializes the mousemat.
         /// </summary>
-        protected override void InitializeLeds()
+        public override void Initialize()
         {
             int deviceCount = _CUESDK.CorsairGetDeviceCount();
 
