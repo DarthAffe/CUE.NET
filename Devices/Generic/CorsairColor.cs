@@ -43,6 +43,47 @@ namespace CUE.NET.Devices.Generic
 
         #region Operators
 
+        public override string ToString()
+        {
+            return $"[A: {A}, R: {R}, G: {G}, B: {B}]";
+        }
+
+        public override bool Equals(object obj)
+        {
+            CorsairColor compareColor = obj as CorsairColor;
+            if (ReferenceEquals(compareColor, null))
+                return false;
+
+            if (ReferenceEquals(this, compareColor))
+                return true;
+
+            if (GetType() != compareColor.GetType())
+                return false;
+
+            return (compareColor.A == A) && (compareColor.R == R) && (compareColor.G == G) && (compareColor.B == B);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = A.GetHashCode();
+                hashCode = (hashCode * 397) ^ R.GetHashCode();
+                hashCode = (hashCode * 397) ^ G.GetHashCode();
+                hashCode = (hashCode * 397) ^ B.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(CorsairColor color1, CorsairColor color2)
+        {
+            return ReferenceEquals(color1, null) ? ReferenceEquals(color2, null) : color1.Equals(color2);
+        }
+        public static bool operator !=(CorsairColor color1, CorsairColor color2)
+        {
+            return !(color1 == color2);
+        }
+
         public static implicit operator CorsairColor(Color color)
         {
             return new CorsairColor(color.A, color.R, color.G, color.B);
