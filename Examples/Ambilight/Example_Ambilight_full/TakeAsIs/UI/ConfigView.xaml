@@ -1,0 +1,167 @@
+﻿<UserControl x:Class="Example_Ambilight_full.TakeAsIs.UI.ConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helper="clr-namespace:Example_Ambilight_full.TakeAsIs.Helper"
+             xmlns:model="clr-namespace:Example_Ambilight_full.TakeAsIs.Model"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:ui="clr-namespace:Example_Ambilight_full.TakeAsIs.UI">
+
+    <!-- Quick'n'Dirty - you really shouldn't implement a View like this ... -->
+
+    <UserControl.Resources>
+        <ui:EnumDescriptionConverter x:Key="HEnumDescriptionConverter" />
+
+        <ObjectDataProvider x:Key="SmoothModeEnumValues" ObjectType="{x:Type system:Enum}" MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="model:SmoothMode" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="AmbienceCreatorTypeValues" ObjectType="{x:Type system:Enum}" MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="model:AmbienceCreatorType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource HEnumDescriptionConverter}}" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,0,4,0" />
+        </Style>
+
+        <Style TargetType="controls:NumericUpDown" BasedOn="{StaticResource {x:Type controls:NumericUpDown}}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border Padding="16" Background="#CECECE" BorderBrush="#2E2E2E" BorderThickness="2">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="160" />
+                <ColumnDefinition Width="32" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="160" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="32" />
+            </Grid.RowDefinitions>
+
+            <!-- Update-Rate-->
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Update-Rate (FPS):" />
+            <controls:NumericUpDown Grid.Row="0" Grid.Column="1"
+                                    Minimum="1" Maximum="60"
+                                    Value="{Binding Path=UpdateRate, Mode=TwoWay}" />
+            
+            <!-- AmbienceCreatorType -->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Ambilight-Mode:"/>
+            <ComboBox Grid.Row="1" Grid.Column="1"
+                      ItemsSource="{Binding Source={StaticResource AmbienceCreatorTypeValues}}"
+                      SelectedItem="{Binding Path=Settings.AmbienceCreatorType}" />
+
+            <!-- MirrorAmount & Downsampling-->
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Mirrored Amount (%):" />
+            <controls:NumericUpDown Grid.Row="2" Grid.Column="1"
+                                    Minimum="0" Maximum="100"
+                                    Value="{Binding Path=Settings.MirroredAmount, Mode=TwoWay}" />
+
+            <TextBlock Grid.Row="2" Grid.Column="3" Text="Downsampling:" />
+            <controls:NumericUpDown Grid.Row="2" Grid.Column="4"
+                                    Minimum="1" Maximum="20"
+                                    Value="{Binding Path=Settings.Downsampling, Mode=TwoWay}" />
+
+            <!-- SmoothMode -->
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Smoothing:" />
+            <ComboBox Grid.Row="3" Grid.Column="1" 
+                      ItemsSource="{Binding Source={StaticResource SmoothModeEnumValues}}"
+                      SelectedItem="{Binding Path=Settings.SmoothMode}" />
+
+            <!-- FlipMode -->
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Flip Horizontal:" />
+            <CheckBox Grid.Row="4" Grid.Column="1"
+                      helper:CheckboxEnumFlagHelper.Value="{x:Static model:FlipMode.Horizontal}"
+                      helper:CheckboxEnumFlagHelper.Flags="{Binding Path=Settings.FlipMode}" />
+
+            <TextBlock Grid.Row="4" Grid.Column="3" Text="Flip Vertical:" />
+            <CheckBox Grid.Row="4" Grid.Column="4"
+                      helper:CheckboxEnumFlagHelper.Value="{x:Static model:FlipMode.Vertical}"
+                      helper:CheckboxEnumFlagHelper.Flags="{Binding Path=Settings.FlipMode}" />
+
+            <!-- Horizontal offsets -->
+            <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" FontWeight="Black" Text="Offset" />
+
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Left:" />
+            <controls:NumericUpDown Grid.Row="6" Grid.Column="1"
+                                    Minimum="0"
+                                    Value="{Binding Path=Settings.OffsetLeft, Mode=TwoWay}" />
+
+            <TextBlock Grid.Row="6" Grid.Column="3" Text="Right:" />
+            <controls:NumericUpDown Grid.Row="6" Grid.Column="4" 
+                                    Minimum="0"
+                                    Value="{Binding Path=Settings.OffsetRight, Mode=TwoWay}" />
+
+            <!-- Vertical offsets -->
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="Top:" />
+            <controls:NumericUpDown Grid.Row="7" Grid.Column="1" Minimum="0"
+                                    Value="{Binding Path=Settings.OffsetTop, Mode=TwoWay}" />
+
+            <TextBlock Grid.Row="7" Grid.Column="3" Text="Bottom:"/>
+            <controls:NumericUpDown Grid.Row="7" Grid.Column="4" Minimum="0"
+                                    Value="{Binding Path=Settings.OffsetBottom, Mode=TwoWay}" />
+
+            <!-- Horizontal BlackBar-detection -->
+            <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="4" FontWeight="Black" Text="Black-Bar detection" />
+
+            <TextBlock Grid.Row="9" Grid.Column="0" Text="Left:" />
+            <CheckBox Grid.Row="9" Grid.Column="1"
+                      helper:CheckboxEnumFlagHelper.Value="{x:Static model:BlackBarDetectionMode.Left}"
+                      helper:CheckboxEnumFlagHelper.Flags="{Binding Path=Settings.BlackBarDetectionMode}" />
+
+            <TextBlock Grid.Row="9" Grid.Column="3" Text="Right:" />
+            <CheckBox Grid.Row="9" Grid.Column="4"
+                      helper:CheckboxEnumFlagHelper.Value="{x:Static model:BlackBarDetectionMode.Right}"
+                      helper:CheckboxEnumFlagHelper.Flags="{Binding Path=Settings.BlackBarDetectionMode}" />
+
+            <!-- Vertical BlackBar-detection -->
+            <TextBlock Grid.Row="10" Grid.Column="0" Text="Top:" />
+            <CheckBox Grid.Row="10" Grid.Column="1"
+                      helper:CheckboxEnumFlagHelper.Value="{x:Static model:BlackBarDetectionMode.Top}"
+                      helper:CheckboxEnumFlagHelper.Flags="{Binding Path=Settings.BlackBarDetectionMode}" />
+
+            <TextBlock Grid.Row="10" Grid.Column="3" Text="Bottom:" />
+            <CheckBox Grid.Row="10" Grid.Column="4"
+                      helper:CheckboxEnumFlagHelper.Value="{x:Static model:BlackBarDetectionMode.Bottom}"
+                      helper:CheckboxEnumFlagHelper.Flags="{Binding Path=Settings.BlackBarDetectionMode}" />
+
+            <Button Grid.Row="12" Grid.Column="4" Command="{Binding ExitCommand}" Content="Exit" /> 
+        </Grid>
+    </Border>
+</UserControl>

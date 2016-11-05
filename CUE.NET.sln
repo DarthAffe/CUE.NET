@@ -32,6 +32,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AudioAnalyzer", "AudioAnaly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example_AudioAnalyzer_full", "Examples\AudioAnalyzer\Example_AudioAnalyzer_full\Example_AudioAnalyzer_full.csproj", "{E06B4E1D-9735-4CB4-BC11-9ECDF27A0972}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ambilight", "Ambilight", "{1ABADCA4-AC96-4E9F-91C5-232EB824D6DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example_Ambilight_full", "Examples\Ambilight\Example_Ambilight_full\Example_Ambilight_full.csproj", "{6D7BAF89-A705-4FFA-A3A2-AF93EC3A909C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +54,10 @@ Global
 		{E06B4E1D-9735-4CB4-BC11-9ECDF27A0972}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E06B4E1D-9735-4CB4-BC11-9ECDF27A0972}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E06B4E1D-9735-4CB4-BC11-9ECDF27A0972}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D7BAF89-A705-4FFA-A3A2-AF93EC3A909C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D7BAF89-A705-4FFA-A3A2-AF93EC3A909C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D7BAF89-A705-4FFA-A3A2-AF93EC3A909C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D7BAF89-A705-4FFA-A3A2-AF93EC3A909C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,5 +69,7 @@ Global
 		{2F99124B-FAED-432D-B797-45566D373411} = {D69EF6D8-68FF-4C56-B5CB-253971B1DF91}
 		{BE16A0BF-6794-4718-AF27-F2A50078D880} = {1F52DDC9-E9D0-4A7B-8E78-930528203EE6}
 		{E06B4E1D-9735-4CB4-BC11-9ECDF27A0972} = {BE16A0BF-6794-4718-AF27-F2A50078D880}
+		{1ABADCA4-AC96-4E9F-91C5-232EB824D6DE} = {1F52DDC9-E9D0-4A7B-8E78-930528203EE6}
+		{6D7BAF89-A705-4FFA-A3A2-AF93EC3A909C} = {1ABADCA4-AC96-4E9F-91C5-232EB824D6DE}
 	EndGlobalSection
 EndGlobal
