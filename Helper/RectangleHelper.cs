@@ -10,7 +10,19 @@ namespace CUE.NET.Helper
     public static class RectangleHelper
     {
         /// <summary>
-        /// Calculates the center-point of a rectangle adding a offset.
+        /// Moves a rectangle by a adding an offset.
+        /// </summary>
+        /// <param name="rectangle">The rectangle.</param>
+        /// <param name="offsetX">The offset for the x-value</param>
+        /// <param name="offsetY">The offset for the y-value</param>
+        /// <returns>The moved rectangle.</returns>
+        public static RectangleF Move(this RectangleF rectangle, float offsetX = 0f, float offsetY = 0f)
+        {
+            return new RectangleF(rectangle.X + offsetX, rectangle.Y + offsetY, rectangle.Width, rectangle.Height);
+        }
+
+        /// <summary>
+        /// Calculates the center-point of a rectangle adding an offset.
         /// </summary>
         /// <param name="rectangle">The rectangle.</param>
         /// <param name="offsetX">The offset for the x-value</param>

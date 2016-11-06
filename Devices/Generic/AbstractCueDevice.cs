@@ -239,10 +239,10 @@ namespace CUE.NET.Devices.Generic
                         float offsetY = -brushRectangle.Y;
                         brushRectangle.X = 0;
                         brushRectangle.Y = 0;
-                        brush.PerformRender(brushRectangle, leds.Select(x => new BrushRenderTarget(x.Id, x.LedRectangle.GetCenter(offsetX, offsetY))));
+                        brush.PerformRender(brushRectangle, leds.Select(x => new BrushRenderTarget(x.Id, x.LedRectangle.Move(offsetX, offsetY))));
                         break;
                     case BrushCalculationMode.Absolute:
-                        brush.PerformRender(DeviceRectangle, leds.Select(x => new BrushRenderTarget(x.Id, x.LedRectangle.GetCenter())));
+                        brush.PerformRender(DeviceRectangle, leds.Select(x => new BrushRenderTarget(x.Id, x.LedRectangle)));
                         break;
                     default:
                         throw new ArgumentException();
