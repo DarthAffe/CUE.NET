@@ -104,6 +104,12 @@
                       ItemsSource="{Binding Source={StaticResource SmoothModeEnumValues}}"
                       SelectedItem="{Binding Path=Settings.SmoothMode}" />
 
+            <!-- Min Lightness -->
+            <TextBlock Grid.Row="3" Grid.Column="3" Text="Min Lightness (%):" />
+            <controls:NumericUpDown Grid.Row="3" Grid.Column="4"
+                                    Minimum="0" Maximum="100"
+                                    Value="{Binding Path=Settings.MinLightness, Mode=TwoWay}" />
+
             <!-- FlipMode -->
             <TextBlock Grid.Row="4" Grid.Column="0" Text="Flip Horizontal:" />
             <CheckBox Grid.Row="4" Grid.Column="1"

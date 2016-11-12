@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using CUE.NET.Brushes;
+using CUE.NET.Devices.Generic;
+using CUE.NET.Helper;
 using Example_Ambilight_full.TakeAsIs;
 using Example_Ambilight_full.TakeAsIs.Model;
 using Example_Ambilight_full.TakeAsIs.Model.Extensions;
@@ -74,10 +76,17 @@ namespace Example_Ambilight_full
 
             KeyWidthProportion = EffectiveSourceWidth / rectangle.Width;
             KeyHeightProportion = EffectiveSourceHeight / rectangle.Height;
-            
+
             Opacity = Settings.SmoothMode == SmoothMode.Low ? 0.25f : (Settings.SmoothMode == SmoothMode.Medium ? 0.075f : (Settings.SmoothMode == SmoothMode.High ? 0.025f : 1f /*None*/));
 
             base.PerformRender(rectangle, renderTargets);
+        }
+
+        protected override CorsairColor FinalizeColor(CorsairColor color)
+        {
+            float lightness = (float)Math.Max((Settings.MinLightness / 100.0), (color.GetHSVValue() * ((double)Brightness < 0.0 ? 0.0f : ((double)Brightness > 1.0 ? 1f : Brightness))));
+            byte alpha = (byte)((double)color.A * ((double)Opacity < 0.0 ? 0.0 : ((double)Opacity > 1.0 ? 1.0 : (double)Opacity)));
+            return ColorHelper.ColorFromHSV(color.GetHSVHue(), color.GetHSVSaturation(), lightness, alpha);
         }
 
         #endregion

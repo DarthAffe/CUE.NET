@@ -34,6 +34,8 @@ namespace Example_Ambilight_full.TakeAsIs
         public BlackBarDetectionMode BlackBarDetectionMode { get; set; } = BlackBarDetectionMode.Bottom;
         public FlipMode FlipMode { get; set; } = FlipMode.Vertical;
 
+        public double MinLightness { get; set; } = 0;
+
         #endregion
 
         #region Events
