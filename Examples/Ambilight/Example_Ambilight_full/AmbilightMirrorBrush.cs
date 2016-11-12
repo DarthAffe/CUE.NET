@@ -43,7 +43,7 @@ namespace Example_Ambilight_full
 
             // DarthAffe 06.11.2016: Validate offsets - rounding errors might cause problems
             widthOffset = Math.Max(0, Math.Min(SourceWidth - widthPixels, widthOffset));
-            heightOffset = Math.Max(0, Math.Min(EffectiveSourceHeight - heightPixels, heightOffset));
+            heightOffset = Math.Max(0, Math.Min(SourceHeight - heightPixels, heightOffset));
 
             for (int y = 0; y < heightPixels; y += Increment)
                 for (int x = 0; x < widthPixels; x += Increment)
