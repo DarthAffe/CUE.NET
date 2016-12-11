@@ -99,6 +99,23 @@ namespace CUE.NET.Helper
 
         #endregion
 
+        #region Color-Correction
+
+        /// <summary>
+        /// Corrects the color using the specified gamma.
+        /// </summary>
+        /// <param name="color">The color to correct.</param>
+        /// <param name="gamma">The gamma value to apply.</param>
+        public static void CorrectGamma(CorsairColor color, float gamma)
+        {
+            double value = 1.0 / gamma;
+            color.R = GetIntColorFromFloat((float)Math.Pow(color.GetFloatR(), value));
+            color.G = GetIntColorFromFloat((float)Math.Pow(color.GetFloatG(), value));
+            color.B = GetIntColorFromFloat((float)Math.Pow(color.GetFloatB(), value));
+        }
+
+        #endregion
+
         #region RGB/HSV conversion
         // https://en.wikipedia.org/wiki/HSL_and_HSV
 

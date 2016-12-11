@@ -30,6 +30,12 @@ namespace CUE.NET.Brushes
         float Opacity { get; set; }
 
         /// <summary>
+        /// Gets or sets the gamma-value used to correct the colors calculated by the brush.
+        /// Values greater than one will make colors brighter, values less than one will make colors darker. 
+        /// </summary>
+        float Gamma { get; set; }
+
+        /// <summary>
         /// Gets the Rectangle used in the last render pass.
         /// </summary>
         RectangleF RenderedRectangle { get; }

@@ -2,6 +2,7 @@
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable VirtualMemberNeverOverridden.Global
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -35,6 +36,12 @@ namespace CUE.NET.Brushes
         public float Opacity { get; set; }
 
         /// <summary>
+        /// Gets or sets the gamma-value used to correct the colors calculated by the brush.
+        /// Values greater than one will make colors brighter, values less than one will make colors darker. 
+        /// </summary>
+        public float Gamma { get; set; }
+
+        /// <summary>
         /// Gets the Rectangle used in the last render pass.
         /// </summary>
         public RectangleF RenderedRectangle { get; protected set; }
@@ -58,10 +65,12 @@ namespace CUE.NET.Brushes
         /// </summary>
         /// <param name="brightness">The overall percentage brightness of the brush. (default: 1f)</param>
         /// <param name="opacity">The overall percentage opacity of the brush. (default: 1f)</param>
-        protected AbstractBrush(float brightness = 1f, float opacity = 1f)
+        /// <param name="gamma">The gamma-value used to correct the colors calculated by the brush. (default: 1f)</param>
+        protected AbstractBrush(float brightness = 1f, float opacity = 1f, float gamma = 1f)
         {
             this.Brightness = brightness;
             this.Opacity = opacity;
+            this.Gamma = gamma;
         }
 
         #endregion
@@ -113,6 +122,10 @@ namespace CUE.NET.Brushes
             // THIS IS NOT A HSB CALCULATION!!!
             float finalBrightness = color.GetHSVValue() * (Brightness < 0 ? 0 : (Brightness > 1f ? 1f : Brightness));
             byte finalAlpha = (byte)(color.A * (Opacity < 0 ? 0 : (Opacity > 1f ? 1f : Opacity)));
+
+            if (Math.Abs(Gamma - 1f) > float.Epsilon)
+                ColorHelper.CorrectGamma(color, Gamma);
+
             return ColorHelper.ColorFromHSV(color.GetHSVHue(), color.GetHSVSaturation(), finalBrightness, finalAlpha);
         }
 
