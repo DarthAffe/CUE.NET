@@ -80,23 +80,29 @@
             <controls:NumericUpDown Grid.Row="0" Grid.Column="1"
                                     Minimum="1" Maximum="60"
                                     Value="{Binding Path=UpdateRate, Mode=TwoWay}" />
-            
-            <!-- AmbienceCreatorType -->
+
+            <!-- AmbienceCreatorType & Downsampling-->
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Ambilight-Mode:"/>
             <ComboBox Grid.Row="1" Grid.Column="1"
                       ItemsSource="{Binding Source={StaticResource AmbienceCreatorTypeValues}}"
                       SelectedItem="{Binding Path=Settings.AmbienceCreatorType}" />
 
-            <!-- MirrorAmount & Downsampling-->
+            <TextBlock Grid.Row="1" Grid.Column="3" Text="Downsampling:" />
+            <controls:NumericUpDown Grid.Row="1" Grid.Column="4"
+                                    Minimum="1" Maximum="20"
+                                    Value="{Binding Path=Settings.Downsampling, Mode=TwoWay}" />
+
+            <!-- MirrorAmount & Gamma-->
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Mirrored Amount (%):" />
             <controls:NumericUpDown Grid.Row="2" Grid.Column="1"
                                     Minimum="0" Maximum="100"
                                     Value="{Binding Path=Settings.MirroredAmount, Mode=TwoWay}" />
-
-            <TextBlock Grid.Row="2" Grid.Column="3" Text="Downsampling:" />
+            
+            <TextBlock Grid.Row="2" Grid.Column="3" Text="Gamma:" />
             <controls:NumericUpDown Grid.Row="2" Grid.Column="4"
-                                    Minimum="1" Maximum="20"
-                                    Value="{Binding Path=Settings.Downsampling, Mode=TwoWay}" />
+                                    Minimum="0.1" Maximum="10" 
+                                    HasDecimals="True" Interval="0.1" StringFormat="F1"
+                                    Value="{Binding Path=Settings.Gamma, Mode=TwoWay}" />
 
             <!-- SmoothMode -->
             <TextBlock Grid.Row="3" Grid.Column="0" Text="Smoothing:" />

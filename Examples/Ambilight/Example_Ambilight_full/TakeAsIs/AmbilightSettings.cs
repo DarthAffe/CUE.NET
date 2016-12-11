@@ -35,6 +35,7 @@ namespace Example_Ambilight_full.TakeAsIs
         public FlipMode FlipMode { get; set; } = FlipMode.Vertical;
 
         public double MinLightness { get; set; } = 0;
+        public float Gamma { get; set; } = 1f;
 
         #endregion
 
