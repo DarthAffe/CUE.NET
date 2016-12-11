@@ -117,14 +117,14 @@ namespace CUE.NET.Brushes
         /// <returns>The finalized color.</returns>
         protected virtual CorsairColor FinalizeColor(CorsairColor color)
         {
+            if (Math.Abs(Gamma - 1f) > float.Epsilon)
+                ColorHelper.CorrectGamma(color, Gamma);
+
             // Since we use HSV to calculate there is no way to make a color 'brighter' than 100%
             // Be carefull with the naming: Since we use HSV the correct term is 'value' but outside we call it 'brightness'
             // THIS IS NOT A HSB CALCULATION!!!
             float finalBrightness = color.GetHSVValue() * (Brightness < 0 ? 0 : (Brightness > 1f ? 1f : Brightness));
             byte finalAlpha = (byte)(color.A * (Opacity < 0 ? 0 : (Opacity > 1f ? 1f : Opacity)));
-
-            if (Math.Abs(Gamma - 1f) > float.Epsilon)
-                ColorHelper.CorrectGamma(color, Gamma);
 
             return ColorHelper.ColorFromHSV(color.GetHSVHue(), color.GetHSVSaturation(), finalBrightness, finalAlpha);
         }
