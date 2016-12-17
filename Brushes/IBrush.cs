@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using CUE.NET.ColorCorrection;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Effects;
@@ -30,10 +31,9 @@ namespace CUE.NET.Brushes
         float Opacity { get; set; }
 
         /// <summary>
-        /// Gets or sets the gamma-value used to correct the colors calculated by the brush.
-        /// Values greater than one will make colors brighter, values less than one will make colors darker. 
+        /// Gets a list of color-corrections used to correct the colors of the brush.
         /// </summary>
-        float Gamma { get; set; }
+        List<IColorCorrection> ColorCorrections { get; }
 
         /// <summary>
         /// Gets the Rectangle used in the last render pass.

@@ -51,6 +51,8 @@
     <Compile Include="Brushes\ImageBrush.cs" />
     <Compile Include="Brushes\ProfileBrush.cs" />
     <Compile Include="Brushes\BrushRenderTarget.cs" />
+    <Compile Include="ColorCorrection\GammaCorrection.cs" />
+    <Compile Include="ColorCorrection\IColorCorrection.cs" />
     <Compile Include="CueSDKAutoUpdate.cs" />
     <Compile Include="Devices\Generic\CorsairColor.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairAccessMode.cs" />

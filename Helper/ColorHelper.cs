@@ -1,6 +1,7 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
 using System;
+using CUE.NET.ColorCorrection;
 using CUE.NET.Devices.Generic;
 
 namespace CUE.NET.Helper
@@ -13,7 +14,7 @@ namespace CUE.NET.Helper
         #region byte/float conversion
 
         /// <summary>
-        /// Converts the alpha-value of the <see cref="CorsairColor"/> to an float value int the range [0..1].
+        /// Converts the alpha-value of the <see cref="CorsairColor"/> to a float value in the range [0..1].
         /// </summary>
         /// <param name="color">The color to take the alpha-value from.</param>
         /// <returns>The float-value in the range of [0..1]</returns>
@@ -23,7 +24,7 @@ namespace CUE.NET.Helper
         }
 
         /// <summary>
-        /// Converts the red-value of the <see cref="CorsairColor"/> to an float value int the range [0..1].
+        /// Converts the red-value of the <see cref="CorsairColor"/> to a float value in the range [0..1].
         /// </summary>
         /// <param name="color">The color to take the red-value from.</param>
         /// <returns>The float-value in the range of [0..1]</returns>
@@ -33,7 +34,7 @@ namespace CUE.NET.Helper
         }
 
         /// <summary>
-        /// Converts the green-value of the <see cref="CorsairColor"/> to an float value int the range [0..1].
+        /// Converts the green-value of the <see cref="CorsairColor"/> to a float value in the range [0..1].
         /// </summary>
         /// <param name="color">The color to take the green-value from.</param>
         /// <returns>The float-value in the range of [0..1]</returns>
@@ -43,7 +44,7 @@ namespace CUE.NET.Helper
         }
 
         /// <summary>
-        /// Converts the blue-value of the <see cref="CorsairColor"/> to an float value int the range [0..1].
+        /// Converts the blue-value of the <see cref="CorsairColor"/> to a float value in the range [0..1].
         /// </summary>
         /// <param name="color">The color to take the blue-value from.</param>
         /// <returns>The float-value in the range of [0..1]</returns>
@@ -65,7 +66,12 @@ namespace CUE.NET.Helper
             return new CorsairColor(GetIntColorFromFloat(a), GetIntColorFromFloat(r), GetIntColorFromFloat(g), GetIntColorFromFloat(b));
         }
 
-        private static byte GetIntColorFromFloat(float f)
+        /// <summary>
+        /// Converts the given float-value to a integer-color in the range [0..255].
+        /// </summary>
+        /// <param name="f">The float color-value</param>
+        /// <returns>The integer-value int the range [0..255].</returns>
+        public static byte GetIntColorFromFloat(float f)
         {
             // ReSharper disable once RedundantCast - never trust this ...
             float calcF = (float)Math.Max(0f, Math.Min(1f, f));
@@ -95,23 +101,6 @@ namespace CUE.NET.Helper
             float resultG = (fg.GetFloatG() * fg.GetFloatA() / resultA + bg.GetFloatG() * bg.GetFloatA() * (1f - fg.GetFloatA()) / resultA);
             float resultB = (fg.GetFloatB() * fg.GetFloatA() / resultA + bg.GetFloatB() * bg.GetFloatA() * (1f - fg.GetFloatA()) / resultA);
             return CreateColorFromFloat(resultA, resultR, resultG, resultB);
-        }
-
-        #endregion
-
-        #region Color-Correction
-
-        /// <summary>
-        /// Corrects the color using the specified gamma.
-        /// </summary>
-        /// <param name="color">The color to correct.</param>
-        /// <param name="gamma">The gamma value to apply.</param>
-        public static void CorrectGamma(CorsairColor color, float gamma)
-        {
-            double value = 1.0 / gamma;
-            color.R = GetIntColorFromFloat((float)Math.Pow(color.GetFloatR(), value));
-            color.G = GetIntColorFromFloat((float)Math.Pow(color.GetFloatG(), value));
-            color.B = GetIntColorFromFloat((float)Math.Pow(color.GetFloatB(), value));
         }
 
         #endregion

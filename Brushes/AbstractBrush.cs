@@ -2,10 +2,10 @@
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable VirtualMemberNeverOverridden.Global
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using CUE.NET.ColorCorrection;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Keyboard.Enums;
 using CUE.NET.Effects;
@@ -36,10 +36,9 @@ namespace CUE.NET.Brushes
         public float Opacity { get; set; }
 
         /// <summary>
-        /// Gets or sets the gamma-value used to correct the colors calculated by the brush.
-        /// Values greater than one will make colors brighter, values less than one will make colors darker. 
+        /// Gets a list of color-corrections used to correct the colors of the brush.
         /// </summary>
-        public float Gamma { get; set; }
+        public List<IColorCorrection> ColorCorrections { get; } = new List<IColorCorrection>();
 
         /// <summary>
         /// Gets the Rectangle used in the last render pass.
@@ -65,12 +64,10 @@ namespace CUE.NET.Brushes
         /// </summary>
         /// <param name="brightness">The overall percentage brightness of the brush. (default: 1f)</param>
         /// <param name="opacity">The overall percentage opacity of the brush. (default: 1f)</param>
-        /// <param name="gamma">The gamma-value used to correct the colors calculated by the brush. (default: 1f)</param>
-        protected AbstractBrush(float brightness = 1f, float opacity = 1f, float gamma = 1f)
+        protected AbstractBrush(float brightness = 1f, float opacity = 1f)
         {
             this.Brightness = brightness;
             this.Opacity = opacity;
-            this.Gamma = gamma;
         }
 
         #endregion
@@ -117,8 +114,8 @@ namespace CUE.NET.Brushes
         /// <returns>The finalized color.</returns>
         protected virtual CorsairColor FinalizeColor(CorsairColor color)
         {
-            if (Math.Abs(Gamma - 1f) > float.Epsilon)
-                ColorHelper.CorrectGamma(color, Gamma);
+            foreach (IColorCorrection colorCorrection in ColorCorrections)
+                colorCorrection.ApplyTo(color);
 
             // Since we use HSV to calculate there is no way to make a color 'brighter' than 100%
             // Be carefull with the naming: Since we use HSV the correct term is 'value' but outside we call it 'brightness'
