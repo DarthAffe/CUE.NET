@@ -36,15 +36,19 @@ namespace SimpleDevTest
                 CueSDK.Initialize();
                 Console.WriteLine("Initialized with " + CueSDK.LoadedArchitecture + "-SDK");
 
+                //CueSDK.KeyboardSDK.Brush = new LinearGradientBrush(new LinearGradient(true, new GradientStop(0, Color.Blue), new GradientStop(0.5f, Color.Red)));
+                CueSDK.KeyboardSDK.Brush = new LinearGradientBrush(new RainbowGradient());
+                CueSDK.KeyboardSDK.Brush.AddEffect(new MoveGradientEffect());
+
                 CueSDK.UpdateMode = UpdateMode.Continuous;
 
-                IBrush rainbowBrush = new LinearGradientBrush(new RainbowGradient());
-                rainbowBrush.AddEffect(new FlashEffect { Attack = 5f, Sustain = 1f, Decay = 0, Release = 5f, Interval = 1f });
-                rainbowBrush.AddEffect(new MoveRainbowEffect());
-                rainbowBrush.AddEffect(new RemoveRedEffect());
+                //IBrush rainbowBrush = new LinearGradientBrush(new RainbowGradient());
+                //rainbowBrush.AddEffect(new FlashEffect { Attack = 5f, Sustain = 1f, Decay = 0, Release = 5f, Interval = 1f });
+                //rainbowBrush.AddEffect(new MoveRainbowEffect());
+                //rainbowBrush.AddEffect(new RemoveRedEffect());
 
-                foreach (ICueDevice device in CueSDK.InitializedDevices)
-                    AddTestBrush(device, rainbowBrush);
+                //foreach (ICueDevice device in CueSDK.InitializedDevices)
+                //    AddTestBrush(device, rainbowBrush);
 
                 //// Get connected keyboard or throw exception if there is no light controllable keyboard connected
                 //CorsairKeyboard keyboard = CueSDK.KeyboardSDK;
