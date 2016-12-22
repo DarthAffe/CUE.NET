@@ -26,6 +26,15 @@ namespace CUE.NET.Gradients
             : base(gradientStops)
         { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractGradient"/> class.
+        /// </summary>
+        /// <param name="wrapGradient">Specifies whether the gradient should wrapp or not (see <see cref="AbstractGradient.WrapGradient"/> for an example of what this means).</param>
+        /// <param name="gradientStops">The stops with which the gradient should be initialized.</param>
+        public LinearGradient(bool wrapGradient, params GradientStop[] gradientStops)
+            : base(wrapGradient, gradientStops)
+        { }
+
         #endregion
 
         #region Methods
@@ -40,10 +49,32 @@ namespace CUE.NET.Gradients
             if (!GradientStops.Any()) return CorsairColor.Transparent;
             if (GradientStops.Count == 1) return GradientStops.First().Color;
 
-            offset = ClipOffset(offset);
+            GradientStop gsBefore;
+            GradientStop gsAfter;
 
-            GradientStop gsBefore = GradientStops.Where(n => n.Offset <= offset).OrderBy(n => n.Offset).Last();
-            GradientStop gsAfter = GradientStops.Where(n => n.Offset >= offset).OrderBy(n => n.Offset).First();
+            if (WrapGradient)
+            {
+                gsBefore = GradientStops.Where(n => n.Offset <= offset).OrderBy(n => n.Offset).LastOrDefault();
+                if (gsBefore == null)
+                {
+                    GradientStop lastStop = GradientStops.OrderBy(n => n.Offset).Last();
+                    gsBefore = new GradientStop(lastStop.Offset - 1f, lastStop.Color);
+                }
+
+                gsAfter = GradientStops.Where(n => n.Offset >= offset).OrderBy(n => n.Offset).FirstOrDefault();
+                if (gsAfter == null)
+                {
+                    GradientStop firstStop = GradientStops.OrderBy(n => n.Offset).First();
+                    gsAfter = new GradientStop(firstStop.Offset + 1f, firstStop.Color);
+                }
+            }
+            else
+            {
+                offset = ClipOffset(offset);
+
+                gsBefore = GradientStops.Where(n => n.Offset <= offset).OrderBy(n => n.Offset).Last();
+                gsAfter = GradientStops.Where(n => n.Offset >= offset).OrderBy(n => n.Offset).First();
+            }
 
             float blendFactor = 0f;
             if (!gsBefore.Offset.Equals(gsAfter.Offset))
