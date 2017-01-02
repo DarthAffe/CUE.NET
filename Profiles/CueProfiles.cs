@@ -12,6 +12,7 @@ namespace CUE.NET.Profiles
     /// <summary>
     /// Represents the SDK for CUE profiles.
     /// </summary>
+    [Obsolete("Only works with CUE 1.")]
     public static class CueProfiles
     {
         #region Constants

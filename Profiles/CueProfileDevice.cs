@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using CUE.NET.Brushes;
@@ -8,6 +9,7 @@ namespace CUE.NET.Profiles
     /// <summary>
     /// Represents a device of a CUE profile.
     /// </summary>
+    [Obsolete("Only works with CUE 1.")]
     internal class CueProfileDevice
     {
         #region Properties & Fields

@@ -12,6 +12,7 @@ namespace CUE.NET.Profiles
     /// <summary>
     /// Represents a mode of a CUE profile.
     /// </summary>
+    [Obsolete("Only works with CUE 1.")]
     internal class CueProfileMode
     {
         #region Properties & Fields

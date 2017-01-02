@@ -2,6 +2,7 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedMember.Global
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace CUE.NET.Profiles
     /// <summary>
     /// Represents a CUE profile.
     /// </summary>
+    [Obsolete("Only works with CUE 1.")]
     public class CueProfile
     {
         #region Properties & Fields
