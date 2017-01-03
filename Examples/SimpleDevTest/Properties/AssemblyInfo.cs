@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Wyrez")]
 [assembly: AssemblyProduct("SimpleDevTest")]
-[assembly: AssemblyCopyright("Copyright © Wyrez 2016")]
+[assembly: AssemblyCopyright("Copyright © Wyrez 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

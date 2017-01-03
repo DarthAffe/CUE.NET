@@ -1,7 +1,7 @@
 ﻿namespace CUE.NET.Devices.Keyboard.Enums
 {
     /// <summary>
-    /// Contains list of all brush calculation modes.
+    /// Contains a list of all brush calculation modes.
     /// </summary>
     public enum BrushCalculationMode
     {

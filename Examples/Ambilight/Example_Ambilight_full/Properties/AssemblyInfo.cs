@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Example_Ambilight_full")]
-[assembly: AssemblyCopyright("Copyright © Wyrez 2016")]
+[assembly: AssemblyCopyright("Copyright © Wyrez 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
