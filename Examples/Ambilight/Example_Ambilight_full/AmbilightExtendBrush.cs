@@ -22,8 +22,7 @@ namespace Example_Ambilight_full
 
         protected override CorsairColor GetColorAtPoint(RectangleF rectangle, BrushRenderTarget renderTarget)
         {
-            //TODO DarthAffe 05.11.2016: The Key-Rectangle is missing in the render-target, I'll fix that with a future version of CUE.NET. Until then we consider the size of each key to be 10x10mm.
-            float keyWidth = 10;
+            float keyWidth = renderTarget.Rectangle.Width;
 
             int widthPixels = Math.Max(1, (int)(KeyWidthProportion * keyWidth));
 

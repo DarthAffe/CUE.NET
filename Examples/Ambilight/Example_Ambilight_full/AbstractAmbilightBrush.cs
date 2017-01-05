@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using CUE.NET.Brushes;
+using CUE.NET.ColorCorrection;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Helper;
 using Example_Ambilight_full.TakeAsIs;
@@ -84,13 +85,12 @@ namespace Example_Ambilight_full
 
         protected override CorsairColor FinalizeColor(CorsairColor color)
         {
-            //TODO DarthAffe 05.01.2017: Adopt example once the new version is released!
-            //if (Math.Abs(Settings.Gamma - 1f) > float.Epsilon)
-            //    ColorHelper.CorrectGamma(color, Settings.Gamma);
+            // Apply our gamma-correction
+            ((GammaCorrection)Settings.Gamma).ApplyTo(color);
 
             float lightness = (float)Math.Max((Settings.MinLightness / 100.0), (color.GetHSVValue() * ((double)Brightness < 0.0 ? 0.0f : ((double)Brightness > 1.0 ? 1f : Brightness))));
             byte alpha = (byte)((double)color.A * ((double)Opacity < 0.0 ? 0.0 : ((double)Opacity > 1.0 ? 1.0 : (double)Opacity)));
-            
+
             return ColorHelper.ColorFromHSV(color.GetHSVHue(), color.GetHSVSaturation(), lightness, alpha);
         }
 
