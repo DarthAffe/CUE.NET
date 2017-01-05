@@ -85,7 +85,7 @@ namespace CUE.NET.Brushes
             RenderedTargets.Clear();
 
             foreach (BrushRenderTarget point in renderTargets)
-                RenderedTargets[point] = GetColorAtPoint(rectangle, point);
+                RenderedTargets[point] = new CorsairColor(GetColorAtPoint(rectangle, point)); // Clone the color, we don't want to have reference issues here and brushes might return the same color multiple times!
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace CUE.NET.Brushes
         {
             List<BrushRenderTarget> renderTargets = RenderedTargets.Keys.ToList();
             foreach (BrushRenderTarget renderTarget in renderTargets)
-                RenderedTargets[renderTarget] = FinalizeColor(RenderedTargets[renderTarget]);
+                RenderedTargets[renderTarget] = FinalizeColor(RenderedTargets[renderTarget]); // Cloning here again shouldn't be needed since we did this above.
         }
 
         /// <summary>
@@ -109,6 +109,7 @@ namespace CUE.NET.Brushes
         /// <summary>
         /// Finalizes the color by appliing the overall brightness and opacity.<br/>
         /// This method should always be the last call of a <see cref="GetColorAtPoint" /> implementation.
+        /// If you overwrite this method please make sure that you never return the same color-object twice to prevent reference-issues!
         /// </summary>
         /// <param name="color">The color to finalize.</param>
         /// <returns>The finalized color.</returns>

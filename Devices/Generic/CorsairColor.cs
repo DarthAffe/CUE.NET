@@ -39,6 +39,10 @@ namespace CUE.NET.Devices.Generic
             this.B = b;
         }
 
+        public CorsairColor(CorsairColor color)
+            : this(color.A, color.R, color.G, color.B)
+        { }
+
         #endregion
 
         #region Operators
