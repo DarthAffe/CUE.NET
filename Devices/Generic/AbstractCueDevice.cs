@@ -165,7 +165,7 @@ namespace CUE.NET.Devices.Generic
         {
             if (LedMapping.ContainsKey(ledId)) return null;
 
-            CorsairLed led = new CorsairLed(ledId, ledRectangle);
+            CorsairLed led = new CorsairLed(this, ledId, ledRectangle);
             LedMapping.Add(ledId, led);
             return led;
         }

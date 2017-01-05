@@ -18,9 +18,14 @@ namespace CUE.NET.Devices.Generic
         #region Properties & Fields
 
         /// <summary>
+        /// Gets the Device this <see cref="CorsairLed"/> is associated with.
+        /// </summary>
+        public ICueDevice Device { get; }
+
+        /// <summary>
         /// Gets the key-ID of the Led.
         /// </summary>
-        public CorsairLedId Id { get; set; }
+        public CorsairLedId Id { get; }
 
         /// <summary>
         /// Gets a rectangle representing the physical location of the led.
@@ -63,10 +68,12 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Initializes a new instance of the <see cref="CorsairLed"/> class.
         /// </summary>
-        /// <param name="id">The ID of the LED</param>
-        /// <param name="ledRectangle">The rectangle representing the physical location of the LED.</param>
-        internal CorsairLed(CorsairLedId id, RectangleF ledRectangle)
+        /// <param name="device">The <see cref="ICueDevice"/> the <see cref="CorsairLed"/> is associated with.</param>
+        /// <param name="id">The <see cref="CorsairLedId"/> of the <see cref="CorsairLed"/>.</param>
+        /// <param name="ledRectangle">The rectangle representing the physical location of the <see cref="CorsairLed"/>.</param>
+        internal CorsairLed(ICueDevice device, CorsairLedId id, RectangleF ledRectangle)
         {
+            this.Device = device;
             this.Id = id;
             this.LedRectangle = ledRectangle;
         }
