@@ -84,8 +84,9 @@ namespace Example_Ambilight_full
 
         protected override CorsairColor FinalizeColor(CorsairColor color)
         {
-            if (Math.Abs(Settings.Gamma - 1f) > float.Epsilon)
-                ColorHelper.CorrectGamma(color, Settings.Gamma);
+            //TODO DarthAffe 05.01.2017: Adopt example once the new version is released!
+            //if (Math.Abs(Settings.Gamma - 1f) > float.Epsilon)
+            //    ColorHelper.CorrectGamma(color, Settings.Gamma);
 
             float lightness = (float)Math.Max((Settings.MinLightness / 100.0), (color.GetHSVValue() * ((double)Brightness < 0.0 ? 0.0f : ((double)Brightness > 1.0 ? 1f : Brightness))));
             byte alpha = (byte)((double)color.A * ((double)Opacity < 0.0 ? 0.0 : ((double)Opacity > 1.0 ? 1.0 : (double)Opacity)));
