@@ -76,6 +76,7 @@ namespace CUE.NET.Effects
             _currentPhaseValue -= deltaTime;
 
             // Using ifs instead of a switch allows to skip phases with time 0.
+            // ReSharper disable InvertIf
 
             if (_currentPhase == ADSRPhase.Attack)
                 if (_currentPhaseValue > 0f)
@@ -123,6 +124,8 @@ namespace CUE.NET.Effects
                     _currentPhaseValue = Attack;
                     _currentPhase = ADSRPhase.Attack;
                 }
+
+            // ReSharper restore InvertIf
         }
 
         /// <summary>

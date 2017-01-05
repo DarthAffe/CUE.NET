@@ -63,6 +63,7 @@ namespace CUE.NET.Profiles
         public static CueProfile LoadProfileByName(string name = null)
         {
             string id = null;
+            // ReSharper disable once InvertIf
             if (name != null && !_profileNameMapping.TryGetValue(name, out id))
             {
                 LoadProfileNames(); // Reload and try again

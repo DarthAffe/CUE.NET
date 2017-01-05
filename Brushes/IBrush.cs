@@ -1,5 +1,6 @@
 // ReSharper disable UnusedMemberInSuper.Global
 // ReSharper disable UnusedMember.Global
+// ReSharper disable ReturnTypeCanBeEnumerable.Global
 
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,7 +34,7 @@ namespace CUE.NET.Brushes
         /// <summary>
         /// Gets a list of color-corrections used to correct the colors of the brush.
         /// </summary>
-        List<IColorCorrection> ColorCorrections { get; }
+        IList<IColorCorrection> ColorCorrections { get; }
 
         /// <summary>
         /// Gets the Rectangle used in the last render pass.

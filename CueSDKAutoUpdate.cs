@@ -9,6 +9,9 @@ using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET
 {
+    /// <summary>
+    /// Static entry point to work with the Corsair-SDK.
+    /// </summary>
     public static partial class CueSDK
     {
         #region Properties & Fields

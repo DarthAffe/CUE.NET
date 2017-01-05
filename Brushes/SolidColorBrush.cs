@@ -50,21 +50,37 @@ namespace CUE.NET.Brushes
 
         #region Operators
 
+        /// <summary>
+        /// Converts a <see cref="Color" /> to a <see cref="SolidColorBrush" />.
+        /// </summary>
+        /// <param name="color">The <see cref="Color"/> to convert.</param>
         public static explicit operator SolidColorBrush(Color color)
         {
             return new SolidColorBrush(color);
         }
 
+        /// <summary>
+        /// Converts a <see cref="SolidColorBrush" /> to a <see cref="Color" />.
+        /// </summary>
+        /// <param name="brush">The <see cref="Color"/> to convert.</param>
         public static implicit operator Color(SolidColorBrush brush)
         {
             return brush.Color;
         }
 
+        /// <summary>
+        /// Converts a <see cref="CorsairColor" /> to a <see cref="SolidColorBrush" />.
+        /// </summary>
+        /// <param name="color">The <see cref="Color"/> to convert.</param>
         public static explicit operator SolidColorBrush(CorsairColor color)
         {
             return new SolidColorBrush(color);
         }
 
+        /// <summary>
+        /// Converts a <see cref="SolidColorBrush" /> to a <see cref="CorsairColor" />.
+        /// </summary>
+        /// <param name="brush">The <see cref="Color"/> to convert.</param>
         public static implicit operator CorsairColor(SolidColorBrush brush)
         {
             return brush.Color;

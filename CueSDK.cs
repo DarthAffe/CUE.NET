@@ -16,6 +16,9 @@ using CUE.NET.Native;
 
 namespace CUE.NET
 {
+    /// <summary>
+    /// Static entry point to work with the Corsair-SDK.
+    /// </summary>
     public static partial class CueSDK
     {
         #region Properties & Fields
@@ -91,6 +94,7 @@ namespace CUE.NET
         {
             try
             {
+                // ReSharper disable once RedundantIfElseBlock
                 if (IsInitialized)
                 {
                     // ReSharper disable once SwitchStatementMissingSomeCases - everything else is true

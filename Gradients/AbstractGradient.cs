@@ -76,10 +76,7 @@ namespace CUE.NET.Gradients
                 return max;
 
             float min = GradientStops.Min(n => n.Offset);
-            if (offset < min)
-                return min;
-
-            return offset;
+            return offset < min ? min : offset;
         }
 
         /// <summary>

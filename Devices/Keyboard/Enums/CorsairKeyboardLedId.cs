@@ -1,6 +1,8 @@
 ﻿// ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
 
+#pragma warning disable 1591 // Missing XML comment for publicly visible type or member
+
 using CUE.NET.Devices.Generic.Enums;
 
 namespace CUE.NET.Devices.Keyboard.Enums

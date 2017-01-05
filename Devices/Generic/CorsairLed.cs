@@ -2,6 +2,7 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
+using System.Diagnostics;
 using System.Drawing;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Helper;
@@ -11,10 +12,11 @@ namespace CUE.NET.Devices.Generic
     /// <summary>
     /// Represents a single LED of a CUE-device.
     /// </summary>
+    [DebuggerDisplay("{Id} {Color}")]
     public class CorsairLed
     {
         #region Properties & Fields
-        
+
         /// <summary>
         /// Gets the key-ID of the Led.
         /// </summary>
@@ -52,7 +54,7 @@ namespace CUE.NET.Devices.Generic
         /// <summary>
         /// Gets or sets if the color of this LED can be changed.
         /// </summary>
-        public bool IsLocked { get; set; } = false;
+        public bool IsLocked { get; set; }
 
         #endregion
 
@@ -74,6 +76,15 @@ namespace CUE.NET.Devices.Generic
         #region Methods
 
         /// <summary>
+        /// Converts the Id and the <see cref="Color"/> of this <see cref="CorsairLed"/> to a human-readable string.
+        /// </summary>
+        /// <returns>A string that contains the Id and the <see cref="Color"/> of this <see cref="CorsairLed"/>. For example "Enter [A: 255, R: 255, G: 0, B: 0]".</returns>
+        public override string ToString()
+        {
+            return $"{Id} {Color}";
+        }
+
+        /// <summary>
         /// Updates the LED to the requested color.
         /// </summary>
         internal void Update()
@@ -89,6 +100,28 @@ namespace CUE.NET.Devices.Generic
             _color = CorsairColor.Transparent;
             RequestedColor = CorsairColor.Transparent;
             IsLocked = false;
+        }
+
+        #endregion
+
+        #region Operators
+
+        /// <summary>
+        /// Converts a <see cref="CorsairLed" /> to a <see cref="CorsairLedId" />.
+        /// </summary>
+        /// <param name="led">The <see cref="CorsairLed"/> to convert.</param>
+        public static implicit operator CorsairLedId(CorsairLed led)
+        {
+            return led?.Id ?? CorsairLedId.Invalid;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="CorsairLed" /> to a <see cref="CorsairColor" />.
+        /// </summary>
+        /// <param name="led">The <see cref="CorsairLed"/> to convert.</param>
+        public static implicit operator CorsairColor(CorsairLed led)
+        {
+            return led?.Color;
         }
 
         #endregion

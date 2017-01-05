@@ -36,9 +36,9 @@ namespace CUE.NET.Brushes
         public float Opacity { get; set; }
 
         /// <summary>
-        /// Gets a list of color-corrections used to correct the colors of the brush.
+        /// Gets a list of <see cref="IColorCorrection"/> used to correct the colors of the brush.
         /// </summary>
-        public List<IColorCorrection> ColorCorrections { get; } = new List<IColorCorrection>();
+        public IList<IColorCorrection> ColorCorrections { get; } = new List<IColorCorrection>();
 
         /// <summary>
         /// Gets the Rectangle used in the last render pass.

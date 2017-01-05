@@ -396,7 +396,7 @@ namespace CUE.NET.Devices.Generic
             {
                 long lastUpdateTicks = _lastUpdate.Ticks;
                 _lastUpdate = DateTime.Now;
-                Updating?.Invoke(this, new UpdatingEventArgs((float)((DateTime.Now.Ticks - lastUpdateTicks) / 10000000f)));
+                Updating?.Invoke(this, new UpdatingEventArgs((DateTime.Now.Ticks - lastUpdateTicks) / 10000000f));
             }
             catch
             {

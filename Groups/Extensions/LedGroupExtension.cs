@@ -19,6 +19,7 @@ namespace CUE.NET.Groups.Extensions
         public static ListLedGroup ToListLedGroup(this AbstractLedGroup ledGroup)
         {
             ListLedGroup listLedGroup = ledGroup as ListLedGroup;
+            // ReSharper disable once InvertIf
             if (listLedGroup == null)
             {
                 bool wasAttached = ledGroup.Detach();

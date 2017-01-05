@@ -1,4 +1,8 @@
-﻿using System;
+﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
+
+using System;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Helper;
 

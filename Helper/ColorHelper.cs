@@ -1,7 +1,6 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
 using System;
-using CUE.NET.ColorCorrection;
 using CUE.NET.Devices.Generic;
 
 namespace CUE.NET.Helper
@@ -90,6 +89,7 @@ namespace CUE.NET.Helper
         /// <returns>The resulting color.</returns>
         public static CorsairColor Blend(this CorsairColor bg, CorsairColor fg)
         {
+            // ReSharper disable once ConvertIfStatementToSwitchStatement
             if (fg.A == 255)
                 return fg;
 
@@ -120,7 +120,7 @@ namespace CUE.NET.Helper
             float min = Math.Min(Math.Min(color.R, color.G), color.B);
             float max = Math.Max(Math.Max(color.R, color.G), color.B);
 
-            float hue = 0f;
+            float hue;
             if (Math.Abs(max - color.R) < float.Epsilon) // r is max
                 hue = (color.G - color.B) / (max - min);
             else if (Math.Abs(max - color.G) < float.Epsilon) // g is max

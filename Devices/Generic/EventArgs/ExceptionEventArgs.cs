@@ -6,7 +6,7 @@ using System;
 namespace CUE.NET.Devices.Generic.EventArgs
 {
     /// <summary>
-    /// Represents the information supplied with an Exception-event.
+    /// Represents the information supplied with an <see cref="ICueDevice.Exception"/>-event.
     /// </summary>
     public class ExceptionEventArgs : System.EventArgs
     {

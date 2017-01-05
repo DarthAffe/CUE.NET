@@ -8,6 +8,9 @@ using CUE.NET.Effects;
 
 namespace CUE.NET.Groups
 {
+    /// <summary>
+    /// Represents a basic led-group.
+    /// </summary>
     public interface ILedGroup : IEffectTarget<ILedGroup>
     {
         /// <summary>

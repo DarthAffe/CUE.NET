@@ -9,6 +9,8 @@ namespace CUE.NET.Effects
     public class MoveGradientEffect : AbstractBrushEffect<IGradientBrush>
     {
         #region Properties & Fields
+        // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+        // ReSharper disable MemberCanBePrivate.Global
 
         /// <summary>
         /// Gets or sets the direction the gradient is moved.
@@ -24,6 +26,8 @@ namespace CUE.NET.Effects
         /// </summary>
         public float Speed { get; set; }
 
+        // ReSharper restore MemberCanBePrivate.Global
+        // ReSharper restore AutoPropertyCanBeMadeGetOnly.Global
         #endregion
 
         #region Constructors
@@ -53,6 +57,7 @@ namespace CUE.NET.Effects
             if (!Direction)
                 movement = -movement;
 
+            // ReSharper disable once CanBeReplacedWithTryCastAndCheckForNull
             if (Brush.Gradient is LinearGradient)
             {
                 LinearGradient linearGradient = (LinearGradient)Brush.Gradient;

@@ -14,6 +14,7 @@ namespace Example_Ambilight_full.TakeAsIs
             get { return _ambienceCreatorType; }
             set
             {
+                // ReSharper disable once InvertIf
                 if (_ambienceCreatorType != value)
                 {
                     _ambienceCreatorType = value;
