@@ -29,8 +29,6 @@
   </metadata>
   <files>
     <file src="bin\CUE.NET.dll" target="lib\net45\CUE.NET.dll" />
-    <file src="bin\CUE.NET.pdb" target="lib\net45\CUE.NET.pdb" />
-    <file src="bin\CUE.NET.xml" target="lib\net45\CUE.NET.XML" />
     <file src="bin\x64\" target="build\net45\libs\x64" />
     <file src="bin\x86\" target="build\net45\libs\x86" />
     <file src="CUE.NET.targets" target="build\net45\CUE.NET.targets" />
