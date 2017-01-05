@@ -16,7 +16,10 @@ namespace CUE.NET.Effects
     {
         #region Properties & Fields
 
-        protected IList<EffectTimeContainer> EffectTimes = new List<EffectTimeContainer>();
+        /// <summary>
+        /// Gets a list of <see cref="EffectTimeContainer"/> storing the attached effects.
+        /// </summary>
+        protected IList<EffectTimeContainer> EffectTimes { get; } = new List<EffectTimeContainer>();
 
         /// <summary>
         /// Gets all <see cref="IEffect{T}" /> attached to this target.

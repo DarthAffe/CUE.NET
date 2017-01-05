@@ -16,26 +16,26 @@ namespace CUE.NET.Effects
 
         /// <summary>
         /// Gets or sets the attack-time (in seconds) of the effect. (default: 0.2f)<br />
-        /// This is close to a synthesizer envelope. (See <see cref="http://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope" /> as reference)
+        /// This is close to a synthesizer envelope. (See <see href="http://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope" />  as reference)
         /// </summary>
         public float Attack { get; set; } = 0.2f;
 
         /// <summary>
         /// Gets or sets the decay-time (in seconds) of the effect. (default: 0f)<br />
-        /// This is close to a synthesizer envelope. (See <see cref="http://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope" /> as reference)
+        /// This is close to a synthesizer envelope. (See <see href="http://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope" /> as reference)
         /// </summary>
         public float Decay { get; set; } = 0f;
 
         /// <summary>
         /// Gets or sets the sustain-time (in seconds) of the effect. (default: 0.3f)<br />
-        /// This is close to a synthesizer envelope. (See <see cref="http://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope" /> as reference)<br />
+        /// This is close to a synthesizer envelope. (See <see href="http://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope" /> as reference)<br />
         /// Note that this value for naming reasons represents the time NOT the level.
         /// </summary>
         public float Sustain { get; set; } = 0.3f;
 
         /// <summary>
         /// Gets or sets the release-time (in seconds) of the effect. (default: 0.2f)<br />
-        /// This is close to a synthesizer envelope. (See <see cref="http://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope" /> as reference)
+        /// This is close to a synthesizer envelope. (See <see href="http://en.wikipedia.org/wiki/Synthesizer#ADSR_envelope" /> as reference)
         /// </summary>
         public float Release { get; set; } = 0.2f;
 

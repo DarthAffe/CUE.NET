@@ -98,6 +98,10 @@ namespace CUE.NET.Groups
 
         #region Methods
 
+        /// <summary>
+        /// Gets a list containing all LEDs of this group.
+        /// </summary>
+        /// <returns>The list containing all LEDs of this group.</returns>
         public override IEnumerable<CorsairLed> GetLeds()
         {
             return _ledCache ?? (_ledCache = Device.Where(x => RectangleHelper.CalculateIntersectPercentage(x.LedRectangle, Rectangle) >= MinOverlayPercentage).ToList());
