@@ -88,7 +88,7 @@ namespace CUE.NET
         /// <summary>
         /// Checks if the SDK for the provided <see cref="CorsairDeviceType"/> is available or checks if CUE is installed and SDK supported enabled if null is provided.
         /// </summary>
-        /// <param name="sdkType">The <see cref="CorsairDeviceType"/> to check or null to check for generall SDK availability.</param>
+        /// <param name="sdkType">The <see cref="CorsairDeviceType"/> to check or null to check for general SDK availability.</param>
         /// <returns>The availability of the provided <see cref="CorsairDeviceType"/>.</returns>
         public static bool IsSDKAvailable(CorsairDeviceType? sdkType = null)
         {
