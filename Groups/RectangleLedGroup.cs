@@ -18,7 +18,7 @@ namespace CUE.NET.Groups
     public class RectangleLedGroup : AbstractLedGroup
     {
         #region Properties & Fields
-        
+
         private IList<CorsairLed> _ledCache;
 
         private RectangleF _rectangle;
@@ -35,10 +35,19 @@ namespace CUE.NET.Groups
             }
         }
 
+        private float _minOverlayPercentage;
         /// <summary>
         /// Gets or sets the minimal percentage overlay a LED must have with the <see cref="Rectangle" /> to be taken into the ledgroup.
         /// </summary>
-        public float MinOverlayPercentage { get; set; }
+        public float MinOverlayPercentage
+        {
+            get { return _minOverlayPercentage; }
+            set
+            {
+                _minOverlayPercentage = value;
+                _ledCache = null;
+            }
+        }
 
         #endregion
 
