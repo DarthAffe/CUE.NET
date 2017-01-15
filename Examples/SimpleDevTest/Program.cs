@@ -36,9 +36,16 @@ namespace SimpleDevTest
                 CueSDK.Initialize();
                 Console.WriteLine("Initialized with " + CueSDK.LoadedArchitecture + "-SDK");
 
+                float halfKeyboardWidth = CueSDK.KeyboardSDK.DeviceRectangle.Width / 2f;
+                ILedGroup left = new RectangleLedGroup(CueSDK.KeyboardSDK, new RectangleF(0, 0, halfKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Height));
+                ILedGroup right = new RectangleLedGroup(CueSDK.KeyboardSDK, new RectangleF(halfKeyboardWidth, 0, halfKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Height));
+
                 //CueSDK.KeyboardSDK.Brush = new LinearGradientBrush(new LinearGradient(true, new GradientStop(0, Color.Blue), new GradientStop(0.5f, Color.Red)));
-                CueSDK.KeyboardSDK.Brush = new LinearGradientBrush(new RainbowGradient());
-                CueSDK.KeyboardSDK.Brush.AddEffect(new MoveGradientEffect());
+                left.Brush = new ConicalGradientBrush(new PointF(0.6f, 0.6f), new RainbowGradient(360, 0));
+                left.Brush.AddEffect(new MoveGradientEffect());
+
+                right.Brush = new ConicalGradientBrush(new PointF(0.4f, 0.6f), new RainbowGradient());
+                right.Brush.AddEffect(new MoveGradientEffect());
 
                 CueSDK.UpdateMode = UpdateMode.Continuous;
 

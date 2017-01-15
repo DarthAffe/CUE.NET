@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brushes\ConicalGradientBrush.cs" />
     <Compile Include="Brushes\IGradientBrush.cs" />
     <Compile Include="Brushes\ImageBrush.cs" />
     <Compile Include="Brushes\ProfileBrush.cs" />
