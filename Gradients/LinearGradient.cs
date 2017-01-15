@@ -1,5 +1,6 @@
 ﻿// ReSharper disable UnusedMember.Global
 
+using System.Collections.Generic;
 using System.Linq;
 using CUE.NET.Devices.Generic;
 
@@ -46,25 +47,26 @@ namespace CUE.NET.Gradients
         /// <returns>The color at the specific offset.</returns>
         public override CorsairColor GetColor(float offset)
         {
-            if (!GradientStops.Any()) return CorsairColor.Transparent;
+            if (GradientStops.Count == 0) return CorsairColor.Transparent;
             if (GradientStops.Count == 1) return GradientStops.First().Color;
 
             GradientStop gsBefore;
             GradientStop gsAfter;
 
+            IList<GradientStop> orderedStops = GradientStops.OrderBy(x => x.Offset).ToList();
             if (WrapGradient)
             {
-                gsBefore = GradientStops.Where(n => n.Offset <= offset).OrderBy(n => n.Offset).LastOrDefault();
+                gsBefore = orderedStops.LastOrDefault(n => n.Offset <= offset);
                 if (gsBefore == null)
                 {
-                    GradientStop lastStop = GradientStops.OrderBy(n => n.Offset).Last();
+                    GradientStop lastStop = orderedStops[orderedStops.Count - 1];
                     gsBefore = new GradientStop(lastStop.Offset - 1f, lastStop.Color);
                 }
 
-                gsAfter = GradientStops.Where(n => n.Offset >= offset).OrderBy(n => n.Offset).FirstOrDefault();
+                gsAfter = orderedStops.FirstOrDefault(n => n.Offset >= offset);
                 if (gsAfter == null)
                 {
-                    GradientStop firstStop = GradientStops.OrderBy(n => n.Offset).First();
+                    GradientStop firstStop = orderedStops[0];
                     gsAfter = new GradientStop(firstStop.Offset + 1f, firstStop.Color);
                 }
             }
@@ -72,8 +74,8 @@ namespace CUE.NET.Gradients
             {
                 offset = ClipOffset(offset);
 
-                gsBefore = GradientStops.Where(n => n.Offset <= offset).OrderBy(n => n.Offset).Last();
-                gsAfter = GradientStops.Where(n => n.Offset >= offset).OrderBy(n => n.Offset).First();
+                gsBefore = orderedStops.Last(n => n.Offset <= offset);
+                gsAfter = orderedStops.First(n => n.Offset >= offset);
             }
 
             float blendFactor = 0f;
