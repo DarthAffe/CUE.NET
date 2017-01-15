@@ -2,8 +2,10 @@
 // ReSharper disable UnusedMember.Global
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic.Enums;
+using CUE.NET.Exceptions;
 
 namespace CUE.NET.Native
 {
@@ -18,12 +20,7 @@ namespace CUE.NET.Native
         /// Gets the loaded architecture (x64/x86).
         /// </summary>
         internal static string LoadedArchitecture { get; private set; }
-
-        static _CUESDK()
-        {
-            LoadCUESDK();
-        }
-
+        
         /// <summary>
         /// Reloads the SDK.
         /// </summary>
@@ -38,7 +35,10 @@ namespace CUE.NET.Native
             if (_dllHandle != IntPtr.Zero) return;
 
             // HACK: Load library at runtime to support both, x86 and x64 with one managed dll
-            _dllHandle = LoadLibrary((LoadedArchitecture = Environment.Is64BitProcess ? "x64" : "x86") + "/CUESDK_2015.dll");
+            string dllPath = (LoadedArchitecture = Environment.Is64BitProcess ? "x64" : "x86") + "/CUESDK_2015.dll";
+            if (!File.Exists(dllPath)) throw new WrapperException($"Can't find the CUE-SDK at the expected location '{Path.GetFullPath(dllPath)}'");
+
+            _dllHandle = LoadLibrary(dllPath);
 
             _corsairSetLedsColorsPointer = (CorsairSetLedsColorsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairSetLedsColors"), typeof(CorsairSetLedsColorsPointer));
             _corsairGetDeviceCountPointer = (CorsairGetDeviceCountPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetDeviceCount"), typeof(CorsairGetDeviceCountPointer));

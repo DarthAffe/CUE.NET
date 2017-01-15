@@ -147,6 +147,8 @@ namespace CUE.NET
             if (IsInitialized)
                 throw new WrapperException("CueSDK is already initialized.");
 
+            _CUESDK.Reload();
+
             ProtocolDetails = new CorsairProtocolDetails(_CUESDK.CorsairPerformProtocolHandshake());
 
             CorsairError error = LastError;
