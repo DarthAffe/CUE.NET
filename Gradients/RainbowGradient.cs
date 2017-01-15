@@ -43,8 +43,6 @@ namespace CUE.NET.Gradients
 
         #region Methods
 
-        #endregion
-
         /// <summary>
         /// Gets the color on the rainbow at the given offset.
         /// </summary>
@@ -58,5 +56,7 @@ namespace CUE.NET.Gradients
                 hue += 360;
             return ColorHelper.ColorFromHSV(hue, 1f, 1f);
         }
+
+        #endregion
     }
 }
