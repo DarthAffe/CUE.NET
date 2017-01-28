@@ -226,8 +226,12 @@ namespace CUE.NET.Devices.Generic
         // ReSharper disable once MemberCanBeMadeStatic.Local - idc
         protected virtual void Render(ILedGroup ledGroup)
         {
+            if (ledGroup == null) return;
+
             IList<CorsairLed> leds = ledGroup.GetLeds().ToList();
+
             IBrush brush = ledGroup.Brush;
+            if (brush == null) return;
 
             try
             {
