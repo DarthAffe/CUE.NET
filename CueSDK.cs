@@ -114,6 +114,7 @@ namespace CUE.NET
                 }
                 else
                 {
+                    _CUESDK.Reload();
                     _CUESDK.CorsairPerformProtocolHandshake();
 
                     if (sdkType == null || sdkType == CorsairDeviceType.Unknown)
