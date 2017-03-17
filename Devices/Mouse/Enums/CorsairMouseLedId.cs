@@ -17,5 +17,7 @@ namespace CUE.NET.Devices.Mouse.Enums
         public const CorsairLedId B2 = CorsairLedId.B2;
         public const CorsairLedId B3 = CorsairLedId.B3;
         public const CorsairLedId B4 = CorsairLedId.B4;
+        public const CorsairLedId B5 = CorsairLedId.B5;
+        public const CorsairLedId B6 = CorsairLedId.B6;
     }
 }

@@ -161,5 +161,24 @@ namespace CUE.NET.Devices.Keyboard.Enums
         public const CorsairLedId International4 = CorsairLedId.International4;
         public const CorsairLedId Fn = CorsairLedId.Fn;
         public const CorsairLedId Logo = CorsairLedId.Logo;
+        public const CorsairLedId Lightbar1 = CorsairLedId.Lightbar1;
+        public const CorsairLedId Lightbar2 = CorsairLedId.Lightbar2;
+        public const CorsairLedId Lightbar3 = CorsairLedId.Lightbar3;
+        public const CorsairLedId Lightbar4 = CorsairLedId.Lightbar4;
+        public const CorsairLedId Lightbar5 = CorsairLedId.Lightbar5;
+        public const CorsairLedId Lightbar6 = CorsairLedId.Lightbar6;
+        public const CorsairLedId Lightbar7 = CorsairLedId.Lightbar7;
+        public const CorsairLedId Lightbar8 = CorsairLedId.Lightbar8;
+        public const CorsairLedId Lightbar9 = CorsairLedId.Lightbar9;
+        public const CorsairLedId Lightbar10 = CorsairLedId.Lightbar10;
+        public const CorsairLedId Lightbar11 = CorsairLedId.Lightbar11;
+        public const CorsairLedId Lightbar12 = CorsairLedId.Lightbar12;
+        public const CorsairLedId Lightbar13 = CorsairLedId.Lightbar13;
+        public const CorsairLedId Lightbar14 = CorsairLedId.Lightbar14;
+        public const CorsairLedId Lightbar15 = CorsairLedId.Lightbar15;
+        public const CorsairLedId Lightbar16 = CorsairLedId.Lightbar16;
+        public const CorsairLedId Lightbar17 = CorsairLedId.Lightbar17;
+        public const CorsairLedId Lightbar18 = CorsairLedId.Lightbar18;
+        public const CorsairLedId Lightbar19 = CorsairLedId.Lightbar19;
     }
 }
