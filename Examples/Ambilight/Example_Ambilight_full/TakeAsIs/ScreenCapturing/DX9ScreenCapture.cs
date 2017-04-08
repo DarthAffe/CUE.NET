@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
+using Microsoft.Win32;
 using SharpDX;
 using SharpDX.Direct3D9;
 
@@ -27,6 +28,14 @@ namespace Example_Ambilight_full.TakeAsIs.ScreenCapturing
             Width = (int)System.Windows.SystemParameters.PrimaryScreenWidth;
             Height = (int)System.Windows.SystemParameters.PrimaryScreenHeight;
 
+            //DarthAffe 08.04.2017: Fix for system using windows-scaling. The primary screen size is reported 'wrong'.
+            double scaling = GetScaling();
+            if (Math.Abs(scaling - 1.0) > 0.01)
+            {
+                Width = (int)(Width / scaling);
+                Height = (int)(Height / scaling);
+            }
+
             PresentParameters presentParams = new PresentParameters(Width, Height)
             {
                 Windowed = true,
@@ -41,6 +50,19 @@ namespace Example_Ambilight_full.TakeAsIs.ScreenCapturing
         #endregion
 
         #region Methods
+
+        private double GetScaling()
+        {
+            try
+            {
+                int currentDpi = (int)Registry.GetValue("HKEY_CURRENT_USER\\Control Panel\\Desktop", "LogPixels", 96);
+                return 96.0 / currentDpi;
+            }
+            catch
+            {
+                return 1.0;
+            }
+        }
 
         public byte[] CaptureScreen()
         {
