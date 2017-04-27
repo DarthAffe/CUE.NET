@@ -2,7 +2,9 @@
 // ReSharper disable UnusedMember.Global
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Exceptions;
@@ -20,7 +22,7 @@ namespace CUE.NET.Native
         /// Gets the loaded architecture (x64/x86).
         /// </summary>
         internal static string LoadedArchitecture { get; private set; }
-        
+
         /// <summary>
         /// Reloads the SDK.
         /// </summary>
@@ -35,8 +37,16 @@ namespace CUE.NET.Native
             if (_dllHandle != IntPtr.Zero) return;
 
             // HACK: Load library at runtime to support both, x86 and x64 with one managed dll
-            string dllPath = (LoadedArchitecture = Environment.Is64BitProcess ? "x64" : "x86") + "/CUESDK_2015.dll";
-            if (!File.Exists(dllPath)) throw new WrapperException($"Can't find the CUE-SDK at the expected location '{Path.GetFullPath(dllPath)}'");
+            List<string> possiblePathList = Environment.Is64BitProcess ? CueSDK.PossibleX64NativePaths : CueSDK.PossibleX86NativePaths;
+            string dllPath = null;
+            foreach (string path in possiblePathList)
+                if (File.Exists(path))
+                {
+                    dllPath = path;
+                    break;
+                }
+
+            if (dllPath == null) throw new WrapperException($"Can't find the CUE-SDK at one of the expected locations:\r\n '{string.Join("\r\n", possiblePathList.Select(Path.GetFullPath))}'");
 
             _dllHandle = LoadLibrary(dllPath);
 
