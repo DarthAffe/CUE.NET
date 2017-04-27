@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CUE.NET;
 using CUE.NET.Brushes;
 using CUE.NET.Devices;
+using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Effects;
 using CUE.NET.Exceptions;
@@ -32,20 +33,41 @@ namespace SimpleDevTest
 
             try
             {
+                bool test = CueSDK.IsSDKAvailable();
+
                 // Initialize CUE-SDK
                 CueSDK.Initialize();
                 Console.WriteLine("Initialized with " + CueSDK.LoadedArchitecture + "-SDK");
 
-                float halfKeyboardWidth = CueSDK.KeyboardSDK.DeviceRectangle.Width / 2f;
-                ILedGroup left = new RectangleLedGroup(CueSDK.KeyboardSDK, new RectangleF(0, 0, halfKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Height));
-                ILedGroup right = new RectangleLedGroup(CueSDK.KeyboardSDK, new RectangleF(halfKeyboardWidth, 0, halfKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Height));
+                CueSDK.KeyboardSDK.Brush = (SolidColorBrush)Color.Black;
+                //CueSDK.KeyboardSDK[CorsairLedId.Z].Color = Color.Red;
+                //CueSDK.KeyboardSDK[CorsairLedId.Z].IsLocked = true;
+
+                float thirdKeyboardWidth = CueSDK.KeyboardSDK.DeviceRectangle.Width / 3f;
+                ILedGroup left = new RectangleLedGroup(CueSDK.KeyboardSDK, new RectangleF(CueSDK.KeyboardSDK.DeviceRectangle.X, CueSDK.KeyboardSDK.DeviceRectangle.Y, thirdKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Height));
+                ILedGroup mid = new RectangleLedGroup(CueSDK.KeyboardSDK, new RectangleF(CueSDK.KeyboardSDK.DeviceRectangle.X + thirdKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Y, thirdKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Height));
+                ILedGroup right = new RectangleLedGroup(CueSDK.KeyboardSDK, new RectangleF(CueSDK.KeyboardSDK.DeviceRectangle.X + thirdKeyboardWidth * 2, CueSDK.KeyboardSDK.DeviceRectangle.Y, thirdKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Height));
 
                 //CueSDK.KeyboardSDK.Brush = new LinearGradientBrush(new LinearGradient(true, new GradientStop(0, Color.Blue), new GradientStop(0.5f, Color.Red)));
-                left.Brush = new ConicalGradientBrush(new PointF(0.6f, 0.6f), new RainbowGradient(360, 0));
+                left.Brush = new ConicalGradientBrush(new PointF(0.6f, 0.7f), new RainbowGradient(360, 0));
                 left.Brush.AddEffect(new MoveGradientEffect());
 
-                right.Brush = new ConicalGradientBrush(new PointF(0.4f, 0.6f), new RainbowGradient());
+                mid.Brush = new ConicalGradientBrush(new PointF(0.5f, 0.3f), new RainbowGradient());
+                mid.Brush.AddEffect(new MoveGradientEffect());
+
+                right.Brush = new ConicalGradientBrush(new PointF(0.4f, 0.7f), new RainbowGradient(360, 0));
                 right.Brush.AddEffect(new MoveGradientEffect());
+
+                //float halfKeyboardWidth = CueSDK.KeyboardSDK.DeviceRectangle.Width / 2f;
+                //ILedGroup left = new RectangleLedGroup(CueSDK.KeyboardSDK, new RectangleF(CueSDK.KeyboardSDK.DeviceRectangle.X, CueSDK.KeyboardSDK.DeviceRectangle.Y, halfKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Height));
+                //ILedGroup right = new RectangleLedGroup(CueSDK.KeyboardSDK, new RectangleF(CueSDK.KeyboardSDK.DeviceRectangle.X + halfKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Y, halfKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Height));
+
+                ////CueSDK.KeyboardSDK.Brush = new LinearGradientBrush(new LinearGradient(true, new GradientStop(0, Color.Blue), new GradientStop(0.5f, Color.Red)));
+                //left.Brush = new ConicalGradientBrush(new PointF(0.6f, 0.6f), new RainbowGradient(360, 0));
+                //left.Brush.AddEffect(new MoveGradientEffect());
+
+                //right.Brush = new ConicalGradientBrush(new PointF(0.4f, 0.6f), new RainbowGradient());
+                //right.Brush.AddEffect(new MoveGradientEffect());
 
                 CueSDK.UpdateMode = UpdateMode.Continuous;
 
