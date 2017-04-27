@@ -346,6 +346,12 @@ namespace CUE.NET.Devices.Generic
         #region Effects
 
         /// <summary>
+        /// Gets a list of all active effects of this target.
+        /// For this device this is always null.
+        /// </summary>
+        public IList<IEffect<ILedGroup>> Effects => null;
+
+        /// <summary>
         /// NOT IMPLEMENTED: Effects can't be applied directly to the device. Add it to the Brush or create a ledgroup instead.
         /// </summary>
         public void UpdateEffects()

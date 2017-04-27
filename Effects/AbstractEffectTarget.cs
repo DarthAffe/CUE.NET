@@ -24,7 +24,7 @@ namespace CUE.NET.Effects
         /// <summary>
         /// Gets all <see cref="IEffect{T}" /> attached to this target.
         /// </summary>
-        protected IList<IEffect<T>> Effects => EffectTimes.Select(x => x.Effect).Cast<IEffect<T>>().ToList();
+        public IList<IEffect<T>> Effects => EffectTimes.Select(x => x.Effect).Cast<IEffect<T>>().ToList();
 
         /// <summary>
         /// Gets the strongly-typed target used for the effect.

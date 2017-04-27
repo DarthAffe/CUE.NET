@@ -1,14 +1,25 @@
 ﻿// ReSharper disable UnusedMember.Global
 
+using System.Collections.Generic;
+
 namespace CUE.NET.Effects
 {
     /// <summary>
     /// Represents a basic effect-target.
     /// </summary>
     /// <typeparam name="T">The type this target represents.</typeparam>
-    public interface IEffectTarget<out T>
+    public interface IEffectTarget<T>
         where T : IEffectTarget<T>
     {
+        #region Properties & Fields
+
+        /// <summary>
+        /// Gets a list of all active effects of this target.
+        /// </summary>
+        IList<IEffect<T>> Effects { get; }
+
+        #endregion
+
         #region Methods
 
         /// <summary>
