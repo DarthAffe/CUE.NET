@@ -36,6 +36,8 @@ namespace CUE.NET.Native
         {
             if (_dllHandle != IntPtr.Zero) return;
 
+            LoadedArchitecture = LoadedArchitecture = Environment.Is64BitProcess ? "x64" : "x86";
+
             // HACK: Load library at runtime to support both, x86 and x64 with one managed dll
             List<string> possiblePathList = Environment.Is64BitProcess ? CueSDK.PossibleX64NativePaths : CueSDK.PossibleX86NativePaths;
             string dllPath = null;
