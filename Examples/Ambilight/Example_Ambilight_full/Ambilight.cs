@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using CUE.NET;
 using CUE.NET.Brushes;
 using CUE.NET.Devices.Generic.Enums;
@@ -36,7 +35,7 @@ namespace Example_Ambilight_full
             {
                 CueSDK.Initialize();
                 CueSDK.UpdateMode = UpdateMode.Continuous;
-                CueSDK.UpdateFrequency = 1 / 20f;
+                CueSDK.UpdateFrequency = 1f / _settings.UpdateRate;
 
                 SetAmbilightBrush();
                 _settings.AmbienceCreatorTypeChanged += (sender, args) => SetAmbilightBrush();

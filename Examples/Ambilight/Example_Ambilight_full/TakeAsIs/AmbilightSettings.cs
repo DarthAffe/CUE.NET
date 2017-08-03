@@ -23,6 +23,7 @@ namespace Example_Ambilight_full.TakeAsIs
             }
         }
 
+        public int UpdateRate { get; set; } = 20;
         public int OffsetLeft { get; set; } = 0;
         public int OffsetRight { get; set; } = 0;
         public int OffsetTop { get; set; } = 0;

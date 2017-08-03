@@ -12,8 +12,12 @@ namespace Example_Ambilight_full.TakeAsIs.UI
 
         public int UpdateRate
         {
-            get { return (int)Math.Round(1f / CueSDK.UpdateFrequency); }
-            set { CueSDK.UpdateFrequency = 1f / value; }
+            get => (int)Math.Round(1f / CueSDK.UpdateFrequency);
+            set
+            {
+                Settings.UpdateRate = value;
+                CueSDK.UpdateFrequency = 1f / value;
+            }
         }
 
         #endregion
