@@ -166,7 +166,7 @@ namespace CUE.NET
 
             CorsairError error = LastError;
             if (error != CorsairError.Success)
-                Throw(error);
+                Throw(error, true);
 
             if (ProtocolDetails.BreakingChanges)
                 throw new WrapperException("The SDK currently used isn't compatible with the installed version of CUE.\r\n"
@@ -176,7 +176,7 @@ namespace CUE.NET
             if (exclusiveAccess)
             {
                 if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
-                    Throw(LastError);
+                    Throw(LastError, true);
 
                 HasExclusiveAccess = true;
             }
@@ -216,7 +216,7 @@ namespace CUE.NET
 
                 error = LastError;
                 if (error != CorsairError.Success)
-                    Throw(error);
+                    Throw(error, true);
             }
 
             InitializedDevices = new ReadOnlyCollection<ICueDevice>(devices);
@@ -252,7 +252,7 @@ namespace CUE.NET
 
             CorsairError error = LastError;
             if (error != CorsairError.Success)
-                Throw(error);
+                Throw(error, false);
 
             if (ProtocolDetails.BreakingChanges)
                 throw new WrapperException("The SDK currently used isn't compatible with the installed version of CUE.\r\n"
@@ -261,7 +261,7 @@ namespace CUE.NET
 
             if (exclusiveAccess)
                 if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
-                    Throw(LastError);
+                    Throw(LastError, false);
             HasExclusiveAccess = exclusiveAccess;
 
             int deviceCount = _CUESDK.CorsairGetDeviceCount();
@@ -276,7 +276,7 @@ namespace CUE.NET
 
                 error = LastError;
                 if (error != CorsairError.Success)
-                    Throw(error);
+                    Throw(error, false);
             }
 
             if (KeyboardSDK != null)
@@ -299,15 +299,18 @@ namespace CUE.NET
             IsInitialized = true;
         }
 
-        private static void Throw(CorsairError error)
+        private static void Throw(CorsairError error, bool reset)
         {
-            ProtocolDetails = null;
-            HasExclusiveAccess = false;
-            KeyboardSDK = null;
-            MouseSDK = null;
-            HeadsetSDK = null;
-            MousematSDK = null;
-            IsInitialized = false;
+            if (reset)
+            {
+                ProtocolDetails = null;
+                HasExclusiveAccess = false;
+                KeyboardSDK = null;
+                MouseSDK = null;
+                HeadsetSDK = null;
+                MousematSDK = null;
+                IsInitialized = false;
+            }
 
             throw new CUEException(error);
         }
