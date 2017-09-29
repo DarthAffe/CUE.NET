@@ -262,7 +262,7 @@ namespace CUE.NET.Devices.Generic
             catch (Exception ex) { OnException(ex); }
         }
 
-        private void UpdateLeds(ICollection<LedUpateRequest> updateRequests)
+        protected virtual void UpdateLeds(ICollection<LedUpateRequest> updateRequests)
         {
             updateRequests = updateRequests.Where(x => x.Color != CorsairColor.Transparent).ToList();
 
