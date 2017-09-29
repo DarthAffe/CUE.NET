@@ -12,7 +12,7 @@ using CUE.NET.Exceptions;
 
 namespace CUE.NET.Devices.Mouse
 {
-    public class GlaiveMouse : AbstractCueDevice
+    public class GlaiveMouse : CorsairMouse
     {
         private const int vid = 0x1b1c;
         private const int pid = 0x1b34;
@@ -26,12 +26,8 @@ namespace CUE.NET.Devices.Mouse
 
         private bool initialized = false;
 
-        public CorsairMouseDeviceInfo MouseDeviceInfo { get; }
-
         public GlaiveMouse(CorsairMouseDeviceInfo info) : base(info)
-        {
-            this.MouseDeviceInfo = info;
-        }
+        { }
 
         public static GlaiveMouse FromCorsairMouse(CorsairMouse mouse)
         {
@@ -45,30 +41,6 @@ namespace CUE.NET.Devices.Mouse
             if (!dev.TryOpen(out stream)) throw new Exception("Glaive mouse init error!");
 
             initialized = true;
-
-            switch (MouseDeviceInfo.PhysicalLayout)
-            {
-                case CorsairPhysicalMouseLayout.Zones1:
-                    InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
-                    break;
-                case CorsairPhysicalMouseLayout.Zones2:
-                    InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
-                    InitializeLed(CorsairMouseLedId.B2, new RectangleF(1, 0, 1, 1));
-                    break;
-                case CorsairPhysicalMouseLayout.Zones3:
-                    InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
-                    InitializeLed(CorsairMouseLedId.B2, new RectangleF(1, 0, 1, 1));
-                    InitializeLed(CorsairMouseLedId.B3, new RectangleF(2, 0, 1, 1));
-                    break;
-                case CorsairPhysicalMouseLayout.Zones4:
-                    InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1));
-                    InitializeLed(CorsairMouseLedId.B2, new RectangleF(1, 0, 1, 1));
-                    InitializeLed(CorsairMouseLedId.B3, new RectangleF(2, 0, 1, 1));
-                    InitializeLed(CorsairMouseLedId.B4, new RectangleF(3, 0, 1, 1));
-                    break;
-                default:
-                    throw new WrapperException($"Can't initial mouse with layout '{MouseDeviceInfo.PhysicalLayout}'");
-            }
 
             base.Initialize();
         }

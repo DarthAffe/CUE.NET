@@ -80,7 +80,6 @@ namespace CUE.NET
         /// </summary>
         public static CorsairMouse MouseSDK { get; private set; }
 
-        public static GlaiveMouse GlaiveSDK { get; private set; }
 
         /// <summary>
         /// Gets the managed representation of a headset managed by the CUE-SDK.
@@ -202,7 +201,7 @@ namespace CUE.NET
                     case CorsairDeviceType.Mouse:
                         if(info.Model.ToLower().Contains("glaive"))
                         {
-                            device = GlaiveSDK = new GlaiveMouse(new CorsairMouseDeviceInfo(nativeDeviceInfo));
+                            device = MouseSDK = new GlaiveMouse(new CorsairMouseDeviceInfo(nativeDeviceInfo));
                         }
                         else
                         {

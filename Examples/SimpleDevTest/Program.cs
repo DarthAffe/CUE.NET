@@ -409,7 +409,7 @@ namespace SimpleDevTest
 
             CueSDK.Initialize();
 
-            GlaiveMouse mouse = CueSDK.GlaiveSDK;
+            CorsairMouse mouse = CueSDK.MouseSDK;
 
             //mouse.Initialize();
 
