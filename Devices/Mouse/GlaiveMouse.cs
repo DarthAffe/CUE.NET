@@ -2,13 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HidSharp;
 using System.Drawing;
 using CUE.NET.Devices.Generic.Enums;
-using CUE.NET.Devices.Mouse.Enums;
-using CUE.NET.Exceptions;
 
 namespace CUE.NET.Devices.Mouse
 {
