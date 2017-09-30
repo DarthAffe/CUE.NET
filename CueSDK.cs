@@ -13,6 +13,7 @@ using CUE.NET.Devices.Mouse;
 using CUE.NET.Devices.Mousemat;
 using CUE.NET.Exceptions;
 using CUE.NET.Native;
+using System;
 
 namespace CUE.NET
 {
@@ -78,6 +79,7 @@ namespace CUE.NET
         /// Note that currently only one connected mouse is supported.
         /// </summary>
         public static CorsairMouse MouseSDK { get; private set; }
+
 
         /// <summary>
         /// Gets the managed representation of a headset managed by the CUE-SDK.
@@ -197,7 +199,14 @@ namespace CUE.NET
                         device = KeyboardSDK = new CorsairKeyboard(new CorsairKeyboardDeviceInfo(nativeDeviceInfo));
                         break;
                     case CorsairDeviceType.Mouse:
-                        device = MouseSDK = new CorsairMouse(new CorsairMouseDeviceInfo(nativeDeviceInfo));
+                        if(info.Model.ToLower().Contains("glaive"))
+                        {
+                            device = MouseSDK = new GlaiveMouse(new CorsairMouseDeviceInfo(nativeDeviceInfo));
+                        }
+                        else
+                        {
+                            device = MouseSDK = new CorsairMouse(new CorsairMouseDeviceInfo(nativeDeviceInfo));
+                        }
                         break;
                     case CorsairDeviceType.Headset:
                         device = HeadsetSDK = new CorsairHeadset(new CorsairHeadsetDeviceInfo(nativeDeviceInfo));
