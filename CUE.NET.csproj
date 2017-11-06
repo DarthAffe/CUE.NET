@@ -36,8 +36,8 @@
     <DocumentationFile>bin\CUE.NET.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HidSharp, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\HidSharp.1.5\lib\net35\HidSharp.dll</HintPath>
+    <Reference Include="HidLibrary, Version=3.2.46.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\hidlibrary.3.2.46.0\lib\HidLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
