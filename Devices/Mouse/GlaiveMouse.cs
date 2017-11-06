@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HidSharp;
 using System.Drawing;
 using CUE.NET.Devices.Generic.Enums;
+using HidLibrary;
 
 namespace CUE.NET.Devices.Mouse
 {
@@ -14,7 +14,6 @@ namespace CUE.NET.Devices.Mouse
         private const int pid = 0x1b34;
 
         private HidDevice dev;
-        private HidStream stream;
 
         private Color bars;
         private Color front;
@@ -32,9 +31,7 @@ namespace CUE.NET.Devices.Mouse
 
         public override void Initialize()
         {
-            var loader = new HidDeviceLoader();
-            dev = loader.GetDeviceOrDefault(vid, pid);
-            if (!dev.TryOpen(out stream)) throw new Exception("Glaive mouse init error!");
+            dev = HidDevices.Enumerate(vid, pid).Where(s=>s.DevicePath.Contains(@"&mi_02#")).Single();
 
             initialized = true;
 
@@ -47,27 +44,8 @@ namespace CUE.NET.Devices.Mouse
 
             OnLedsUpdating(updateRequests);
 
-            if (updateRequests.Any()) // CUE seems to crash if 'CorsairSetLedsColors' is called with a zero length array
+            if (updateRequests.Any())
             {
-                //int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
-                //IntPtr ptr = Marshal.AllocHGlobal(structSize * updateRequests.Count);
-                //IntPtr addPtr = new IntPtr(ptr.ToInt64());
-                //foreach (LedUpateRequest ledUpdateRequest in updateRequests)
-                //{
-                //    _CorsairLedColor color = new _CorsairLedColor
-                //    {
-                //        ledId = (int)ledUpdateRequest.LedId,
-                //        r = ledUpdateRequest.Color.R,
-                //        g = ledUpdateRequest.Color.G,
-                //        b = ledUpdateRequest.Color.B
-                //    };
-
-                //    Marshal.StructureToPtr(color, addPtr, false);
-                //    addPtr = new IntPtr(addPtr.ToInt64() + structSize);
-                //}
-                //_CUESDK.CorsairSetLedsColors(updateRequests.Count, ptr);
-                //Marshal.FreeHGlobal(ptr);
-
                 foreach (LedUpateRequest ledUpdateRequest in updateRequests)
                 {
                     switch(ledUpdateRequest.LedId)
@@ -101,16 +79,8 @@ namespace CUE.NET.Devices.Mouse
                 buff[2] = 34;
                 buff[3] = 4;
                 buff[4] = 1;
-
-
-
-                //dpi indicator (no idea why but this crap doesnt work)
                 buff[5] = 3;
-                //if (dpiIndicator == 1 || dpiIndicator == 2 || dpiIndicator == 4)
-                //buff[6] = 255;
-                //if (dpiIndicator >= 2)
                 buff[7] = 255;
-                //if (dpiIndicator == 2 || dpiIndicator == 5)
                 buff[8] = 255;
 
                 //bars rgb
@@ -131,7 +101,7 @@ namespace CUE.NET.Devices.Mouse
                 buff[19] = logo.G;
                 buff[20] = logo.B;
 
-                stream.Write(buff);
+                dev.Write(buff);
             }
             else throw new Exception("not initialized");
         }
