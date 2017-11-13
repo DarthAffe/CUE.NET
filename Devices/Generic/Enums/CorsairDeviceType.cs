@@ -15,6 +15,7 @@ namespace CUE.NET.Devices.Generic.Enums
         Mouse = 1,
         Keyboard = 2,
         Headset = 3,
-        Mousemat = 4
+        Mousemat = 4,
+        HeadsetStand = 5
     };
 }

@@ -205,5 +205,15 @@ namespace CUE.NET.Devices.Generic.Enums
         Lightbar17 = 186,
         Lightbar18 = 187,
         Lightbar19 = 188,
+
+        HeadsetStandZone1 = 191,
+        HeadsetStandZone2 = 192,
+        HeadsetStandZone3 = 193,
+        HeadsetStandZone4 = 194,
+        HeadsetStandZone5 = 195,
+        HeadsetStandZone6 = 196,
+        HeadsetStandZone7 = 197,
+        HeadsetStandZone8 = 198,
+        HeadsetStandZone9 = 199,
     }
 }

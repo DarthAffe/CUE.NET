@@ -8,6 +8,7 @@ using CUE.NET.Devices;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Headset;
+using CUE.NET.Devices.HeadsetStand;
 using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Mouse;
 using CUE.NET.Devices.Mousemat;
@@ -86,10 +87,16 @@ namespace CUE.NET
         public static CorsairHeadset HeadsetSDK { get; private set; }
 
         /// <summary>
-        /// Gets the managed representation of a moustmat managed by the CUE-SDK.
+        /// Gets the managed representation of a mousemat managed by the CUE-SDK.
         /// Note that currently only one connected mousemat is supported.
         /// </summary>
         public static CorsairMousemat MousematSDK { get; private set; }
+
+        /// <summary>
+        /// Gets the managed representation of a headset stand managed by the CUE-SDK.
+        /// Note that currently only one connected headset stand is supported.
+        /// </summary>
+        public static CorsairHeadsetStand HeadsetStandSDK { get; private set; }
 
         // ReSharper restore UnusedAutoPropertyAccessor.Global
 
@@ -120,6 +127,8 @@ namespace CUE.NET
                             return HeadsetSDK != null;
                         case CorsairDeviceType.Mousemat:
                             return MousematSDK != null;
+                        case CorsairDeviceType.HeadsetStand:
+                            return HeadsetStandSDK != null;
                         default:
                             return true;
                     }
@@ -205,6 +214,9 @@ namespace CUE.NET
                     case CorsairDeviceType.Mousemat:
                         device = MousematSDK = new CorsairMousemat(new CorsairMousematDeviceInfo(nativeDeviceInfo));
                         break;
+                    case CorsairDeviceType.HeadsetStand:
+                        device = HeadsetStandSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
+                        break;
                     // ReSharper disable once RedundantCaseLabel
                     case CorsairDeviceType.Unknown:
                     default:
@@ -245,6 +257,7 @@ namespace CUE.NET
             MouseSDK?.ResetLeds();
             HeadsetSDK?.ResetLeds();
             MousematSDK?.ResetLeds();
+            HeadsetStandSDK?.ResetLeds();
 
             _CUESDK.Reload();
 
@@ -295,6 +308,10 @@ namespace CUE.NET
                 if (!reloadedDevices.ContainsKey(CorsairDeviceType.Mousemat)
                     || MousematSDK.MousematDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Mousemat].Model)
                     throw new WrapperException("The previously loaded Mousemat got disconnected.");
+            if (HeadsetStandSDK != null)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.HeadsetStand)
+                    || HeadsetStandSDK.HeadsetStandDeviceInfo.Model != reloadedDevices[CorsairDeviceType.HeadsetStand].Model)
+                    throw new WrapperException("The previously loaded Headset Stand got disconnected.");
 
             IsInitialized = true;
         }
@@ -309,6 +326,7 @@ namespace CUE.NET
                 MouseSDK = null;
                 HeadsetSDK = null;
                 MousematSDK = null;
+                HeadsetStandSDK = null;
                 IsInitialized = false;
             }
 

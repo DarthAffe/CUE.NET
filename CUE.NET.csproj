@@ -67,6 +67,9 @@
     <Compile Include="Devices\Generic\EventArgs\UpdatedEventArgs.cs" />
     <Compile Include="Devices\Generic\EventArgs\UpdatingEventArgs.cs" />
     <Compile Include="Devices\Generic\LedUpateRequest.cs" />
+    <Compile Include="Devices\HeadsetStand\CorsairHeadsetStand.cs" />
+    <Compile Include="Devices\HeadsetStand\CorsairHeadsetStandDeviceInfo.cs" />
+    <Compile Include="Devices\HeadsetStand\Enums\CorsairHeadsetStandLedId.cs" />
     <Compile Include="Devices\Keyboard\Enums\BrushCalculationMode.cs" />
     <Compile Include="Effects\AbstractLedGroupEffect.cs" />
     <Compile Include="Effects\AbstractBrushEffect.cs" />
