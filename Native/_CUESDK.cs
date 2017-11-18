@@ -53,6 +53,7 @@ namespace CUE.NET.Native
             _dllHandle = LoadLibrary(dllPath);
 
             _corsairSetLedsColorsPointer = (CorsairSetLedsColorsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairSetLedsColors"), typeof(CorsairSetLedsColorsPointer));
+            _corsairGetLedsColorsPointer = (CorsairGetLedsColorsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedsColors"), typeof(CorsairGetLedsColorsPointer));
             _corsairGetDeviceCountPointer = (CorsairGetDeviceCountPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetDeviceCount"), typeof(CorsairGetDeviceCountPointer));
             _corsairGetDeviceInfoPointer = (CorsairGetDeviceInfoPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetDeviceInfo"), typeof(CorsairGetDeviceInfoPointer));
             _corsairGetLedPositionsPointer = (CorsairGetLedPositionsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedPositions"), typeof(CorsairGetLedPositionsPointer));
@@ -89,6 +90,7 @@ namespace CUE.NET.Native
         #region Pointers
 
         private static CorsairSetLedsColorsPointer _corsairSetLedsColorsPointer;
+        private static CorsairGetLedsColorsPointer _corsairGetLedsColorsPointer;
         private static CorsairGetDeviceCountPointer _corsairGetDeviceCountPointer;
         private static CorsairGetDeviceInfoPointer _corsairGetDeviceInfoPointer;
         private static CorsairGetLedPositionsPointer _corsairGetLedPositionsPointer;
@@ -105,6 +107,9 @@ namespace CUE.NET.Native
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate bool CorsairSetLedsColorsPointer(int size, IntPtr ledsColors);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate bool CorsairGetLedsColorsPointer(int size, IntPtr ledsColors);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int CorsairGetDeviceCountPointer();
@@ -143,6 +148,14 @@ namespace CUE.NET.Native
         internal static bool CorsairSetLedsColors(int size, IntPtr ledsColors)
         {
             return _corsairSetLedsColorsPointer(size, ledsColors);
+        }
+
+        /// <summary>
+        /// CUE-SDK: get current color for the list of requested LEDs.
+        /// </summary>
+        internal static bool CorsairGetLedsColors(int size, IntPtr ledsColors)
+        {
+            return _corsairGetLedsColorsPointer(size, ledsColors);
         }
 
         /// <summary>

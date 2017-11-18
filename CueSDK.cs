@@ -237,6 +237,15 @@ namespace CUE.NET
         }
 
         /// <summary>
+        /// Resets the colors of all devices back to the last saved color-data. (If there wasn't a manual save, that's the data from the time the SDK was initialized.)
+        /// </summary>
+        public static void Reset()
+        {
+            foreach (ICueDevice device in InitializedDevices)
+                device.RestoreColors();
+        }
+
+        /// <summary>
         /// Reinitialize the CUE-SDK and temporarily hand back full control to CUE.
         /// </summary>
         public static void Reinitialize()
