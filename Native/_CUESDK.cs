@@ -53,6 +53,7 @@ namespace CUE.NET.Native
             _dllHandle = LoadLibrary(dllPath);
 
             _corsairSetLedsColorsPointer = (CorsairSetLedsColorsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairSetLedsColors"), typeof(CorsairSetLedsColorsPointer));
+            _corsairGetLedsColorsPointer = (CorsairGetLedsColorsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedsColors"), typeof(CorsairGetLedsColorsPointer));
             _corsairGetDeviceCountPointer = (CorsairGetDeviceCountPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetDeviceCount"), typeof(CorsairGetDeviceCountPointer));
             _corsairGetDeviceInfoPointer = (CorsairGetDeviceInfoPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetDeviceInfo"), typeof(CorsairGetDeviceInfoPointer));
             _corsairGetLedPositionsPointer = (CorsairGetLedPositionsPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLedPositions"), typeof(CorsairGetLedPositionsPointer));
@@ -62,6 +63,7 @@ namespace CUE.NET.Native
             _corsairReleaseControlPointer = (CorsairReleaseControlPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairReleaseControl"), typeof(CorsairReleaseControlPointer));
             _corsairPerformProtocolHandshakePointer = (CorsairPerformProtocolHandshakePointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairPerformProtocolHandshake"), typeof(CorsairPerformProtocolHandshakePointer));
             _corsairGetLastErrorPointer = (CorsairGetLastErrorPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLastError"), typeof(CorsairGetLastErrorPointer));
+            _corsairRegisterKeypressCallbackPointer = (CorsairRegisterKeypressCallbackPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairRegisterKeypressCallback"), typeof(CorsairRegisterKeypressCallbackPointer));
         }
 
         private static void UnloadCUESDK()
@@ -89,6 +91,7 @@ namespace CUE.NET.Native
         #region Pointers
 
         private static CorsairSetLedsColorsPointer _corsairSetLedsColorsPointer;
+        private static CorsairGetLedsColorsPointer _corsairGetLedsColorsPointer;
         private static CorsairGetDeviceCountPointer _corsairGetDeviceCountPointer;
         private static CorsairGetDeviceInfoPointer _corsairGetDeviceInfoPointer;
         private static CorsairGetLedPositionsPointer _corsairGetLedPositionsPointer;
@@ -98,6 +101,7 @@ namespace CUE.NET.Native
         private static CorsairReleaseControlPointer _corsairReleaseControlPointer;
         private static CorsairPerformProtocolHandshakePointer _corsairPerformProtocolHandshakePointer;
         private static CorsairGetLastErrorPointer _corsairGetLastErrorPointer;
+        private static CorsairRegisterKeypressCallbackPointer _corsairRegisterKeypressCallbackPointer;
 
         #endregion
 
@@ -105,6 +109,9 @@ namespace CUE.NET.Native
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate bool CorsairSetLedsColorsPointer(int size, IntPtr ledsColors);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate bool CorsairGetLedsColorsPointer(int size, IntPtr ledsColors);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int CorsairGetDeviceCountPointer();
@@ -133,6 +140,9 @@ namespace CUE.NET.Native
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate CorsairError CorsairGetLastErrorPointer();
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate bool CorsairRegisterKeypressCallbackPointer(IntPtr callback, IntPtr context);
+
         #endregion
 
         // ReSharper disable EventExceptionNotDocumented
@@ -143,6 +153,14 @@ namespace CUE.NET.Native
         internal static bool CorsairSetLedsColors(int size, IntPtr ledsColors)
         {
             return _corsairSetLedsColorsPointer(size, ledsColors);
+        }
+
+        /// <summary>
+        /// CUE-SDK: get current color for the list of requested LEDs.
+        /// </summary>
+        internal static bool CorsairGetLedsColors(int size, IntPtr ledsColors)
+        {
+            return _corsairGetLedsColorsPointer(size, ledsColors);
         }
 
         /// <summary>
@@ -216,6 +234,11 @@ namespace CUE.NET.Native
         internal static CorsairError CorsairGetLastError()
         {
             return _corsairGetLastErrorPointer();
+        }
+
+        internal static bool CorsairRegisterKeypressCallback(IntPtr callback, IntPtr context)
+        {
+            return _corsairRegisterKeypressCallbackPointer(callback, context);
         }
 
         // ReSharper restore EventExceptionNotDocumented

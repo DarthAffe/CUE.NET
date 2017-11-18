@@ -59,6 +59,7 @@
     <Compile Include="Devices\Generic\Enums\CorsairAccessMode.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceCaps.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceType.cs" />
+    <Compile Include="Devices\Generic\Enums\CorsairKeyId.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairLedId.cs" />
     <Compile Include="Devices\Generic\EventArgs\ExceptionEventArgs.cs" />
     <Compile Include="Brushes\AbstractBrush.cs" />
@@ -67,7 +68,12 @@
     <Compile Include="Devices\Generic\EventArgs\UpdatedEventArgs.cs" />
     <Compile Include="Devices\Generic\EventArgs\UpdatingEventArgs.cs" />
     <Compile Include="Devices\Generic\LedUpateRequest.cs" />
+    <Compile Include="Devices\HeadsetStand\CorsairHeadsetStand.cs" />
+    <Compile Include="Devices\HeadsetStand\CorsairHeadsetStandDeviceInfo.cs" />
+    <Compile Include="Devices\HeadsetStand\Enums\CorsairHeadsetStandLedId.cs" />
     <Compile Include="Devices\Keyboard\Enums\BrushCalculationMode.cs" />
+    <Compile Include="Devices\Keyboard\Enums\CorsairKeyboardKeyId.cs" />
+    <Compile Include="Devices\Mouse\Enums\CorsairMouseKeyId.cs" />
     <Compile Include="Effects\AbstractLedGroupEffect.cs" />
     <Compile Include="Effects\AbstractBrushEffect.cs" />
     <Compile Include="Effects\AbstractEffectTarget.cs" />
@@ -76,6 +82,7 @@
     <Compile Include="Devices\Mousemat\CorsairMousematDeviceInfo.cs" />
     <Compile Include="Devices\Mousemat\Enums\CorsairMousematLedId.cs" />
     <Compile Include="Effects\MoveGradientEffect.cs" />
+    <Compile Include="EventArgs\KeyPressedEventArgs.cs" />
     <Compile Include="Gradients\AbstractGradient.cs" />
     <Compile Include="Gradients\GradientStop.cs" />
     <Compile Include="Gradients\IGradient.cs" />

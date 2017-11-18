@@ -1,6 +1,7 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
@@ -8,9 +9,11 @@ using CUE.NET.Devices;
 using CUE.NET.Devices.Generic;
 using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Headset;
+using CUE.NET.Devices.HeadsetStand;
 using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Mouse;
 using CUE.NET.Devices.Mousemat;
+using CUE.NET.EventArgs;
 using CUE.NET.Exceptions;
 using CUE.NET.Native;
 
@@ -86,12 +89,32 @@ namespace CUE.NET
         public static CorsairHeadset HeadsetSDK { get; private set; }
 
         /// <summary>
-        /// Gets the managed representation of a moustmat managed by the CUE-SDK.
+        /// Gets the managed representation of a mousemat managed by the CUE-SDK.
         /// Note that currently only one connected mousemat is supported.
         /// </summary>
         public static CorsairMousemat MousematSDK { get; private set; }
 
+        /// <summary>
+        /// Gets the managed representation of a headset stand managed by the CUE-SDK.
+        /// Note that currently only one connected headset stand is supported.
+        /// </summary>
+        public static CorsairHeadsetStand HeadsetStandSDK { get; private set; }
+
         // ReSharper restore UnusedAutoPropertyAccessor.Global
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void OnKeyPressedDelegate(IntPtr context, CorsairKeyId keyId, [MarshalAs(UnmanagedType.I1)] bool pressed);
+        private static readonly OnKeyPressedDelegate _onKeyPressedDelegate = OnKeyPressed;
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when the SDK reports that a key is pressed.
+        /// Notice that right now only G- (keyboard) and M- (mouse) keys are supported.
+        /// </summary>
+        public static event EventHandler<KeyPressedEventArgs> KeyPressed;
 
         #endregion
 
@@ -120,6 +143,8 @@ namespace CUE.NET
                             return HeadsetSDK != null;
                         case CorsairDeviceType.Mousemat:
                             return MousematSDK != null;
+                        case CorsairDeviceType.HeadsetStand:
+                            return HeadsetStandSDK != null;
                         default:
                             return true;
                     }
@@ -205,6 +230,9 @@ namespace CUE.NET
                     case CorsairDeviceType.Mousemat:
                         device = MousematSDK = new CorsairMousemat(new CorsairMousematDeviceInfo(nativeDeviceInfo));
                         break;
+                    case CorsairDeviceType.HeadsetStand:
+                        device = HeadsetStandSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
+                        break;
                     // ReSharper disable once RedundantCaseLabel
                     case CorsairDeviceType.Unknown:
                     default:
@@ -219,9 +247,23 @@ namespace CUE.NET
                     Throw(error, true);
             }
 
+            _CUESDK.CorsairRegisterKeypressCallback(Marshal.GetFunctionPointerForDelegate(_onKeyPressedDelegate), IntPtr.Zero);
+            error = LastError;
+            if (error != CorsairError.Success)
+                Throw(error, false);
+
             InitializedDevices = new ReadOnlyCollection<ICueDevice>(devices);
 
             IsInitialized = true;
+        }
+
+        /// <summary>
+        /// Resets the colors of all devices back to the last saved color-data. (If there wasn't a manual save, that's the data from the time the SDK was initialized.)
+        /// </summary>
+        public static void Reset()
+        {
+            foreach (ICueDevice device in InitializedDevices)
+                device.RestoreColors();
         }
 
         /// <summary>
@@ -245,6 +287,7 @@ namespace CUE.NET
             MouseSDK?.ResetLeds();
             HeadsetSDK?.ResetLeds();
             MousematSDK?.ResetLeds();
+            HeadsetStandSDK?.ResetLeds();
 
             _CUESDK.Reload();
 
@@ -295,6 +338,15 @@ namespace CUE.NET
                 if (!reloadedDevices.ContainsKey(CorsairDeviceType.Mousemat)
                     || MousematSDK.MousematDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Mousemat].Model)
                     throw new WrapperException("The previously loaded Mousemat got disconnected.");
+            if (HeadsetStandSDK != null)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.HeadsetStand)
+                    || HeadsetStandSDK.HeadsetStandDeviceInfo.Model != reloadedDevices[CorsairDeviceType.HeadsetStand].Model)
+                    throw new WrapperException("The previously loaded Headset Stand got disconnected.");
+
+            _CUESDK.CorsairRegisterKeypressCallback(Marshal.GetFunctionPointerForDelegate(_onKeyPressedDelegate), IntPtr.Zero);
+            error = LastError;
+            if (error != CorsairError.Success)
+                Throw(error, false);
 
             IsInitialized = true;
         }
@@ -309,11 +361,15 @@ namespace CUE.NET
                 MouseSDK = null;
                 HeadsetSDK = null;
                 MousematSDK = null;
+                HeadsetStandSDK = null;
                 IsInitialized = false;
             }
 
             throw new CUEException(error);
         }
+
+        private static void OnKeyPressed(IntPtr context, CorsairKeyId keyId, bool pressed)
+            => KeyPressed?.Invoke(null, new KeyPressedEventArgs(keyId, pressed));
 
         #endregion
     }

@@ -140,10 +140,26 @@ namespace CUE.NET.Devices
         void Initialize();
 
         /// <summary>
-        /// Perform an update for all dirty keys, or all keys if flushLeds is set to true.
+        /// Performs an update for all dirty keys, or all keys if flushLeds is set to true.
         /// </summary>
         /// <param name="flushLeds">Specifies whether all keys (including clean ones) should be updated.</param>
-        void Update(bool flushLeds = false);
+        /// <param name="noRender">Only updates the hardware-leds skippin effects and the render-pass. Only use this if you know what that means!</param>
+        void Update(bool flushLeds = false, bool noRender = false);
+
+        /// <summary>
+        /// Reads the currently active colors from the device and sync them with the internal state.
+        /// </summary>
+        void SyncColors();
+
+        /// <summary>
+        /// Saves the currently active colors from the device.
+        /// </summary>
+        void SaveColors();
+
+        /// <summary>
+        /// Restores the last saved colors.
+        /// </summary>
+        void RestoreColors();
 
         /// <summary>
         /// Attaches the given ledgroup.

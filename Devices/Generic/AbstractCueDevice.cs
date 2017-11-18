@@ -29,6 +29,8 @@ namespace CUE.NET.Devices.Generic
 
         private static DateTime _lastUpdate = DateTime.Now;
 
+        private Dictionary<CorsairLedId, CorsairColor> _colorDataSave;
+
         /// <summary>
         /// Gets generic information provided by CUE for the device.
         /// </summary>
@@ -56,6 +58,7 @@ namespace CUE.NET.Devices.Generic
 
         /// <summary>
         /// Gets or sets the background brush of the keyboard.
+        /// If this is null the last saved color-data is used as background.
         /// </summary>
         public IBrush Brush { get; set; }
 
@@ -153,6 +156,7 @@ namespace CUE.NET.Devices.Generic
         public virtual void Initialize()
         {
             DeviceRectangle = RectangleHelper.CreateRectangleFromRectangles((this).Select(x => x.LedRectangle));
+            SaveColors();
         }
 
         /// <summary>
@@ -187,19 +191,26 @@ namespace CUE.NET.Devices.Generic
         /// Performs an update for all dirty keys, or all keys if flushLeds is set to true.
         /// </summary>
         /// <param name="flushLeds">Specifies whether all keys (including clean ones) should be updated.</param>
-        public void Update(bool flushLeds = false)
+        /// <param name="noRender">Only updates the hardware-leds skippin effects and the render-pass. Only use this if you know what that means!</param>
+        public void Update(bool flushLeds = false, bool noRender = false)
         {
             OnUpdating();
 
-            // Update effects
-            foreach (ILedGroup ledGroup in LedGroups)
-                ledGroup.UpdateEffects();
+            if (!noRender)
+            {
+                // Update effects
+                foreach (ILedGroup ledGroup in LedGroups)
+                    ledGroup.UpdateEffects();
 
-            // Render brushes
-            Render(this);
-            foreach (ILedGroup ledGroup in LedGroups.OrderBy(x => x.ZIndex))
-                Render(ledGroup);
+                // Render brushes
+                if (Brush != null)
+                    Render(this);
+                else
+                    ApplyColorData(_colorDataSave);
 
+                foreach (ILedGroup ledGroup in LedGroups.OrderBy(x => x.ZIndex))
+                    Render(ledGroup);
+            }
             // Device-specific updates
             DeviceUpdate();
 
@@ -291,6 +302,63 @@ namespace CUE.NET.Devices.Generic
             }
 
             OnLedsUpdated(updateRequests);
+        }
+
+        /// <inheritdoc />
+        public void SyncColors()
+        {
+            Dictionary<CorsairLedId, CorsairColor> colorData = GetColors();
+            ApplyColorData(colorData);
+            Update(true, true);
+        }
+
+        /// <inheritdoc />
+        public void SaveColors()
+        {
+            _colorDataSave = GetColors();
+        }
+
+        /// <inheritdoc />
+        public void RestoreColors()
+        {
+            ApplyColorData(_colorDataSave);
+            Update(true, true);
+        }
+
+        private void ApplyColorData(Dictionary<CorsairLedId, CorsairColor> colorData)
+        {
+            if (colorData == null) return;
+
+            foreach (KeyValuePair<CorsairLedId, CorsairColor> corsairColor in _colorDataSave)
+                LedMapping[corsairColor.Key].Color = corsairColor.Value;
+        }
+
+        private Dictionary<CorsairLedId, CorsairColor> GetColors()
+        {
+            int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
+            IntPtr ptr = Marshal.AllocHGlobal(structSize * LedMapping.Count);
+            IntPtr addPtr = new IntPtr(ptr.ToInt64());
+            foreach (KeyValuePair<CorsairLedId, CorsairLed> led in LedMapping)
+            {
+                _CorsairLedColor color = new _CorsairLedColor { ledId = (int)led.Value.Id };
+                Marshal.StructureToPtr(color, addPtr, false);
+                addPtr = new IntPtr(addPtr.ToInt64() + structSize);
+            }
+            _CUESDK.CorsairGetLedsColors(LedMapping.Count, ptr);
+
+            IntPtr readPtr = ptr;
+            Dictionary<CorsairLedId, CorsairColor> colorData = new Dictionary<CorsairLedId, CorsairColor>();
+            for (int i = 0; i < LedMapping.Count; i++)
+            {
+                _CorsairLedColor ledColor = (_CorsairLedColor)Marshal.PtrToStructure(readPtr, typeof(_CorsairLedColor));
+                colorData.Add((CorsairLedId)ledColor.ledId, new CorsairColor((byte)ledColor.r, (byte)ledColor.g, (byte)ledColor.b));
+
+                readPtr = new IntPtr(readPtr.ToInt64() + structSize);
+            }
+
+            Marshal.FreeHGlobal(ptr);
+
+            return colorData;
         }
 
         #endregion

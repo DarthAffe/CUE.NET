@@ -2,10 +2,16 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedMember.Global
 
+using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
 using CUE.NET.Devices.Generic;
+using CUE.NET.Devices.Generic.Enums;
 using CUE.NET.Devices.Mouse.Enums;
 using CUE.NET.Exceptions;
+using CUE.NET.Native;
 
 namespace CUE.NET.Devices.Mouse
 {
@@ -44,6 +50,14 @@ namespace CUE.NET.Devices.Mouse
         /// </summary>
         public override void Initialize()
         {
+            // Glaive is a special flake that doesn't follow the default layout
+            if (MouseDeviceInfo.Model == "GLAIVE RGB")
+            {
+                InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1)); // Logo
+                InitializeLed(CorsairMouseLedId.B2, new RectangleF(2, 0, 1, 1)); // Front
+                InitializeLed(CorsairMouseLedId.B5, new RectangleF(3, 0, 1, 1)); // Sides
+                return;
+            }
             switch (MouseDeviceInfo.PhysicalLayout)
             {
                 case CorsairPhysicalMouseLayout.Zones1:

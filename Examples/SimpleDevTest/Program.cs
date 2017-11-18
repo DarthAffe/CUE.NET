@@ -39,7 +39,9 @@ namespace SimpleDevTest
                 CueSDK.Initialize();
                 Console.WriteLine("Initialized with " + CueSDK.LoadedArchitecture + "-SDK");
 
-                CueSDK.KeyboardSDK.Brush = (SolidColorBrush)Color.Black;
+                CueSDK.KeyPressed += (sender, eventArgs) => Console.WriteLine($"Key {eventArgs.KeyId} {(eventArgs.IsPressed ? "pressed" : "released")}");
+
+                //CueSDK.KeyboardSDK.Brush = (SolidColorBrush)Color.Black;
                 //CueSDK.KeyboardSDK[CorsairLedId.Z].Color = Color.Red;
                 //CueSDK.KeyboardSDK[CorsairLedId.Z].IsLocked = true;
 
@@ -51,12 +53,15 @@ namespace SimpleDevTest
                 //CueSDK.KeyboardSDK.Brush = new LinearGradientBrush(new LinearGradient(true, new GradientStop(0, Color.Blue), new GradientStop(0.5f, Color.Red)));
                 left.Brush = new ConicalGradientBrush(new PointF(0.6f, 0.7f), new RainbowGradient(360, 0));
                 left.Brush.AddEffect(new MoveGradientEffect());
+                left.Brush.AddEffect(new FlashEffect { Attack = 2, Sustain = 1f, Release = 2, Interval = 1f });
 
                 mid.Brush = new ConicalGradientBrush(new PointF(0.5f, 0.3f), new RainbowGradient());
                 mid.Brush.AddEffect(new MoveGradientEffect());
+                mid.Brush.AddEffect(new FlashEffect { Attack = 2, Sustain = 1f, Release = 2, Interval = 1f });
 
                 right.Brush = new ConicalGradientBrush(new PointF(0.4f, 0.7f), new RainbowGradient(360, 0));
                 right.Brush.AddEffect(new MoveGradientEffect());
+                right.Brush.AddEffect(new FlashEffect { Attack = 2, Sustain = 1f, Release = 2, Interval = 1f });
 
                 //float halfKeyboardWidth = CueSDK.KeyboardSDK.DeviceRectangle.Width / 2f;
                 //ILedGroup left = new RectangleLedGroup(CueSDK.KeyboardSDK, new RectangleF(CueSDK.KeyboardSDK.DeviceRectangle.X, CueSDK.KeyboardSDK.DeviceRectangle.Y, halfKeyboardWidth, CueSDK.KeyboardSDK.DeviceRectangle.Height));
