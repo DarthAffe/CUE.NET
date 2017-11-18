@@ -1,6 +1,7 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
@@ -12,6 +13,7 @@ using CUE.NET.Devices.HeadsetStand;
 using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Mouse;
 using CUE.NET.Devices.Mousemat;
+using CUE.NET.EventArgs;
 using CUE.NET.Exceptions;
 using CUE.NET.Native;
 
@@ -99,6 +101,20 @@ namespace CUE.NET
         public static CorsairHeadsetStand HeadsetStandSDK { get; private set; }
 
         // ReSharper restore UnusedAutoPropertyAccessor.Global
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void OnKeyPressedDelegate(IntPtr context, CorsairKeyId keyId, [MarshalAs(UnmanagedType.I1)] bool pressed);
+        private static readonly OnKeyPressedDelegate _onKeyPressedDelegate = OnKeyPressed;
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Occurs when the SDK reports that a key is pressed.
+        /// Notice that right now only G- (keyboard) and M- (mouse) keys are supported.
+        /// </summary>
+        public static event EventHandler<KeyPressedEventArgs> KeyPressed;
 
         #endregion
 
@@ -231,6 +247,11 @@ namespace CUE.NET
                     Throw(error, true);
             }
 
+            _CUESDK.CorsairRegisterKeypressCallback(Marshal.GetFunctionPointerForDelegate(_onKeyPressedDelegate), IntPtr.Zero);
+            error = LastError;
+            if (error != CorsairError.Success)
+                Throw(error, false);
+
             InitializedDevices = new ReadOnlyCollection<ICueDevice>(devices);
 
             IsInitialized = true;
@@ -322,6 +343,11 @@ namespace CUE.NET
                     || HeadsetStandSDK.HeadsetStandDeviceInfo.Model != reloadedDevices[CorsairDeviceType.HeadsetStand].Model)
                     throw new WrapperException("The previously loaded Headset Stand got disconnected.");
 
+            _CUESDK.CorsairRegisterKeypressCallback(Marshal.GetFunctionPointerForDelegate(_onKeyPressedDelegate), IntPtr.Zero);
+            error = LastError;
+            if (error != CorsairError.Success)
+                Throw(error, false);
+
             IsInitialized = true;
         }
 
@@ -341,6 +367,9 @@ namespace CUE.NET
 
             throw new CUEException(error);
         }
+
+        private static void OnKeyPressed(IntPtr context, CorsairKeyId keyId, bool pressed)
+            => KeyPressed?.Invoke(null, new KeyPressedEventArgs(keyId, pressed));
 
         #endregion
     }

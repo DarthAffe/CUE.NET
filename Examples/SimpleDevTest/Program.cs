@@ -39,6 +39,8 @@ namespace SimpleDevTest
                 CueSDK.Initialize();
                 Console.WriteLine("Initialized with " + CueSDK.LoadedArchitecture + "-SDK");
 
+                CueSDK.KeyPressed += (sender, eventArgs) => Console.WriteLine($"Key {eventArgs.KeyId} {(eventArgs.IsPressed ? "pressed" : "released")}");
+
                 //CueSDK.KeyboardSDK.Brush = (SolidColorBrush)Color.Black;
                 //CueSDK.KeyboardSDK[CorsairLedId.Z].Color = Color.Red;
                 //CueSDK.KeyboardSDK[CorsairLedId.Z].IsLocked = true;

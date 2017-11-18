@@ -63,6 +63,7 @@ namespace CUE.NET.Native
             _corsairReleaseControlPointer = (CorsairReleaseControlPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairReleaseControl"), typeof(CorsairReleaseControlPointer));
             _corsairPerformProtocolHandshakePointer = (CorsairPerformProtocolHandshakePointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairPerformProtocolHandshake"), typeof(CorsairPerformProtocolHandshakePointer));
             _corsairGetLastErrorPointer = (CorsairGetLastErrorPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairGetLastError"), typeof(CorsairGetLastErrorPointer));
+            _corsairRegisterKeypressCallbackPointer = (CorsairRegisterKeypressCallbackPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "CorsairRegisterKeypressCallback"), typeof(CorsairRegisterKeypressCallbackPointer));
         }
 
         private static void UnloadCUESDK()
@@ -100,6 +101,7 @@ namespace CUE.NET.Native
         private static CorsairReleaseControlPointer _corsairReleaseControlPointer;
         private static CorsairPerformProtocolHandshakePointer _corsairPerformProtocolHandshakePointer;
         private static CorsairGetLastErrorPointer _corsairGetLastErrorPointer;
+        private static CorsairRegisterKeypressCallbackPointer _corsairRegisterKeypressCallbackPointer;
 
         #endregion
 
@@ -137,6 +139,9 @@ namespace CUE.NET.Native
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate CorsairError CorsairGetLastErrorPointer();
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate bool CorsairRegisterKeypressCallbackPointer(IntPtr callback, IntPtr context);
 
         #endregion
 
@@ -229,6 +234,11 @@ namespace CUE.NET.Native
         internal static CorsairError CorsairGetLastError()
         {
             return _corsairGetLastErrorPointer();
+        }
+
+        internal static bool CorsairRegisterKeypressCallback(IntPtr callback, IntPtr context)
+        {
+            return _corsairRegisterKeypressCallbackPointer(callback, context);
         }
 
         // ReSharper restore EventExceptionNotDocumented
