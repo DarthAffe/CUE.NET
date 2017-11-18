@@ -3,7 +3,7 @@
   <metadata>
     <id>CUE.NET</id>
     <title>CUE.NET</title>
-    <version>1.1.3.1</version>
+    <version>1.2.0.0</version>
     <authors>Darth Affe</authors>
     <owners>Darth Affe</owners>
     <projectUrl>https://github.com/DarthAffe/CUE.NET</projectUrl>
@@ -11,8 +11,11 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Corsair HID SDK Wrapper</description>
     <releaseNotes>
-      - Added an effect-list to the effect-target
-      - Added two lists to allow modification of the native-dll-paths
+      - Updated SDK to 2.18.127
+      - Added methods to use the new GetColor method
+      - Added an event to get the key-change of special keys (G and M)
+      - Fixed missing LoadedArchitecture assignment
+      - Fixed an issue that prevents further reinitializing if an exception was thrown earlier
     </releaseNotes>
     <summary>C# (.NET) Wrapper library around the Corsair CUE-SDK</summary>
     <copyright>Copyright © Wyrez 2017</copyright>
