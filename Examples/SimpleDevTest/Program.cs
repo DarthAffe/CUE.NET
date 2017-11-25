@@ -39,6 +39,8 @@ namespace SimpleDevTest
                 CueSDK.Initialize();
                 Console.WriteLine("Initialized with " + CueSDK.LoadedArchitecture + "-SDK");
 
+                CueSDK.EnableKeypressCallback();
+
                 CueSDK.KeyPressed += (sender, eventArgs) => Console.WriteLine($"Key {eventArgs.KeyId} {(eventArgs.IsPressed ? "pressed" : "released")}");
 
                 //CueSDK.KeyboardSDK.Brush = (SolidColorBrush)Color.Black;
@@ -75,6 +77,17 @@ namespace SimpleDevTest
                 //right.Brush.AddEffect(new MoveGradientEffect());
 
                 CueSDK.UpdateMode = UpdateMode.Continuous;
+
+                Wait(5);
+                CueSDK.UpdateMode = UpdateMode.Manual;
+                for (int i = 0; i < 100000; i++)
+                {
+                    CueSDK.Reinitialize();
+                    Console.WriteLine(i);
+                }
+
+                Console.WriteLine("done!");
+                Wait(5);
 
                 //IBrush rainbowBrush = new LinearGradientBrush(new RainbowGradient());
                 //rainbowBrush.AddEffect(new FlashEffect { Attack = 5f, Sustain = 1f, Decay = 0, Release = 5f, Interval = 1f });

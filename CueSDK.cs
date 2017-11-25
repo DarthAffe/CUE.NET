@@ -104,7 +104,7 @@ namespace CUE.NET
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void OnKeyPressedDelegate(IntPtr context, CorsairKeyId keyId, [MarshalAs(UnmanagedType.I1)] bool pressed);
-        private static readonly OnKeyPressedDelegate _onKeyPressedDelegate = OnKeyPressed;
+        private static OnKeyPressedDelegate _onKeyPressedDelegate;
 
         #endregion
 
@@ -113,6 +113,8 @@ namespace CUE.NET
         /// <summary>
         /// Occurs when the SDK reports that a key is pressed.
         /// Notice that right now only G- (keyboard) and M- (mouse) keys are supported.
+        /// 
+        /// To enable this event <see cref="EnableKeypressCallback"/> needs to be called.
         /// </summary>
         public static event EventHandler<KeyPressedEventArgs> KeyPressed;
 
@@ -247,7 +249,6 @@ namespace CUE.NET
                     Throw(error, true);
             }
 
-            _CUESDK.CorsairRegisterKeypressCallback(Marshal.GetFunctionPointerForDelegate(_onKeyPressedDelegate), IntPtr.Zero);
             error = LastError;
             if (error != CorsairError.Success)
                 Throw(error, false);
@@ -255,6 +256,21 @@ namespace CUE.NET
             InitializedDevices = new ReadOnlyCollection<ICueDevice>(devices);
 
             IsInitialized = true;
+        }
+
+        /// <summary>
+        /// Enables the keypress-callback.
+        /// This method needs to be called to enable the <see cref="KeyPressed"/>-event.
+        /// 
+        /// WARNING: AFTER THIS METHOD IS CALLED IT'S NO LONGER POSSIBLE TO REINITIALIZE THE SDK!
+        /// </summary>
+        public static void EnableKeypressCallback()
+        {
+            if (!IsInitialized)
+                throw new WrapperException("CueSDK isn't initialized.");
+
+            _onKeyPressedDelegate = OnKeyPressed;
+            _CUESDK.CorsairRegisterKeypressCallback(Marshal.GetFunctionPointerForDelegate(_onKeyPressedDelegate), IntPtr.Zero);
         }
 
         /// <summary>
@@ -282,6 +298,9 @@ namespace CUE.NET
         {
             if (!IsInitialized)
                 throw new WrapperException("CueSDK isn't initialized.");
+
+            if (_onKeyPressedDelegate != null)
+                throw new WrapperException("Keypress-Callback is enabled.");
 
             KeyboardSDK?.ResetLeds();
             MouseSDK?.ResetLeds();
@@ -343,7 +362,6 @@ namespace CUE.NET
                     || HeadsetStandSDK.HeadsetStandDeviceInfo.Model != reloadedDevices[CorsairDeviceType.HeadsetStand].Model)
                     throw new WrapperException("The previously loaded Headset Stand got disconnected.");
 
-            _CUESDK.CorsairRegisterKeypressCallback(Marshal.GetFunctionPointerForDelegate(_onKeyPressedDelegate), IntPtr.Zero);
             error = LastError;
             if (error != CorsairError.Success)
                 Throw(error, false);
