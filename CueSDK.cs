@@ -269,6 +269,9 @@ namespace CUE.NET
             if (!IsInitialized)
                 throw new WrapperException("CueSDK isn't initialized.");
 
+            if (_onKeyPressedDelegate != null)
+                return;
+
             _onKeyPressedDelegate = OnKeyPressed;
             _CUESDK.CorsairRegisterKeypressCallback(Marshal.GetFunctionPointerForDelegate(_onKeyPressedDelegate), IntPtr.Zero);
         }
