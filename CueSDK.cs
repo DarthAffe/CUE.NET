@@ -214,8 +214,8 @@ namespace CUE.NET
             {
                 _CorsairDeviceInfo nativeDeviceInfo = (_CorsairDeviceInfo)Marshal.PtrToStructure(_CUESDK.CorsairGetDeviceInfo(i), typeof(_CorsairDeviceInfo));
                 GenericDeviceInfo info = new GenericDeviceInfo(nativeDeviceInfo);
-                if (!info.CapsMask.HasFlag(CorsairDeviceCaps.Lighting))
-                    continue; // Everything that doesn't support lighting control is useless
+              //  if (!info.CapsMask.HasFlag(CorsairDeviceCaps.Lighting))
+              //      continue; // Everything that doesn't support lighting control is useless
 
                 ICueDevice device;
                 switch (info.Type)
@@ -334,8 +334,8 @@ namespace CUE.NET
             for (int i = 0; i < deviceCount; i++)
             {
                 GenericDeviceInfo info = new GenericDeviceInfo((_CorsairDeviceInfo)Marshal.PtrToStructure(_CUESDK.CorsairGetDeviceInfo(i), typeof(_CorsairDeviceInfo)));
-                if (!info.CapsMask.HasFlag(CorsairDeviceCaps.Lighting))
-                    continue; // Everything that doesn't support lighting control is useless
+                //if (!info.CapsMask.HasFlag(CorsairDeviceCaps.Lighting))
+                //    continue; // Everything that doesn't support lighting control is useless
 
                 reloadedDevices.Add(info.Type, info);
 
