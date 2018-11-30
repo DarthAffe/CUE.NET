@@ -32,13 +32,13 @@ namespace CUE.NET
         /// Gets a modifiable list of paths used to find the native SDK-dlls for x86 applications.
         /// The first match will be used.
         /// </summary>
-        public static List<string> PossibleX86NativePaths { get; } = new List<string> { "x86/CUESDK_2015.dll", "x86/CUESDK.dll" };
+        public static List<string> PossibleX86NativePaths { get; } = new List<string> { "CorsairSDK/x86/CUESDK_2015.dll", "CorsairSDK/x86/CUESDK.dll" };
 
         /// <summary>
         /// Gets a modifiable list of paths used to find the native SDK-dlls for x64 applications.
         /// The first match will be used.
         /// </summary>
-        public static List<string> PossibleX64NativePaths { get; } = new List<string> { "x64/CUESDK_2015.dll", "x64/CUESDK.dll" };
+        public static List<string> PossibleX64NativePaths { get; } = new List<string> { "CorsairSDK/x64/CUESDK_2015.dll", "CorsairSDK/x64/CUESDK.dll" };
 
         /// <summary>
         /// Indicates if the SDK is initialized and ready to use.

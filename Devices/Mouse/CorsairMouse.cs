@@ -51,7 +51,7 @@ namespace CUE.NET.Devices.Mouse
         public override void Initialize()
         {
             // Glaive is a special flake that doesn't follow the default layout
-            if (MouseDeviceInfo.Model == "GLAIVE RGB")
+            if (MouseDeviceInfo.Model == "GLAIVE RGB"|| MouseDeviceInfo.Model == "GLAIVE RGB Demo")
             {
                 InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1)); // Logo
                 InitializeLed(CorsairMouseLedId.B2, new RectangleF(2, 0, 1, 1)); // Front
