@@ -16,6 +16,10 @@ namespace CUE.NET.Devices.Generic.Enums
         Keyboard = 2,
         Headset = 3,
         Mousemat = 4,
-        HeadsetStand = 5
+        HeadsetStand = 5,
+        CommanderPro = 6,
+		LightingNodePro = 7,
+		MemoryModule = 8,
+		Cooler = 9
     };
 }
