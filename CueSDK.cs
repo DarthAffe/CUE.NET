@@ -13,6 +13,10 @@ using CUE.NET.Devices.HeadsetStand;
 using CUE.NET.Devices.Keyboard;
 using CUE.NET.Devices.Mouse;
 using CUE.NET.Devices.Mousemat;
+using CUE.NET.Devices.Cooler;
+using CUE.NET.Devices.LightingNodePro;
+using CUE.NET.Devices.CommanderPro;
+using CUE.NET.Devices.MemoryModule;
 using CUE.NET.EventArgs;
 using CUE.NET.Exceptions;
 using CUE.NET.Native;
@@ -100,6 +104,14 @@ namespace CUE.NET
         /// </summary>
         public static CorsairHeadsetStand HeadsetStandSDK { get; private set; }
 
+         public static CorsairCommanderPro CommanderProSDK { get; private set; }
+
+         public static CorsairLightingNodePro LightingNodeProSDK { get; private set; }
+
+         public static CorsairMemoryModule MemoryModuleSDK { get; private set; }
+
+        public static CorsairCooler CoolerSDK { get; private set; }
+
         // ReSharper restore UnusedAutoPropertyAccessor.Global
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -147,6 +159,14 @@ namespace CUE.NET
                             return MousematSDK != null;
                         case CorsairDeviceType.HeadsetStand:
                             return HeadsetStandSDK != null;
+                             case CorsairDeviceType.CommanderPro:
+                            return CommanderProSDK != null;
+                             case CorsairDeviceType.Cooler:
+                            return CoolerSDK != null;
+                             case CorsairDeviceType.MemoryModule:
+                            return MemoryModuleSDK != null;
+                             case CorsairDeviceType.LightingNodePro:
+                            return LightingNodeProSDK != null;
                         default:
                             return true;
                     }
@@ -234,6 +254,18 @@ namespace CUE.NET
                         break;
                     case CorsairDeviceType.HeadsetStand:
                         device = HeadsetStandSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
+                        break;
+                         case CorsairDeviceType.Cooler:
+                        device = CoolerSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
+                        break;
+                         case CorsairDeviceType.CommanderPro:
+                        device = CommanderProSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
+                        break;
+                         case CorsairDeviceType.LightingNodePro:
+                        device = LightingNodeProSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
+                        break;
+                         case CorsairDeviceType.MemoryModule:
+                        device = MemoryModuleSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
                         break;
                     // ReSharper disable once RedundantCaseLabel
                     case CorsairDeviceType.Unknown:
