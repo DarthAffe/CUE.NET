@@ -55,6 +55,11 @@
     <Compile Include="ColorCorrection\GammaCorrection.cs" />
     <Compile Include="ColorCorrection\IColorCorrection.cs" />
     <Compile Include="CueSDKAutoUpdate.cs" />
+    <Compile Include="Devices\CommanderPro\CorsairCommanderPro.cs" />
+    <Compile Include="Devices\CommanderPro\CorsairCommanderProDeviceInfo.cs" />
+    <Compile Include="Devices\CommanderPro\Enums\CorsairCommanderProLedId.cs" />
+    <Compile Include="Devices\Cooler\CorsairCooler.cs" />
+    <Compile Include="Devices\Cooler\CorsairCoolerDeviceInfo.cs" />
     <Compile Include="Devices\Generic\CorsairColor.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairAccessMode.cs" />
     <Compile Include="Devices\Generic\Enums\CorsairDeviceCaps.cs" />
@@ -73,6 +78,10 @@
     <Compile Include="Devices\HeadsetStand\Enums\CorsairHeadsetStandLedId.cs" />
     <Compile Include="Devices\Keyboard\Enums\BrushCalculationMode.cs" />
     <Compile Include="Devices\Keyboard\Enums\CorsairKeyboardKeyId.cs" />
+    <Compile Include="Devices\LightingNodePro\CorsairLightingNodePro.cs" />
+    <Compile Include="Devices\LightingNodePro\CorsairLightingNodeProDeviceInfo.cs" />
+    <Compile Include="Devices\MemoryModule\CorsairMemoryModule.cs" />
+    <Compile Include="Devices\MemoryModule\CorsairMemoryModuleDeviceInfo.cs" />
     <Compile Include="Devices\Mouse\Enums\CorsairMouseKeyId.cs" />
     <Compile Include="Effects\AbstractLedGroupEffect.cs" />
     <Compile Include="Effects\AbstractBrushEffect.cs" />

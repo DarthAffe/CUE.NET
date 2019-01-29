@@ -256,16 +256,16 @@ namespace CUE.NET
                         device = HeadsetStandSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
                         break;
                          case CorsairDeviceType.Cooler:
-                        device = CoolerSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
+                        device = CoolerSDK = new CorsairCooler(new CorsairCoolerDeviceInfo(nativeDeviceInfo));
                         break;
                          case CorsairDeviceType.CommanderPro:
-                        device = CommanderProSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
+                        device = CommanderProSDK = new CorsairCommanderPro(new CorsairCommanderProDeviceInfo(nativeDeviceInfo));
                         break;
                          case CorsairDeviceType.LightingNodePro:
-                        device = LightingNodeProSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
+                        device = LightingNodeProSDK = new CorsairLightingNodePro(new CorsairLightingNodeProDeviceInfo(nativeDeviceInfo));
                         break;
                          case CorsairDeviceType.MemoryModule:
-                        device = MemoryModuleSDK = new CorsairHeadsetStand(new CorsairHeadsetStandDeviceInfo(nativeDeviceInfo));
+                        device = MemoryModuleSDK = new CorsairMemoryModule(new CorsairMemoryModuleDeviceInfo(nativeDeviceInfo));
                         break;
                     // ReSharper disable once RedundantCaseLabel
                     case CorsairDeviceType.Unknown:
@@ -396,6 +396,22 @@ namespace CUE.NET
                 if (!reloadedDevices.ContainsKey(CorsairDeviceType.HeadsetStand)
                     || HeadsetStandSDK.HeadsetStandDeviceInfo.Model != reloadedDevices[CorsairDeviceType.HeadsetStand].Model)
                     throw new WrapperException("The previously loaded Headset Stand got disconnected.");
+            if (CoolerSDK != null)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.Cooler)
+                    || CoolerSDK.CoolerDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Cooler].Model)
+                    throw new WrapperException("The previously loaded Cooler got disconnected.");
+            if (CommanderProSDK != null)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.HeadsetStand)
+                    || CommanderProSDK.CommanderProDeviceInfo.Model != reloadedDevices[CorsairDeviceType.CommanderPro].Model)
+                    throw new WrapperException("The previously loaded Commander Pro got disconnected.");
+            if (MemoryModuleSDK != null)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.HeadsetStand)
+                    || MemoryModuleSDK.MemoryModuleDeviceInfo.Model != reloadedDevices[CorsairDeviceType.MemoryModule].Model)
+                    throw new WrapperException("The previously loaded Memory Module got disconnected.");
+            if (LightingNodeProSDK != null)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.HeadsetStand)
+                    || LightingNodeProSDK.LightingNodeProDeviceInfo.Model != reloadedDevices[CorsairDeviceType.LightingNodePro].Model)
+                    throw new WrapperException("The previously loaded Lighting Node Pro got disconnected.");
 
             error = LastError;
             if (error != CorsairError.Success)
