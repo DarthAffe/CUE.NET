@@ -1,5 +1,6 @@
 ﻿using CUE.NET;
-using CUE.NET.Devices.Mouse;
+using CUE.NET.Devices.CommanderPro;
+using CUE.NET.Devices.HeadsetStand;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,10 @@ namespace Demo
         {
             CueSDK.IsSDKAvailable();
             CueSDK.Initialize(true);
-            CorsairMouse mouse = CueSDK.MouseSDK;
-            Console.Write("Hello: "+mouse); Console.ReadLine();
+            CorsairCommanderPro cooler = CueSDK.CommanderProSDK;
+            Console.Write("Cooler: "+cooler); Console.ReadLine();
+            CorsairHeadsetStand headset = CueSDK.HeadsetStandSDK;
+            Console.Write("HeadSet: " + headset); Console.ReadLine();
         }
     }
 }
