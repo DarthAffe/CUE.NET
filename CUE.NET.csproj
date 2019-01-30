@@ -57,7 +57,6 @@
     <Compile Include="CueSDKAutoUpdate.cs" />
     <Compile Include="Devices\CommanderPro\CorsairCommanderPro.cs" />
     <Compile Include="Devices\CommanderPro\CorsairCommanderProDeviceInfo.cs" />
-    <Compile Include="Devices\CommanderPro\Enums\CorsairCommanderProLedId.cs" />
     <Compile Include="Devices\Cooler\CorsairCooler.cs" />
     <Compile Include="Devices\Cooler\CorsairCoolerDeviceInfo.cs" />
     <Compile Include="Devices\Generic\CorsairColor.cs" />

@@ -342,6 +342,10 @@ namespace CUE.NET
             HeadsetSDK?.ResetLeds();
             MousematSDK?.ResetLeds();
             HeadsetStandSDK?.ResetLeds();
+            CommanderProSDK?.ResetLeds();
+            LightingNodeProSDK?.ResetLeds();
+            MemoryModuleSDK?.ResetLeds();
+            CoolerSDK?.ResetLeds();
 
             _CUESDK.Reload();
 
@@ -401,15 +405,15 @@ namespace CUE.NET
                     || CoolerSDK.CoolerDeviceInfo.Model != reloadedDevices[CorsairDeviceType.Cooler].Model)
                     throw new WrapperException("The previously loaded Cooler got disconnected.");
             if (CommanderProSDK != null)
-                if (!reloadedDevices.ContainsKey(CorsairDeviceType.HeadsetStand)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.CommanderPro)
                     || CommanderProSDK.CommanderProDeviceInfo.Model != reloadedDevices[CorsairDeviceType.CommanderPro].Model)
                     throw new WrapperException("The previously loaded Commander Pro got disconnected.");
             if (MemoryModuleSDK != null)
-                if (!reloadedDevices.ContainsKey(CorsairDeviceType.HeadsetStand)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.MemoryModule)
                     || MemoryModuleSDK.MemoryModuleDeviceInfo.Model != reloadedDevices[CorsairDeviceType.MemoryModule].Model)
                     throw new WrapperException("The previously loaded Memory Module got disconnected.");
             if (LightingNodeProSDK != null)
-                if (!reloadedDevices.ContainsKey(CorsairDeviceType.HeadsetStand)
+                if (!reloadedDevices.ContainsKey(CorsairDeviceType.LightingNodePro)
                     || LightingNodeProSDK.LightingNodeProDeviceInfo.Model != reloadedDevices[CorsairDeviceType.LightingNodePro].Model)
                     throw new WrapperException("The previously loaded Lighting Node Pro got disconnected.");
 
@@ -431,6 +435,10 @@ namespace CUE.NET
                 HeadsetSDK = null;
                 MousematSDK = null;
                 HeadsetStandSDK = null;
+                CommanderProSDK = null;
+                LightingNodeProSDK = null;
+                CoolerSDK = null;
+                MemoryModuleSDK = null;
                 IsInitialized = false;
             }
 

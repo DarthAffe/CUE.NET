@@ -15,14 +15,14 @@ using CUE.NET.Native;
 namespace CUE.NET.Devices.LightingNodePro
 {
     /// <summary>
-    /// Represents the SDK for a corsair headset stand.
+    /// Represents the SDK for a corsair Lighting Node Pro stand.
     /// </summary>
     public class CorsairLightingNodePro : AbstractCueDevice
     {
         #region Properties & Fields
 
         /// <summary>
-        /// Gets specific information provided by CUE for the headset stand.
+        /// Gets specific information provided by CUE for the Lighting Node Pro stand.
         /// </summary>
         public CorsairLightingNodeProDeviceInfo LightingNodeProDeviceInfo { get; }
 
@@ -33,7 +33,7 @@ namespace CUE.NET.Devices.LightingNodePro
         /// <summary>
         /// Initializes a new instance of the <see cref="CorsairLightingNodePro"/> class.
         /// </summary>
-        /// <param name="info">The specific information provided by CUE for the headset stand</param>
+        /// <param name="info">The specific information provided by CUE for the Lighting Node Pro stand</param>
         internal CorsairLightingNodePro(CorsairLightingNodeProDeviceInfo info)
             : base(info)
         {
@@ -45,13 +45,13 @@ namespace CUE.NET.Devices.LightingNodePro
         #region Methods
 
         /// <summary>
-        /// Initializes the headset stand.
+        /// Initializes the Lighting Node Pro stand.
         /// </summary>
         public override void Initialize()
         {
             int deviceCount = _CUESDK.CorsairGetDeviceCount();
 
-            // Get headset stand device index
+            // Get Lighting Node Pro stand device index
             int LightingNodeProIndex = -1;
             for (int i = 0; i < deviceCount; i++)
             {
@@ -64,7 +64,7 @@ namespace CUE.NET.Devices.LightingNodePro
                 break;
             }
             if (LightingNodeProIndex < 0)
-                throw new WrapperException("Can't determine headset stand device index");
+                throw new WrapperException("Can't determine Lighting Node Pro device index");
 
             _CorsairLedPositions nativeLedPositions = (_CorsairLedPositions)Marshal.PtrToStructure(_CUESDK.CorsairGetLedPositionsByDeviceIndex(LightingNodeProIndex), typeof(_CorsairLedPositions));
             int structSize = Marshal.SizeOf(typeof(_CorsairLedPosition));

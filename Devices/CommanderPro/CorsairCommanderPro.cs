@@ -15,14 +15,14 @@ using CUE.NET.Native;
 namespace CUE.NET.Devices.CommanderPro
 {
     /// <summary>
-    /// Represents the SDK for a corsair headset stand.
+    /// Represents the SDK for a corsair CommanderPro stand.
     /// </summary>
     public class CorsairCommanderPro : AbstractCueDevice
     {
         #region Properties & Fields
 
         /// <summary>
-        /// Gets specific information provided by CUE for the headset stand.
+        /// Gets specific information provided by CUE for the CommanderPro stand.
         /// </summary>
         public CorsairCommanderProDeviceInfo CommanderProDeviceInfo { get; }
 
@@ -33,7 +33,7 @@ namespace CUE.NET.Devices.CommanderPro
         /// <summary>
         /// Initializes a new instance of the <see cref="CorsairCommanderPro"/> class.
         /// </summary>
-        /// <param name="info">The specific information provided by CUE for the headset stand</param>
+        /// <param name="info">The specific information provided by CUE for the CommanderPro stand</param>
         internal CorsairCommanderPro(CorsairCommanderProDeviceInfo info)
             : base(info)
         {
@@ -45,13 +45,13 @@ namespace CUE.NET.Devices.CommanderPro
         #region Methods
 
         /// <summary>
-        /// Initializes the headset stand.
+        /// Initializes the CommanderPro stand.
         /// </summary>
         public override void Initialize()
         {
             int deviceCount = _CUESDK.CorsairGetDeviceCount();
 
-            // Get headset stand device index
+            // Get CommanderPro stand device index
             int CommanderProIndex = -1;
             for (int i = 0; i < deviceCount; i++)
             {

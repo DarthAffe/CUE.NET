@@ -45,7 +45,7 @@ namespace CUE.NET.Devices.MemoryModule
         #region Methods
 
         /// <summary>
-        /// Initializes the headset stand.
+        /// Initializes the Memory Module
         /// </summary>
         public override void Initialize()
         {
@@ -64,7 +64,7 @@ namespace CUE.NET.Devices.MemoryModule
                 break;
             }
             if (MemoryModuleIndex < 0)
-                throw new WrapperException("Can't determine headset stand device index");
+                throw new WrapperException("Can't determine Memory Module device index");
 
             _CorsairLedPositions nativeLedPositions = (_CorsairLedPositions)Marshal.PtrToStructure(_CUESDK.CorsairGetLedPositionsByDeviceIndex(MemoryModuleIndex), typeof(_CorsairLedPositions));
             int structSize = Marshal.SizeOf(typeof(_CorsairLedPosition));

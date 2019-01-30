@@ -15,14 +15,14 @@ using CUE.NET.Native;
 namespace CUE.NET.Devices.Cooler
 {
     /// <summary>
-    /// Represents the SDK for a corsair headset stand.
+    /// Represents the SDK for a corsair Cooler stand.
     /// </summary>
     public class CorsairCooler : AbstractCueDevice
     {
         #region Properties & Fields
 
         /// <summary>
-        /// Gets specific information provided by CUE for the headset stand.
+        /// Gets specific information provided by CUE for the Cooler stand.
         /// </summary>
         public CorsairCoolerDeviceInfo CoolerDeviceInfo { get; }
 
@@ -33,7 +33,7 @@ namespace CUE.NET.Devices.Cooler
         /// <summary>
         /// Initializes a new instance of the <see cref="CorsairCooler"/> class.
         /// </summary>
-        /// <param name="info">The specific information provided by CUE for the headset stand</param>
+        /// <param name="info">The specific information provided by CUE for the Cooler stand</param>
         internal CorsairCooler(CorsairCoolerDeviceInfo info)
             : base(info)
         {
@@ -45,13 +45,13 @@ namespace CUE.NET.Devices.Cooler
         #region Methods
 
         /// <summary>
-        /// Initializes the headset stand.
+        /// Initializes the Cooler stand.
         /// </summary>
         public override void Initialize()
         {
             int deviceCount = _CUESDK.CorsairGetDeviceCount();
 
-            // Get headset stand device index
+            // Get Cooler stand device index
             int CoolerIndex = -1;
             for (int i = 0; i < deviceCount; i++)
             {
@@ -64,7 +64,7 @@ namespace CUE.NET.Devices.Cooler
                 break;
             }
             if (CoolerIndex < 0)
-                throw new WrapperException("Can't determine headset stand device index");
+                throw new WrapperException("Can't determine Cooler device index");
 
             _CorsairLedPositions nativeLedPositions = (_CorsairLedPositions)Marshal.PtrToStructure(_CUESDK.CorsairGetLedPositionsByDeviceIndex(CoolerIndex), typeof(_CorsairLedPositions));
             int structSize = Marshal.SizeOf(typeof(_CorsairLedPosition));
