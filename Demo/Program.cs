@@ -1,6 +1,6 @@
 ﻿using CUE.NET;
 using CUE.NET.Brushes;
-using CUE.NET.Devices.CommanderPro;
+using CUE.NET.Devices.LightingNodePro;
 using CUE.NET.Devices.HeadsetStand;
 using CUE.NET.Gradients;
 using CUE.NET.Groups;
@@ -19,12 +19,12 @@ namespace Demo
         {
             CueSDK.IsSDKAvailable();
             CueSDK.Initialize(false);
-            CorsairCommanderPro commander = CueSDK.CommanderProSDK;
-            CueSDK.CommanderProSDK.Brush = (SolidColorBrush)Color.Black;
-            ILedGroup rainbowLeds = new ListLedGroup(CueSDK.CommanderProSDK, CueSDK.CommanderProSDK);
+            CorsairLightingNodePro commander = CueSDK.LightingNodeProSDK;
+            CueSDK.LightingNodeProSDK.Brush = (SolidColorBrush)Color.Black;
+            ILedGroup rainbowLeds = new ListLedGroup(CueSDK.LightingNodeProSDK, CueSDK.LightingNodeProSDK);
             rainbowLeds.Brush = new LinearGradientBrush(new RainbowGradient());
-            CueSDK.CommanderProSDK.Update();
-            Console.Write("CommanderPro: " + commander); Console.ReadLine();
+            CueSDK.LightingNodeProSDK.Update();
+            Console.Write("LightingNodePro: " + commander); Console.ReadLine();
         }
     }
 }

@@ -78,7 +78,7 @@ namespace CUE.NET.Devices.CommanderPro
                 ptr = new IntPtr(ptr.ToInt64() + structSize);
                 positions.Add(ledPosition);
             }
-
+            positions.Count();
             // Sort for easy iteration by clients
             foreach (_CorsairLedPosition ledPosition in positions.OrderBy(p => p.ledId))
                 InitializeLed(ledPosition.ledId, new RectangleF((float)ledPosition.left, (float)ledPosition.top, (float)ledPosition.width, (float)ledPosition.height));

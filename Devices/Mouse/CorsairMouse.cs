@@ -58,6 +58,11 @@ namespace CUE.NET.Devices.Mouse
                 InitializeLed(CorsairMouseLedId.B5, new RectangleF(3, 0, 1, 1)); // Sides
                 return;
             }
+            if (MouseDeviceInfo.Model == "HARPOON RGB")
+            {
+                InitializeLed(CorsairMouseLedId.B1, new RectangleF(0, 0, 1, 1)); // Logo
+                return;
+            }
             switch (MouseDeviceInfo.PhysicalLayout)
             {
                 case CorsairPhysicalMouseLayout.Zones1:
