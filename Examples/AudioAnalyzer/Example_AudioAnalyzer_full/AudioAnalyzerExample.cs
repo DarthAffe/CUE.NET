@@ -38,7 +38,7 @@ namespace Example_AudioAnalyzer_full
         private SoundDataProcessor _soundDataProcessor; // Take as is
 
         private CorsairKeyboard _keyboard;
-
+        
         #endregion
 
         #region Methods
