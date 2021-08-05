@@ -1,8 +1,8 @@
+**CUE.NET is considered done now and will be no longer actively developed.   
+It is superseded by [RGB.NET](https://github.com/DarthAffe/RGB.NET). Feel free to join the [discord-channel](https://discord.gg/9kytURv) if you're interested what's happening there :)**
+
 # CUE.NET
 C# (.NET) Wrapper library around the Corsair CUE-SDK
-
-> CUE.NET is considered done now and will be no longer actively developed (only bugfixes if needed).   
-> It will be superseded by [RGB.NET](https://github.com/DarthAffe/RGB.NET). Feel free to join the [discord-channel](https://discord.gg/9kytURv) if you're interested what's happening there :)
 
 Please take a look at the [wiki](https://github.com/DarthAffe/CUE.NET/wiki) or the documentation at [http://cue.wyrez.org](http://cue.wyrez.org) for some help on how to use the library. Documentation and Tutorials will be finished/rewritten soon.
 
